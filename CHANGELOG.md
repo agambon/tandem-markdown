@@ -2,6 +2,13 @@
 
 All notable changes to Tandem Markdown are recorded here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.1.1 (2026-11-25)
+
+### Documentation
+
+- Added an animated demo to `README.md` showing wide Markdown syntax rendering, Notion-style `/` editing, live merging while typing across external disk writes, and raw Markdown parity.
+- Expanded `README.md` to highlight clean git diffs, screenshot paste and image drop, chat-style LaTeX math delimiters, embedded notes, interactive git tools, and local-first offline defaults.
+
 ## 0.1.0 (2026-11-24)
 
 First version.
