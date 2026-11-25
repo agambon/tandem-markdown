@@ -151,6 +151,7 @@ class HeadingFoldButton extends RichWidget {
       className: this.open ? 'tm-fold tm-heading-fold' : 'tm-fold tm-heading-fold tm-heading-fold-closed',
       keepFocus: true,
     });
+    button.tabIndex = -1;
     button.setAttribute('aria-expanded', String(this.open));
     button.addEventListener('click', (event) => {
       event.preventDefault();
@@ -185,6 +186,7 @@ class FoldedEllipsis extends RichWidget {
     const button = view.dom.ownerDocument.createElement('button');
     button.type = 'button';
     button.className = 'tm-fold-pill tm-stop';
+    button.tabIndex = -1;
     button.textContent = '…';
     button.setAttribute('aria-label', 'Unfold section');
     button.title = 'Unfold section';
