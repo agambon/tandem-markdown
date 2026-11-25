@@ -113,11 +113,6 @@ async function main(): Promise<number> {
         '--skip-welcome',
         '--skip-release-notes',
         '--new-window',
-        // Headless Windows and macOS CI runners can mark the test window occluded and throttle
-        // requestAnimationFrame / timers inside webviews, stalling CodeMirror layout measurements.
-        '--disable-backgrounding-occluded-windows',
-        '--disable-renderer-backgrounding',
-        '--disable-background-timer-throttling',
         // The reconciler's every decision goes to the Tandem Markdown log at trace level.
         `--log=${publisher}.${name}:trace`,
       ],

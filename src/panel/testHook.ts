@@ -114,7 +114,6 @@ export class TestHook {
     const main = v.state.selection.main;
     const version = getSyncedVersion(v.state);
     const unconfirmed = sendableUpdates(v.state).length;
-    const win = v.dom.ownerDocument.defaultView ?? window;
     return {
       text: v.state.doc.toString(),
       version,
@@ -130,17 +129,6 @@ export class TestHook {
       diagnostics: diagnosticsOf(v.state).map(({ from, to, severity, message }) => ({ from, to, severity, message })),
       changeMarks: changeMarksOf(v.state).map((m) => ({ line: v.state.doc.lineAt(m.from).number, kind: m.kind })),
       messageStrip: this.messageStrip(),
-      layout: {
-        scrollTop: v.scrollDOM.scrollTop,
-        scrollHeight: v.scrollDOM.scrollHeight,
-        clientHeight: v.scrollDOM.clientHeight,
-        defaultLineHeight: v.defaultLineHeight,
-        docPadTop: v.documentPadding.top,
-        innerWidth: win.innerWidth,
-        innerHeight: win.innerHeight,
-        dpr: win.devicePixelRatio,
-        hidden: v.dom.ownerDocument.hidden,
-      },
     };
   }
 

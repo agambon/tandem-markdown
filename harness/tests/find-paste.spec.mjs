@@ -353,6 +353,38 @@ try {
     expect(where.head === from + 3, `the cursor is at ${where.head}, not ${from + 3}`);
   });
 
+  await check('revealHeading lands on the heading with prefers-reduced-motion: reduce in a long note', async () => {
+    if (!(await hasRunCommand(page)))
+      throw new Skip('the lab has no __lab.runCommand, and nothing else on it runs revealHeading');
+    const longNote = Array.from({ length: 240 }, (_, i) =>
+      i === 120 ? '## Deep heading' : `Paragraph ${i + 1} of the long note.`,
+    ).join('\n\n');
+    const from = longNote.indexOf('## Deep heading');
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    try {
+      await reset(page, longNote, 'view');
+      await frames(page, 2);
+      const ran = await page.evaluate((at) => window.__lab.runCommand('revealHeading', { from: at }), from);
+      expect(ran === true, 'the command returned false');
+      await frames(page, 4);
+      const where = await page.evaluate((at) => {
+        const view = window.__lab.view;
+        const block = view.lineBlockAt(at);
+        return {
+          lineTop: view.documentTop + block.top - view.scrollDOM.getBoundingClientRect().top,
+          scrollTop: view.scrollDOM.scrollTop,
+        };
+      }, from);
+      expect(
+        where.lineTop >= -1 && where.lineTop < 40,
+        `the heading line is ${where.lineTop}px from the top (scrollTop=${where.scrollTop})`,
+      );
+    } finally {
+      await page.emulateMedia({ reducedMotion: 'no-preference' });
+      await reset(page, sample, 'edit');
+    }
+  });
+
   // ---------------------------------------------------------------------------
   // Paste
 

@@ -39,6 +39,7 @@ const marks = (state: State) => state.changeMarks.map((m) => `${m.kind} ${m.line
 suite('Change marks against the last commit', () => {
   let folder = '';
   let file: vscode.Uri;
+  let repo: { status(): Promise<void> } | null = null;
   /** Git's setting before these tests turned it on; undefined while they have not. */
   let gitBefore: { value: unknown } | undefined;
 
@@ -60,12 +61,13 @@ suite('Change marks against the last commit', () => {
     await config.update('enabled', true, vscode.ConfigurationTarget.Global);
     const extension = vscode.extensions.getExtension<{
       enabled: boolean;
-      getAPI(v: 1): { openRepository(root: vscode.Uri): Promise<unknown> };
+      getAPI(v: 1): { openRepository(root: vscode.Uri): Promise<{ status(): Promise<void> } | null> };
     }>('vscode.git');
     assert.ok(extension, 'the built-in git extension is there');
     const exported = extension.isActive ? extension.exports : await extension.activate();
     await waitFor(() => exported.enabled, 'git to be turned on');
-    assert.ok(await exported.getAPI(1).openRepository(vscode.Uri.file(folder)), 'git opened the repository');
+    repo = await exported.getAPI(1).openRepository(vscode.Uri.file(folder));
+    assert.ok(repo, 'git opened the repository');
   });
 
   suiteTeardown(async () => {
@@ -107,6 +109,8 @@ suite('Change marks against the last commit', () => {
     const document = vscode.workspace.textDocuments.find((d) => d.uri.toString() === file.toString());
     assert.ok(document && (await document.save()), 'the note was saved');
     git(folder, 'commit', '--quiet', '-am', 'Second');
+    // Headless unfocused test windows can miss external .git writes; ask vscode.git to refresh HEAD.
+    await repo?.status();
     await waitFor(
       async () => marks(await hook.panelState(file)).length === 0,
       'the commit to take the marks away',
