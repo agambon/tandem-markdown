@@ -234,6 +234,18 @@ export interface PanelTestState {
   changeMarks: { line: number; kind: ChangeMark['kind'] }[];
   /** The message the strip shows: its words and the names of its buttons, in order; null for none. */
   messageStrip: { text: string; buttons: string[] } | null;
+  /** Scroll and viewport layout diagnostics for debugging scroll tests. */
+  layout?: {
+    scrollTop: number;
+    scrollHeight: number;
+    clientHeight: number;
+    defaultLineHeight: number;
+    docPadTop: number;
+    innerWidth: number;
+    innerHeight: number;
+    dpr: number;
+    hidden: boolean;
+  };
 }
 export interface FailurePageTestState {
   failurePage: true;

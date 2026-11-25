@@ -43,8 +43,12 @@ describe('LocalDirWatcher', () => {
     const stop = watcher.watch(target, () => hits++);
     expect(watcher.watchedDirCount()).toBe(1);
 
+    // macOS FSEvents can deliver a coalesced event for the write made right before watch() attached.
+    await new Promise((r) => setTimeout(r, 150));
+    hits = 0;
+
     writeFileSync(sibling, 'b\n');
-    await new Promise((r) => setTimeout(r, 80));
+    await new Promise((r) => setTimeout(r, 150));
     expect(hits).toBe(0);
 
     writeFileSync(target, 'two\n');

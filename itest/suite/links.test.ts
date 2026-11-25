@@ -140,8 +140,9 @@ suite('Links, wikilinks and images', () => {
         .logLines()
         .map((l) => JSON.stringify(l))
         .slice(-15);
+      const layout = (await hook.panelState(other).catch(() => null))?.layout;
       throw new Error(
-        `${(error as Error).message}; view state ${JSON.stringify(record()?.viewState)}; log ${logs.join(' | ')}`,
+        `${(error as Error).message}; view state ${JSON.stringify(record()?.viewState)}; layout ${JSON.stringify(layout)}; log ${logs.join(' | ')}`,
       );
     }
   });
