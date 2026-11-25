@@ -1,0 +1,132 @@
+# The area checks: the panel's unit tests when the panel changes, each browser spec when the
+# files it covers change, and the in-VS-Code suite (one system, the current release) when the
+# host, the core or the suite change.
+# scripts/areas.mjs holds the table of which files each check covers; the paths below are only
+# its outline, so a change to nothing it names starts nothing.
+name: Area
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'harness/**'
+      - 'itest/**'
+      - 'test/sync/world.ts'
+      - 'test/sync/fakes/**'
+      - 'test/panel/syntax/cases/**'
+      - 'test/panel/paste/fixtures/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'esbuild.mjs'
+      - 'tsconfig.json'
+      - 'vitest.config.ts'
+      - 'test/panel/**'
+      - 'scripts/areas.mjs'
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'harness/**'
+      - 'itest/**'
+      - 'test/sync/world.ts'
+      - 'test/sync/fakes/**'
+      - 'test/panel/syntax/cases/**'
+      - 'test/panel/paste/fixtures/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'esbuild.mjs'
+      - 'tsconfig.json'
+      - 'vitest.config.ts'
+      - 'test/panel/**'
+      - 'scripts/areas.mjs'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: area-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  choose:
+    name: Choose the checks the change needs
+    runs-on: ubuntu-latest
+    outputs:
+      specs: ${{ steps.areas.outputs.specs }}
+      unit: ${{ steps.areas.outputs.unit }}
+      itest: ${{ steps.areas.outputs.itest }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+      - id: areas
+        env:
+          BASE: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+          HEAD: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+        run: node scripts/areas.mjs --github "$BASE" "$HEAD" >> "$GITHUB_OUTPUT"
+
+  unit:
+    name: The panel's unit tests
+    needs: choose
+    if: needs.choose.outputs.unit == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run test:panel
+
+  specs:
+    name: Browser spec ${{ matrix.spec }}
+    needs: choose
+    if: needs.choose.outputs.specs != '[]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        spec: ${{ fromJSON(needs.choose.outputs.specs) }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: node harness/tests/${{ matrix.spec }}.spec.mjs
+
+  vscode:
+    name: In VS Code (stable, Linux)
+    needs: choose
+    if: needs.choose.outputs.itest == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Run the suite
+        env:
+          VSCODE_TEST_VERSION: stable
+          TM_ITEST_DIR: ${{ runner.temp }}/tandem-markdown-itest
+        # VS Code needs a display; Linux runners have none, so the suite runs under xvfb.
+        run: xvfb-run -a npm run itest
+      - name: Keep the log of a failed run
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: itest-area
+          path: |
+            ${{ runner.temp }}/tandem-markdown-itest/last-run.log
+            ${{ runner.temp }}/tandem-markdown-itest/user-data/logs
+          if-no-files-found: ignore

@@ -1,0 +1,7 @@
+# Prose is written by hand: Prettier would pad every markdown table to its widest cell.
+*.md
+
+# Test inputs are compared byte for byte.
+test/**/fixtures/
+itest/fixtures/
+harness/samples/

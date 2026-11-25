@@ -1,0 +1,671 @@
+{
+  "about": "The cases of the optional syntax and of the HTML the panel draws. Each example comes from the program or specification that writes it. `syntax` is the setting it belongs to (tandemMarkdown.syntax.<id>), or null for standard markdown. `value`, for a setting with choices, is the value the case is read under, and `off` the value that turns it off. `nodes` are the parser's nodes for the construct, in order, with the syntax on (none of them is there with it off). `view` is the text Rich view shows, and `drawn` counts what the reader sees, by kind: each name is a kind in src/panel/syntax/kinds.ts, which says how the page draws it, and the count is how many a reader would count (each box once, nested ones too, however many lines it takes). `cursor`, when given, is a piece of the example whose source shows once the cursor is inside it in Rich editor. `plain`, when given, lists pieces of the example that look exactly like the text around them: in Rich editor with the cursor inside each, and in Rich view where Rich view shows them. `off` is what Rich view shows with the syntax off, when that is not the example as typed. `reference`, when given, makes the example an entry of SYNTAX.md: its `group` (standard, github, notes, documents, html, math, or typed and wrong for what is shown as typed and drawn wrongly), its `title`, what it `becomes` in a sentence or two of markdown, and the programs that write it (`writers`); scripts/syntax-reference.mjs writes the file from them. Read by test/panel/syntax/cases.test.ts, test/panel/syntax/reference.test.ts and harness/tests/syntax.spec.mjs.",
+  "cases": [
+    {
+      "name": "a tag and a nested tag",
+      "syntax": "tags",
+      "example": "A line with #project and #area/sub tags.",
+      "nodes": ["Tag", "Tag"],
+      "view": "A line with #project and #area/sub tags.",
+      "drawn": { "tag": 2 },
+      "cursor": "#project",
+      "reference": {
+        "group": "notes",
+        "title": "Tags",
+        "becomes": "A label. Ctrl+click (Cmd+click on a Mac) searches the workspace for it. By Obsidian's rule a color code such as `#ff0000` is a tag, and a number such as `#123` is not.",
+        "writers": ["Obsidian", "Foam", "Bear", "Logseq", "Dendron"]
+      }
+    },
+    {
+      "name": "a tag at the start of a line",
+      "syntax": "tags",
+      "example": "#meeting notes for today",
+      "nodes": ["Tag"],
+      "view": "#meeting notes for today",
+      "drawn": { "tag": 1 }
+    },
+    {
+      "name": "a color code is a tag",
+      "syntax": "tags",
+      "example": "Red is #ff0000 here.",
+      "nodes": ["Tag"],
+      "view": "Red is #ff0000 here.",
+      "drawn": { "tag": 1 }
+    },
+    {
+      "name": "letters in any script make a tag, and punctuation ends one",
+      "syntax": "tags",
+      "example": "Plan (see #日本語, #café!) today.",
+      "nodes": ["Tag", "Tag"],
+      "view": "Plan (see #日本語, #café!) today.",
+      "drawn": { "tag": 2 }
+    },
+    {
+      "name": "a number after # stays text",
+      "syntax": "tags",
+      "example": "Fixes #123 and a #5 bolt.",
+      "nodes": [],
+      "view": "Fixes #123 and a #5 bolt.",
+      "drawn": { "tag": 0 }
+    },
+    {
+      "name": "# inside a word or an address stays text",
+      "syntax": "tags",
+      "example": "C# and page.html#top and a#b.",
+      "nodes": [],
+      "view": "C# and page.html#top and a#b.",
+      "drawn": { "tag": 0 }
+    },
+    {
+      "name": "an escaped # stays text",
+      "syntax": "tags",
+      "example": "\\#not-a-tag here",
+      "nodes": [],
+      "view": "#not-a-tag here",
+      "drawn": { "tag": 0 },
+      "off": "#not-a-tag here"
+    },
+    {
+      "name": "a tag in code stays code",
+      "syntax": "tags",
+      "example": "`#code` and #real",
+      "nodes": ["Tag"],
+      "view": "#code and #real",
+      "drawn": { "tag": 1 },
+      "off": "#code and #real"
+    },
+    {
+      "name": "a heading's mark is not a tag",
+      "syntax": "tags",
+      "example": "# Heading",
+      "nodes": [],
+      "view": "Heading",
+      "drawn": { "tag": 0 },
+      "off": "Heading"
+    },
+    {
+      "name": "emoji codes on GitHub's list",
+      "syntax": "emoji",
+      "example": "Nice :smile: and :rocket: here.",
+      "nodes": ["EmojiCode", "EmojiCode"],
+      "view": "Nice 😄 and 🚀 here.",
+      "drawn": { "emoji": 2 },
+      "cursor": ":smile:",
+      "plain": ["smile"],
+      "reference": {
+        "group": "github",
+        "title": "Emoji codes",
+        "becomes": "The emoji, for the names on GitHub's list, with its code as a tooltip. A time such as `12:30:45` stays text.",
+        "writers": ["GitHub", "GitLab", "Azure DevOps", "Typora", "Docusaurus", "Material for MkDocs"]
+      }
+    },
+    {
+      "name": "emoji codes made of digits and signs",
+      "syntax": "emoji",
+      "example": "Thumbs :+1: and :100:",
+      "nodes": ["EmojiCode", "EmojiCode"],
+      "view": "Thumbs 👍 and 💯",
+      "drawn": { "emoji": 2 }
+    },
+    {
+      "name": "a time stays text",
+      "syntax": "emoji",
+      "example": "Meet at 12:30:45 today.",
+      "nodes": ["EmojiCode"],
+      "view": "Meet at 12:30:45 today.",
+      "drawn": { "emoji": 0 },
+      "plain": ["12:30:45"]
+    },
+    {
+      "name": "a name not on the list stays text",
+      "syntax": "emoji",
+      "example": "A :not_an_emoji: here and :SMILE: there.",
+      "nodes": ["EmojiCode"],
+      "view": "A :not_an_emoji: here and :SMILE: there.",
+      "drawn": { "emoji": 0 },
+      "plain": [":not_an_emoji:", ":SMILE:"]
+    },
+    {
+      "name": "an emoji typed as itself stays as typed",
+      "syntax": "emoji",
+      "example": "Coded :smile: and typed 😄 here.",
+      "nodes": ["EmojiCode"],
+      "view": "Coded 😄 and typed 😄 here.",
+      "drawn": { "emoji": 1 },
+      "plain": ["😄"]
+    },
+    {
+      "name": "an emoji code in code stays code",
+      "syntax": "emoji",
+      "example": "`:smile:`",
+      "nodes": [],
+      "view": ":smile:",
+      "drawn": { "emoji": 0 },
+      "off": ":smile:"
+    },
+    {
+      "name": "a GitHub alert",
+      "syntax": "callouts",
+      "example": "> [!NOTE]\n> Useful information.",
+      "nodes": [],
+      "view": "Note\nUseful information.",
+      "drawn": { "box title": 1, "note callout": 1 },
+      "off": "[!NOTE]\nUseful information.",
+      "reference": {
+        "group": "github",
+        "title": "Alerts",
+        "becomes": "A colored box with its type's icon and name: `NOTE`, `TIP`, `IMPORTANT`, `WARNING` or `CAUTION`.",
+        "writers": ["GitHub", "GitLab", "Typora", "VitePress", "Bear"]
+      }
+    },
+    {
+      "name": "GitHub's other four alerts",
+      "syntax": "callouts",
+      "example": "> [!TIP]\n> Tip text.\n\n> [!IMPORTANT]\n> Key text.\n\n> [!WARNING]\n> Warn text.\n\n> [!CAUTION]\n> Careful text.",
+      "nodes": [],
+      "view": "Tip\nTip text.\n\nImportant\nKey text.\n\nWarning\nWarn text.\n\nCaution\nCareful text.",
+      "drawn": {
+        "box title": 4,
+        "tip callout": 1,
+        "important callout": 1,
+        "warning callout": 1,
+        "caution callout": 1
+      },
+      "off": "[!TIP]\nTip text.\n\n[!IMPORTANT]\nKey text.\n\n[!WARNING]\nWarn text.\n\n[!CAUTION]\nCareful text."
+    },
+    {
+      "name": "a callout with a title, in lower case",
+      "syntax": "callouts",
+      "example": "> [!warning] Data deletion\n> Careful.",
+      "nodes": [],
+      "view": "Data deletion\nCareful.",
+      "drawn": { "box title": 1, "warning callout": 1 },
+      "cursor": "[!warning]",
+      "off": "[!warning] Data deletion\nCareful."
+    },
+    {
+      "name": "a callout folded by its sign",
+      "syntax": "callouts",
+      "example": "> [!faq]- Are callouts foldable?\n> Yes!",
+      "nodes": [],
+      "view": "Are callouts foldable?",
+      "drawn": { "box title": 1, "fold button": 1, "question callout": 1 },
+      "off": "[!faq]- Are callouts foldable?\nYes!",
+      "reference": {
+        "group": "notes",
+        "title": "Callouts",
+        "becomes": "A colored box of one of Obsidian's thirteen types and their aliases, with its title. A `-` after the type starts it folded and a `+` open, and a click on its arrow opens and closes it. Callouts nest.",
+        "writers": ["Obsidian", "Hugo", "Markdown Preview Enhanced"]
+      }
+    },
+    {
+      "name": "a callout open by its sign",
+      "syntax": "callouts",
+      "example": "> [!tip]+ Open\n> Body",
+      "nodes": [],
+      "view": "Open\nBody",
+      "drawn": { "box title": 1, "fold button": 1, "tip callout": 1 },
+      "off": "[!tip]+ Open\nBody"
+    },
+    {
+      "name": "an alias takes its type's look",
+      "syntax": "callouts",
+      "example": "> [!tldr] Summary\n> Text.",
+      "nodes": [],
+      "view": "Summary\nText.",
+      "drawn": { "box title": 1, "abstract callout": 1 },
+      "off": "[!tldr] Summary\nText."
+    },
+    {
+      "name": "a callout inside a callout",
+      "syntax": "callouts",
+      "example": "> [!question] Q\n> > [!todo] A\n> > text",
+      "nodes": [],
+      "view": "Q\nA\ntext",
+      "drawn": { "box title": 2, "todo callout": 1 },
+      "off": "[!question] Q\n[!todo] A\ntext"
+    },
+    {
+      "name": "a type no program knows takes the note's look and its own name",
+      "syntax": "callouts",
+      "example": "> [!recipe]\n> Flour.",
+      "nodes": [],
+      "view": "Recipe\nFlour.",
+      "drawn": { "box title": 1, "note callout": 1 },
+      "off": "[!recipe]\nFlour."
+    },
+    {
+      "name": "a marker after other text stays a quote",
+      "syntax": "callouts",
+      "example": "> Text [!NOTE]\n> more",
+      "nodes": [],
+      "view": "Text [!NOTE]\nmore",
+      "drawn": { "box title": 0 },
+      "off": "Text [!NOTE]\nmore"
+    },
+    {
+      "name": "math in a line",
+      "syntax": "math",
+      "example": "Inline $a^2 + b^2$ here.",
+      "nodes": ["InlineMath"],
+      "view": "Inline a2+b2 here.",
+      "drawn": { "formula": 1 },
+      "cursor": "$a^2 + b^2$",
+      "reference": {
+        "group": "math",
+        "title": "Math in a line",
+        "becomes": "A formula, drawn by KaTeX. Prices stay text: `$5 and $10` is not a formula, by the rule Pandoc and VS Code's preview follow.",
+        "writers": ["GitHub", "GitLab", "Obsidian", "Pandoc", "Jupyter", "Typora", "Joplin"]
+      }
+    },
+    {
+      "name": "two prices stay text",
+      "syntax": "math",
+      "example": "The pots cost $5 and the pans cost $10.",
+      "nodes": [],
+      "view": "The pots cost $5 and the pans cost $10.",
+      "drawn": { "formula": 0 }
+    },
+    {
+      "name": "prices with thousands stay text",
+      "syntax": "math",
+      "example": "From $20,000 to $30,000 a year.",
+      "nodes": [],
+      "view": "From $20,000 to $30,000 a year.",
+      "drawn": { "formula": 0 }
+    },
+    {
+      "name": "a closing dollar before a digit is not one",
+      "syntax": "math",
+      "example": "Pay $x$5 now.",
+      "nodes": [],
+      "view": "Pay $x$5 now.",
+      "drawn": { "formula": 0 }
+    },
+    {
+      "name": "an opening dollar before a space is not one",
+      "syntax": "math",
+      "example": "A $ x$ here.",
+      "nodes": [],
+      "view": "A $ x$ here.",
+      "drawn": { "formula": 0 }
+    },
+    {
+      "name": "escaped dollars stay text",
+      "syntax": "math",
+      "example": "Costs \\$5 or \\$6.",
+      "nodes": [],
+      "view": "Costs $5 or $6.",
+      "drawn": { "formula": 0 },
+      "off": "Costs $5 or $6."
+    },
+    {
+      "name": "GitHub's backtick form",
+      "syntax": "math",
+      "example": "Inline $`\\sqrt{3}`$ here.",
+      "nodes": ["InlineMath"],
+      "view": "Inline 3\u200b here.",
+      "drawn": { "formula": 1 },
+      "off": "Inline $\\sqrt{3}$ here.",
+      "reference": {
+        "group": "math",
+        "title": "Math in a line with backticks",
+        "becomes": "A formula in the line.",
+        "writers": ["GitHub", "GitLab"]
+      }
+    },
+    {
+      "name": "display math inside a line",
+      "syntax": "math",
+      "example": "So $$x^2$$ holds.",
+      "nodes": ["DisplayMath"],
+      "view": "So x2 holds.",
+      "drawn": { "formula": 1 }
+    },
+    {
+      "name": "a math block",
+      "syntax": "math",
+      "example": "$$\n\\int_0^1 x\\,dx\n$$",
+      "nodes": ["DisplayMath"],
+      "view": "∫01\u200bxdx",
+      "drawn": { "math block": 1 },
+      "off": "$$\n\\int_0^1 x,dx\n$$",
+      "reference": {
+        "group": "math",
+        "title": "Math blocks",
+        "becomes": "A formula on its own lines. Its pencil, or the cursor, opens its source, with the drawing kept beneath while you edit.",
+        "writers": ["GitHub", "GitLab", "Obsidian", "Pandoc", "Jupyter", "Typora", "Joplin"]
+      }
+    },
+    {
+      "name": "a math code block",
+      "syntax": "math",
+      "example": "```math\n\\sqrt{3}\n```",
+      "nodes": [],
+      "view": "3\u200b",
+      "drawn": { "math block": 1 },
+      "off": "mathCopy\n\\sqrt{3}",
+      "reference": {
+        "group": "math",
+        "title": "Math code blocks",
+        "becomes": "A formula on its own lines, as a math block is drawn.",
+        "writers": ["GitHub", "GitLab", "Docusaurus"]
+      }
+    },
+    {
+      "name": "dollars in code stay code",
+      "syntax": "math",
+      "example": "`$x$` stays",
+      "nodes": [],
+      "view": "$x$ stays",
+      "drawn": { "formula": 0 },
+      "off": "$x$ stays"
+    },
+    {
+      "name": "wikilinks",
+      "syntax": "wikilinks",
+      "value": "noteFirst",
+      "example": "See [[Other note]] and [[folder/Other note|an alias]].",
+      "nodes": ["Wikilink", "Wikilink"],
+      "view": "See Other note and an alias.",
+      "drawn": { "link": 2 },
+      "cursor": "[[Other note]]",
+      "reference": {
+        "group": "notes",
+        "title": "Wikilinks",
+        "becomes": "A link to the note, found by the end of its path, showing the text after the bar when there is one. Typing `[[` offers notes.",
+        "writers": ["Obsidian", "Foam", "Logseq", "Bear", "Markdown Preview Enhanced"]
+      }
+    },
+    {
+      "name": "wikilinks to a heading and to a block of a note",
+      "syntax": "wikilinks",
+      "value": "noteFirst",
+      "example": "[[Other note#Part two]] and [[Other note#^quote-1]]",
+      "nodes": ["Wikilink", "Wikilink"],
+      "view": "Other note > Part two and Other note > ^quote-1",
+      "drawn": { "link": 2 },
+      "cursor": "[[Other note#Part two]]",
+      "reference": {
+        "group": "notes",
+        "title": "Wikilinks to a heading or a block",
+        "becomes": "A link to that heading, or to the block with that id, in the note.",
+        "writers": ["Obsidian", "Foam", "Dendron", "Markdown Preview Enhanced"]
+      }
+    },
+    {
+      "name": "Bear's link to a heading goes to the heading when no note answers it as a folder path",
+      "syntax": "wikilinks",
+      "value": "noteFirst",
+      "example": "See [[Other note/Part two]] and [[Other note/Part three|the end]].",
+      "nodes": ["Wikilink", "Wikilink"],
+      "view": "See Other note > Part two and the end.",
+      "drawn": { "link": 2, "link to a missing note": 0 },
+      "cursor": "[[Other note/Part two]]",
+      "reference": {
+        "group": "notes",
+        "title": "Bear's links to headings",
+        "becomes": "A link to the heading \"Part two\" in the note \"Other note\", as Bear means it, when no note \"Part two\" sits in a folder \"Other note\" and the note \"Other note\" has that heading. When a note answers the folder path, the link goes to it, as Obsidian and Foam read it.",
+        "writers": ["Bear"]
+      }
+    },
+    {
+      "name": "a slash link that a note answers as a folder path stays a link to that note",
+      "syntax": "wikilinks",
+      "value": "noteFirst",
+      "example": "See [[Folder/Topic]].",
+      "nodes": ["Wikilink"],
+      "view": "See Folder/Topic.",
+      "drawn": { "link": 1, "link to a missing note": 0 }
+    },
+    {
+      "name": "a slash link to a heading the note does not have is missing",
+      "syntax": "wikilinks",
+      "value": "noteFirst",
+      "example": "See [[Other note/Part nine]].",
+      "nodes": ["Wikilink"],
+      "view": "See Other note/Part nine.",
+      "drawn": { "link": 1, "link to a missing note": 1 }
+    },
+    {
+      "name": "wikilinks in front matter values are links",
+      "syntax": "wikilinks",
+      "value": "noteFirst",
+      "example": "---\nauthor: \"[[Other note]]\"\n---\n\nText.",
+      "nodes": [],
+      "view": "authorOther note\n\nText.",
+      "drawn": { "front matter table": 1, "link": 1 },
+      "off": "author[[Other note]]\n\nText.",
+      "reference": {
+        "group": "notes",
+        "title": "Wikilinks in front matter",
+        "becomes": "Links in the front matter's table, opened as other links are.",
+        "writers": ["Obsidian"]
+      }
+    },
+    {
+      "name": "highlight",
+      "syntax": "highlight",
+      "example": "Some ==highlighted== words.",
+      "nodes": ["Highlight"],
+      "view": "Some highlighted words.",
+      "drawn": { "highlight": 1 },
+      "cursor": "==highlighted==",
+      "reference": {
+        "group": "notes",
+        "title": "Highlight",
+        "becomes": "Highlighted text.",
+        "writers": ["Obsidian", "Bear", "Joplin", "Typora", "Markdown Preview Enhanced"]
+      }
+    },
+    {
+      "name": "a footnote and its note",
+      "syntax": "footnotes",
+      "example": "A claim.[^1]\n\n[^1]: The note.",
+      "nodes": ["FootnoteRef", "FootnoteDef"],
+      "view": "A claim.1\n\n1. The note.",
+      "drawn": { "footnote reference": 1, "footnote text": 1 },
+      "cursor": "[^1]",
+      "reference": {
+        "group": "github",
+        "title": "Footnotes",
+        "becomes": "The reference shows its note's number, counted in the order the notes are first referred to, as GitHub counts them, and the note shows the same number. Pointing at a reference shows the note's text, and it opens as a link does, going to the note and back.",
+        "writers": ["GitHub", "GitLab", "Obsidian", "Pandoc", "MultiMarkdown", "Typora", "Joplin"]
+      }
+    },
+    {
+      "name": "key caps",
+      "syntax": null,
+      "example": "Press <kbd>Ctrl</kbd>+<kbd>S</kbd>.",
+      "nodes": [],
+      "view": "Press Ctrl+S.",
+      "drawn": { "key": 2, "HTML tag shown as code": 0 },
+      "cursor": "<kbd>Ctrl</kbd>",
+      "reference": {
+        "group": "html",
+        "title": "Keys",
+        "becomes": "Key caps. As with all HTML in a line, the tags are hidden until the cursor is in them.",
+        "writers": ["GitHub", "GitLab"]
+      }
+    },
+    {
+      "name": "subscript and superscript",
+      "syntax": null,
+      "example": "H<sub>2</sub>O and x<sup>2</sup>",
+      "nodes": [],
+      "view": "H2O and x2",
+      "drawn": { "subscript": 1, "superscript": 1 },
+      "reference": {
+        "group": "html",
+        "title": "Subscript and superscript in HTML",
+        "becomes": "Subscript and superscript.",
+        "writers": ["GitHub", "web clippers"]
+      }
+    },
+    {
+      "name": "underline, mark and a span, whose style is dropped as GitHub drops it",
+      "syntax": null,
+      "example": "An <u>underlined</u>, <mark>marked</mark> and <span style=\"color:red\">plain</span> word.",
+      "nodes": [],
+      "view": "An underlined, marked and plain word.",
+      "drawn": { "underline": 1, "highlight": 1 },
+      "plain": ["plain"],
+      "reference": {
+        "group": "html",
+        "title": "Underline, highlight and spans",
+        "becomes": "Underlined and highlighted text. A `style` is dropped, as GitHub drops it.",
+        "writers": ["Pandoc", "MarkItDown", "web clippers"]
+      }
+    },
+    {
+      "name": "a line break",
+      "syntax": null,
+      "example": "line<br>break",
+      "nodes": [],
+      "view": "linebreak",
+      "drawn": { "line break": 1 },
+      "reference": {
+        "group": "html",
+        "title": "Line breaks in HTML",
+        "becomes": "A line break.",
+        "writers": ["GitHub", "GitLab", "Azure DevOps"]
+      }
+    },
+    {
+      "name": "a picture in a line",
+      "syntax": null,
+      "example": "A <img src=\"picture.png\" width=\"20\" alt=\"dot\"> dot.",
+      "nodes": [],
+      "view": "A  dot.",
+      "drawn": { "picture": 1 },
+      "reference": {
+        "group": "html",
+        "title": "Pictures in HTML",
+        "becomes": "The picture, at the size its attributes give.",
+        "writers": ["GitHub", "Typora"]
+      }
+    },
+    {
+      "name": "a named anchor is hidden",
+      "syntax": null,
+      "example": "<a name=\"here\"></a>Jump [there](#here).",
+      "nodes": [],
+      "view": "Jump there.",
+      "drawn": { "HTML tag shown as code": 0 },
+      "reference": {
+        "group": "html",
+        "title": "Anchors",
+        "becomes": "Hidden. A link to `#here` goes to it.",
+        "writers": ["GitHub"]
+      }
+    },
+    {
+      "name": "tag-shaped text that is not an element stays as typed",
+      "syntax": null,
+      "example": "use <name> here",
+      "nodes": [],
+      "view": "use <name> here",
+      "drawn": { "HTML tag shown as code": 0 },
+      "reference": {
+        "group": "typed",
+        "title": "Text shaped like a tag",
+        "becomes": "Shown as typed when it names no HTML element, where GitHub would show nothing."
+      }
+    },
+    {
+      "name": "an element GitHub refuses shows as code",
+      "syntax": null,
+      "example": "a <iframe src=\"x\"></iframe> b",
+      "nodes": [],
+      "view": "a <iframe src=\"x\"></iframe> b",
+      "drawn": { "HTML tag shown as code": 2 },
+      "reference": {
+        "group": "typed",
+        "title": "HTML elements GitHub refuses",
+        "becomes": "Shown as typed, faded. GitHub refuses them too."
+      }
+    },
+    {
+      "name": "a tag with no closing tag stays as typed",
+      "syntax": null,
+      "example": "<kbd>Ctrl and more",
+      "nodes": [],
+      "view": "<kbd>Ctrl and more",
+      "drawn": { "key": 0 }
+    },
+    {
+      "name": "wikilinks in a table cell, one with shown text after an escaped bar, as in Obsidian",
+      "syntax": "wikilinks",
+      "value": "noteFirst",
+      "example": "| Note | Shown as |\n|---|---|\n| [[Other note]] | [[Other note\\|the other one]] |",
+      "nodes": ["Wikilink", "Wikilink"],
+      "view": "NoteShown asOther notethe other one",
+      "drawn": {
+        "table": 1,
+        "link": 2
+      },
+      "cursor": "[[Other note]]",
+      "off": "NoteShown as[[Other note]][[Other note|the other one]]"
+    },
+    {
+      "name": "a highlight in a table cell",
+      "syntax": "highlight",
+      "example": "| Task | When |\n|---|---|\n| Call the bank | ==today== |",
+      "nodes": ["Highlight"],
+      "view": "TaskWhenCall the banktoday",
+      "drawn": {
+        "table": 1,
+        "highlight": 1
+      },
+      "off": "TaskWhenCall the bank==today=="
+    },
+    {
+      "name": "a footnote in a table cell is its note's number, as GitHub numbers it",
+      "syntax": "footnotes",
+      "example": "| Claim | Source |\n|---|---|\n| Water boils at 100 °C | Measured[^1] |\n| It freezes at 0 °C | Measured^[At sea level.] |\n\n[^1]: At sea level.",
+      "nodes": ["FootnoteRef", "InlineFootnote", "FootnoteDef"],
+      "view": "ClaimSourceWater boils at 100 °CMeasured1It freezes at 0 °CMeasured2\n\n1. At sea level.",
+      "drawn": {
+        "table": 1,
+        "footnote reference": 2
+      },
+      "off": "ClaimSourceWater boils at 100 °CMeasured[^1]It freezes at 0 °CMeasured^[At sea level.]\n\n[^1]: At sea level."
+    },
+    {
+      "name": "a tag in a table cell",
+      "syntax": "tags",
+      "example": "| Project | Status |\n|---|---|\n| Garden | #active |",
+      "nodes": ["Tag"],
+      "view": "ProjectStatusGarden#active",
+      "drawn": {
+        "table": 1,
+        "tag": 1
+      },
+      "off": "ProjectStatusGarden#active"
+    },
+    {
+      "name": "an emoji code in a table cell",
+      "syntax": "emoji",
+      "example": "| Step | Done |\n|---|---|\n| Tests | :white_check_mark: |",
+      "nodes": ["EmojiCode"],
+      "view": "StepDoneTests✅",
+      "drawn": {
+        "table": 1,
+        "emoji": 1
+      },
+      "off": "StepDoneTests:white_check_mark:"
+    },
+    {
+      "name": "math in a table cell",
+      "syntax": "math",
+      "example": "| Quantity | Formula |\n|---|---|\n| Energy | $E = mc^2$ |",
+      "nodes": ["InlineMath"],
+      "view": "QuantityFormulaEnergyE=mc2",
+      "drawn": {
+        "table": 1,
+        "formula": 1
+      },
+      "off": "QuantityFormulaEnergy$E = mc^2$"
+    }
+  ]
+}

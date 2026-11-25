@@ -1,0 +1,71 @@
+name: Bug report
+description: Something does not work, or text was lost, doubled or put in the wrong place.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A report about text that was lost or misplaced can only be worked on with specifics. Please fill in every field you can. A security problem goes through SECURITY.md instead.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you saw, and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps
+      description: As exactly as you can give them, from opening the file.
+      placeholder: |
+        1. Open notes.md in Rich editor.
+        2. Type a word at the end of the second paragraph.
+        3. ...
+    validations:
+      required: true
+  - type: input
+    id: vscode
+    attributes:
+      label: VS Code version
+      description: Help > About, or `code --version`.
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+    validations:
+      required: true
+  - type: dropdown
+    id: view
+    attributes:
+      label: Which view
+      options:
+        - Rich editor
+        - Rich view
+        - Source
+        - More than one tab of the file was open
+    validations:
+      required: true
+  - type: input
+    id: file
+    attributes:
+      label: The file's line endings and encoding
+      description: Both are in the status bar while the file is open in Source, for example "CRLF" and "UTF-8".
+  - type: textarea
+    id: outside
+    attributes:
+      label: Was another program writing the file?
+      description: Git, a sync tool, another editor, an AI tool, a script. Roughly when, relative to your typing or saving.
+  - type: textarea
+    id: verify
+    attributes:
+      label: 'What "Tandem Markdown: Verify File" says'
+      description: Run it from the Command Palette with the file open, right after the problem if you can.
+  - type: textarea
+    id: log
+    attributes:
+      label: The log
+      description: 'Run "Tandem Markdown: Show Log" and paste the lines from around the time it happened. It holds file names; remove anything you do not want to share.'
+      render: text

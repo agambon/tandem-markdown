@@ -1,0 +1,764 @@
+/*
+ * The panel's stylesheet: the tokens, the page skeleton (.tm-root holding .tm-toolbar,
+ * .tm-messages, .tm-notices and .tm-editor) and the classes features put on lines. A widget's
+ * or control's own styles sit beside the code that builds it.
+ *
+ * Measurements follow GitHub's markdown stylesheet; colors come from VS Code's theme
+ * variables, each with a fallback for the lab page, picked by the body class. Settings arrive
+ * as custom properties on the root element (editor.ts): --tm-content-width (px, or none),
+ * --tm-font-size (px), --tm-font-family (when set). Selectors on editor lines start with
+ * `.tm-editor .cm-content` so they outrank CodeMirror's base theme, injected after this file.
+ */
+
+/* ---- Fallback colors (used only where VS Code's variables are missing) ------------------ */
+
+body {
+  --tm-fb-bg: #ffffff;
+  --tm-fb-fg: #24292f;
+  --tm-fb-faded: #57606a;
+  --tm-fb-link: #0969da;
+  --tm-fb-border: #d0d7de;
+  --tm-fb-quote-border: #d0d7de;
+  --tm-fb-quote-bg: rgba(175, 184, 193, 0.12);
+  --tm-fb-code-bg: rgba(175, 184, 193, 0.2);
+  --tm-fb-highlight: rgba(255, 213, 0, 0.4);
+  --tm-fb-selection: rgba(9, 105, 218, 0.22);
+  --tm-fb-selection-inactive: rgba(9, 105, 218, 0.12);
+  --tm-fb-widget-bg: #f6f8fa;
+  --tm-fb-button-bg: #0969da;
+  --tm-fb-button-fg: #ffffff;
+  --tm-fb-button2-bg: rgba(175, 184, 193, 0.35);
+  --tm-fb-button2-fg: #24292f;
+  --tm-fb-warning: #9a6700;
+  --tm-fb-error: #cf222e;
+  --tm-fb-info: #0969da;
+  /* VS Code's diffEditor.insertedLineBackground in every theme that is not high contrast. */
+  --tm-fb-inserted: rgba(155, 185, 85, 0.2);
+  margin: 0;
+  padding: 0;
+}
+
+body.vscode-dark,
+body.vscode-high-contrast:not(.vscode-high-contrast-light) {
+  --tm-fb-bg: #24292e;
+  --tm-fb-fg: #cccccc;
+  --tm-fb-faded: #a3a3a3;
+  --tm-fb-link: #0088cc;
+  --tm-fb-border: #48525c;
+  --tm-fb-quote-border: #48525c;
+  --tm-fb-quote-bg: rgba(110, 118, 129, 0.25);
+  --tm-fb-code-bg: rgba(110, 118, 129, 0.3);
+  --tm-fb-highlight: rgba(187, 128, 9, 0.45);
+  --tm-fb-selection: rgba(56, 139, 253, 0.35);
+  --tm-fb-selection-inactive: rgba(56, 139, 253, 0.18);
+  --tm-fb-widget-bg: #2d333b;
+  --tm-fb-button-bg: #0e639c;
+  --tm-fb-button-fg: #ffffff;
+  --tm-fb-button2-bg: rgba(110, 118, 129, 0.4);
+  --tm-fb-button2-fg: #e6edf3;
+  --tm-fb-warning: #d29922;
+  --tm-fb-error: #f85149;
+  --tm-fb-info: #58a6ff;
+}
+
+/* ---- Tokens ----------------------------------------------------------------------------- */
+
+.tm-root {
+  --tm-bg: var(--vscode-editor-background, var(--tm-fb-bg));
+  --tm-fg: var(--vscode-editor-foreground, var(--tm-fb-fg));
+  --tm-faded: var(--vscode-descriptionForeground, var(--tm-fb-faded));
+  --tm-link: var(--vscode-textLink-foreground, var(--tm-fb-link));
+  --tm-border: var(--vscode-editorWidget-border, var(--tm-fb-border));
+  --tm-quote-border: var(--vscode-textBlockQuote-border, var(--tm-fb-quote-border));
+  --tm-quote-bg: var(--vscode-textBlockQuote-background, var(--tm-fb-quote-bg));
+  --tm-quote-fg: color-mix(in srgb, var(--tm-fg) 65%, transparent);
+  --tm-code-bg: var(--vscode-textCodeBlock-background, var(--tm-fb-code-bg));
+  --tm-hr: var(--vscode-textSeparator-foreground, var(--tm-border));
+  --tm-highlight-bg: var(--vscode-editor-findMatchHighlightBackground, var(--tm-fb-highlight));
+  --tm-selection: var(--vscode-editor-selectionBackground, var(--tm-fb-selection));
+  --tm-selection-inactive: var(--vscode-editor-inactiveSelectionBackground, var(--tm-fb-selection-inactive));
+  --tm-cursor: var(--vscode-editorCursor-foreground, var(--tm-fg));
+  --tm-widget-bg: var(--vscode-editorWidget-background, var(--tm-fb-widget-bg));
+  --tm-widget-fg: var(--vscode-editorWidget-foreground, var(--tm-fg));
+  --tm-button-bg: var(--vscode-button-background, var(--tm-fb-button-bg));
+  --tm-button-fg: var(--vscode-button-foreground, var(--tm-fb-button-fg));
+  --tm-button-hover-bg: var(--vscode-button-hoverBackground, var(--tm-button-bg));
+  --tm-button2-bg: var(--vscode-button-secondaryBackground, var(--tm-fb-button2-bg));
+  --tm-button2-fg: var(--vscode-button-secondaryForeground, var(--tm-fb-button2-fg));
+  --tm-button2-hover-bg: var(--vscode-button-secondaryHoverBackground, var(--tm-button2-bg));
+  --tm-focus: var(--vscode-focusBorder, var(--tm-link));
+  --tm-warning: var(--vscode-editorWarning-foreground, var(--tm-fb-warning));
+  --tm-error: var(--vscode-editorError-foreground, var(--tm-fb-error));
+  --tm-info: var(--vscode-editorInfo-foreground, var(--tm-fb-info));
+  --tm-inserted: var(--vscode-diffEditor-insertedLineBackground, var(--tm-fb-inserted));
+
+  --tm-ui-font: var(--vscode-font-family, system-ui, -apple-system, 'Segoe UI', sans-serif);
+  --tm-ui-font-size: var(--vscode-font-size, 13px);
+  --tm-text-font: var(--tm-font-family, var(--vscode-font-family, system-ui, -apple-system, 'Segoe UI', sans-serif));
+  --tm-mono: var(--vscode-editor-font-family, Consolas, 'Courier New', monospace);
+  --tm-size: var(--tm-font-size, 16px);
+
+  /* Layout steps, in px so a heading's larger font does not widen its indent. */
+  --tm-list-step: calc(2 * var(--tm-size)); /* github-dark: ol, ul { padding-left: 2em } */
+  --tm-quote-step: 19px; /* github-dark: a 4px bar and 15px padding */
+  --tm-code-pad: 16px; /* github-dark: pre { padding: 1em } */
+  --tm-gap: 16px;
+
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--tm-bg);
+  color: var(--tm-fg);
+  font-family: var(--tm-ui-font);
+  font-size: var(--tm-ui-font-size);
+}
+
+.tm-toolbar:empty,
+.tm-messages:empty,
+.tm-notices:empty {
+  display: none;
+}
+
+.tm-editor {
+  flex: 1 1 auto;
+  min-height: 0;
+  position: relative;
+}
+
+/* ---- The editor ------------------------------------------------------------------------- */
+
+.tm-editor .cm-editor {
+  height: 100%;
+  background: var(--tm-bg);
+  color: var(--tm-fg);
+}
+
+.tm-editor .cm-editor.cm-focused {
+  outline: none;
+}
+
+.tm-editor .cm-scroller {
+  font-family: var(--tm-text-font);
+  font-size: var(--tm-size);
+  line-height: var(--tm-line-height, 1.6);
+}
+
+.tm-editor .cm-editor .cm-content {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--tm-content-width, 860px);
+  margin: 0 auto;
+  padding: 32px;
+  caret-color: var(--tm-cursor);
+}
+
+.tm-editor .cm-editor .cm-cursor {
+  border-left-color: var(--tm-cursor);
+}
+
+.tm-root .tm-editor .cm-editor .cm-selectionLayer .cm-selectionBackground {
+  background: var(--tm-selection-inactive);
+}
+
+.tm-root .tm-editor .cm-editor.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground {
+  background: var(--tm-selection);
+}
+
+.tm-mode-view .cm-cursorLayer {
+  display: none;
+}
+
+/*
+ * Every line: left padding from list depth (--tm-ld), quote depth (--tm-qd), a footnote
+ * definition's further lines (--tm-fn) and a block's own padding (--tm-xpad); the gap above
+ * as a transparent top border, so the line's background starts below it.
+ */
+.tm-editor .cm-content .cm-line {
+  --tm-indent: calc(var(--tm-ld, 0) * var(--tm-list-step) + var(--tm-qd, 0) * var(--tm-quote-step) + var(--tm-fn, 0px));
+  padding-left: calc(var(--tm-indent) + var(--tm-xpad, 0px));
+  padding-right: calc(2px + var(--tm-xpad, 0px));
+  border-top: calc(var(--tm-gap-t, 0px) + var(--tm-gap-h, 0px)) solid transparent;
+  background-clip: padding-box;
+  position: relative;
+  isolation: isolate;
+}
+
+/* ---- Revealed marks and fallbacks ------------------------------------------------------- */
+
+.tm-editor .cm-content .tm-mark {
+  color: var(--tm-faded);
+}
+
+.tm-editor .cm-content .tm-fallback {
+  white-space: pre-wrap;
+}
+
+/* ---- Headings (github-dark: line-height 1.2, weight 600, h1 and h2 padding-bottom .3em) - */
+
+.tm-editor .cm-content .tm-h {
+  position: relative;
+  font-weight: 600;
+  line-height: 1.2;
+}
+.tm-editor .cm-content .tm-h1 {
+  font-size: 2.25em;
+  padding-bottom: 0.3em;
+}
+.tm-editor .cm-content .tm-h2 {
+  font-size: 1.75em;
+  padding-bottom: 0.3em;
+}
+.tm-editor .cm-content .tm-h3 {
+  font-size: 1.5em;
+}
+.tm-editor .cm-content .tm-h4 {
+  font-size: 1.25em;
+}
+.tm-editor .cm-content .tm-h5 {
+  font-size: 1em;
+}
+.tm-editor .cm-content .tm-h6 {
+  font-size: 1em;
+  color: var(--tm-faded);
+}
+.tm-editor .cm-content .tm-setext-underline {
+  line-height: 1.2;
+}
+
+/* ---- Inline styles ---------------------------------------------------------------------- */
+
+.tm-editor .cm-content .tm-strong {
+  font-weight: 600;
+}
+.tm-editor .cm-content .tm-em {
+  font-style: italic;
+}
+.tm-editor .cm-content .tm-strike {
+  text-decoration: line-through;
+  color: var(--tm-faded);
+}
+.tm-editor .cm-content .tm-highlight {
+  background: var(--tm-highlight-bg);
+  border-radius: 2px;
+}
+/* Obsidian's highlight colors (render/emphasis.ts), translucent so the selection shows through. */
+.tm-editor .cm-content .tm-highlight-red {
+  background: rgba(248, 81, 73, 0.3);
+}
+.tm-editor .cm-content .tm-highlight-orange {
+  background: rgba(251, 143, 68, 0.32);
+}
+.tm-editor .cm-content .tm-highlight-yellow {
+  background: rgba(234, 199, 0, 0.35);
+}
+.tm-editor .cm-content .tm-highlight-green {
+  background: rgba(46, 160, 67, 0.3);
+}
+.tm-editor .cm-content .tm-highlight-blue {
+  background: rgba(56, 139, 253, 0.3);
+}
+.tm-editor .cm-content .tm-highlight-purple {
+  background: rgba(163, 113, 247, 0.3);
+}
+.tm-editor .cm-content .tm-sub {
+  vertical-align: sub;
+  font-size: 0.75em;
+  line-height: 0;
+}
+.tm-editor .cm-content .tm-sup {
+  vertical-align: super;
+  font-size: 0.75em;
+  line-height: 0;
+}
+.tm-editor .cm-content .tm-code {
+  font-family: var(--tm-mono);
+  font-size: 0.85em;
+  background: var(--tm-code-bg);
+  border-radius: 3px;
+  padding: 0.2em 0.4em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* ---- Lists ------------------------------------------------------------------------------ */
+
+.tm-ld1 {
+  --tm-ld: 1;
+}
+.tm-ld2 {
+  --tm-ld: 2;
+}
+.tm-ld3 {
+  --tm-ld: 3;
+}
+.tm-ld4 {
+  --tm-ld: 4;
+}
+.tm-ld5 {
+  --tm-ld: 5;
+}
+.tm-ld6 {
+  --tm-ld: 6;
+}
+.tm-ld7 {
+  --tm-ld: 7;
+}
+.tm-ld8 {
+  --tm-ld: 8;
+}
+.tm-ld9 {
+  --tm-ld: 9;
+}
+
+/*
+ * The marker's box is --tm-mw wide: one list step, or wider when its marker needs it
+ * (tm-mw<n>, n characters: a numbered list's widest number, or a task's `- [ ] ` shown as
+ * typed; render/lists.ts). A wider box hangs further left, so the item's text stays where its
+ * next lines start.
+ */
+.tm-editor .cm-content .tm-li-first {
+  text-indent: calc(-1 * var(--tm-mw, var(--tm-list-step)));
+}
+.tm-mw4 {
+  --tm-mw: max(var(--tm-list-step), calc(4ch + 0.15em));
+}
+.tm-mw5 {
+  --tm-mw: max(var(--tm-list-step), calc(5ch + 0.15em));
+}
+.tm-mw6 {
+  --tm-mw: max(var(--tm-list-step), calc(6ch + 0.15em));
+}
+.tm-mw7 {
+  --tm-mw: max(var(--tm-list-step), calc(7ch + 0.15em));
+}
+.tm-mw8 {
+  --tm-mw: max(var(--tm-list-step), calc(8ch + 0.15em));
+}
+.tm-mw9 {
+  --tm-mw: max(var(--tm-list-step), calc(9ch + 0.15em));
+}
+.tm-mw10 {
+  --tm-mw: max(var(--tm-list-step), calc(10ch + 0.15em));
+}
+.tm-mw11 {
+  --tm-mw: max(var(--tm-list-step), calc(11ch + 0.15em));
+}
+.tm-mw12 {
+  --tm-mw: max(var(--tm-list-step), calc(12ch + 0.15em));
+}
+.tm-mw13 {
+  --tm-mw: max(var(--tm-list-step), calc(13ch + 0.15em));
+}
+.tm-mw14 {
+  --tm-mw: max(var(--tm-list-step), calc(14ch + 0.15em));
+}
+.tm-mw15 {
+  --tm-mw: max(var(--tm-list-step), calc(15ch + 0.15em));
+}
+.tm-mw16 {
+  --tm-mw: max(var(--tm-list-step), calc(16ch + 0.15em));
+}
+.tm-mw17 {
+  --tm-mw: max(var(--tm-list-step), calc(17ch + 0.15em));
+}
+.tm-mw18 {
+  --tm-mw: max(var(--tm-list-step), calc(18ch + 0.15em));
+}
+.tm-mw19 {
+  --tm-mw: max(var(--tm-list-step), calc(19ch + 0.15em));
+}
+.tm-mw20 {
+  --tm-mw: max(var(--tm-list-step), calc(20ch + 0.15em));
+}
+
+.tm-editor .cm-content .tm-list-marker {
+  display: inline-block;
+  box-sizing: border-box;
+  width: var(--tm-mw, var(--tm-list-step));
+  text-indent: 0;
+  white-space: pre;
+  vertical-align: top;
+}
+
+.tm-editor .cm-content .tm-bullet {
+  color: transparent;
+  position: relative;
+}
+.tm-editor .cm-content .tm-bullet::before {
+  position: absolute;
+  right: 0.6em;
+  color: var(--tm-fg);
+}
+.tm-editor .cm-content .tm-bullet-1::before {
+  content: '\2022';
+}
+.tm-editor .cm-content .tm-bullet-2::before {
+  content: '\25E6';
+}
+.tm-editor .cm-content .tm-bullet-3::before {
+  content: '\25AA';
+}
+
+.tm-editor .cm-content .tm-ordered {
+  text-align: right;
+  padding-right: 0.15em;
+}
+
+/* A marker shown as typed: in the same box, right-aligned where the bullet or checkbox was. */
+.tm-editor .cm-content .tm-list-raw {
+  text-align: right;
+  color: var(--tm-faded);
+}
+
+/* ---- Quotes (github-dark: 4px bar, 15px padding, background, faded text) ---------------- */
+
+.tm-qd1 {
+  --tm-qd: 1;
+}
+.tm-qd2 {
+  --tm-qd: 2;
+}
+.tm-qd3 {
+  --tm-qd: 3;
+}
+.tm-qd4 {
+  --tm-qd: 4;
+}
+.tm-qd5 {
+  --tm-qd: 5;
+}
+.tm-qd6 {
+  --tm-qd: 6;
+}
+.tm-qx0 {
+  --tm-qx: 0;
+}
+.tm-qx1 {
+  --tm-qx: 1;
+}
+.tm-qx2 {
+  --tm-qx: 2;
+}
+.tm-qx3 {
+  --tm-qx: 3;
+}
+.tm-qx4 {
+  --tm-qx: 4;
+}
+.tm-qx5 {
+  --tm-qx: 5;
+}
+.tm-qx6 {
+  --tm-qx: 6;
+}
+.tm-qx7 {
+  --tm-qx: 7;
+}
+.tm-qx8 {
+  --tm-qx: 8;
+}
+.tm-qx9 {
+  --tm-qx: 9;
+}
+
+.tm-editor .cm-content .tm-quote {
+  --tm-bar: linear-gradient(var(--tm-quote-border), var(--tm-quote-border));
+  --tm-x: calc(var(--tm-qx, 0) * var(--tm-list-step));
+  --tm-q: var(--tm-quote-step);
+  color: var(--tm-quote-fg);
+  background-repeat: no-repeat;
+}
+.tm-editor .cm-content .tm-quote.tm-qd1 {
+  background-image: var(--tm-bar), linear-gradient(var(--tm-quote-bg), var(--tm-quote-bg));
+  background-size:
+    4px 100%,
+    100% 100%;
+  background-position:
+    var(--tm-x) 0,
+    var(--tm-x) 0;
+}
+.tm-editor .cm-content .tm-quote.tm-qd2 {
+  background-image: var(--tm-bar), var(--tm-bar), linear-gradient(var(--tm-quote-bg), var(--tm-quote-bg));
+  background-size:
+    4px 100%,
+    4px 100%,
+    100% 100%;
+  background-position:
+    var(--tm-x) 0,
+    calc(var(--tm-x) + var(--tm-q)) 0,
+    var(--tm-x) 0;
+}
+.tm-editor .cm-content .tm-quote.tm-qd3 {
+  background-image:
+    var(--tm-bar), var(--tm-bar), var(--tm-bar), linear-gradient(var(--tm-quote-bg), var(--tm-quote-bg));
+  background-size:
+    4px 100%,
+    4px 100%,
+    4px 100%,
+    100% 100%;
+  background-position:
+    var(--tm-x) 0,
+    calc(var(--tm-x) + var(--tm-q)) 0,
+    calc(var(--tm-x) + 2 * var(--tm-q)) 0,
+    var(--tm-x) 0;
+}
+.tm-editor .cm-content .tm-quote.tm-qd4,
+.tm-editor .cm-content .tm-quote.tm-qd5,
+.tm-editor .cm-content .tm-quote.tm-qd6 {
+  background-image:
+    var(--tm-bar), var(--tm-bar), var(--tm-bar), var(--tm-bar), linear-gradient(var(--tm-quote-bg), var(--tm-quote-bg));
+  background-size:
+    4px 100%,
+    4px 100%,
+    4px 100%,
+    4px 100%,
+    100% 100%;
+  background-position:
+    var(--tm-x) 0,
+    calc(var(--tm-x) + var(--tm-q)) 0,
+    calc(var(--tm-x) + 2 * var(--tm-q)) 0,
+    calc(var(--tm-x) + 3 * var(--tm-q)) 0,
+    var(--tm-x) 0;
+}
+.tm-editor .cm-content .tm-quote-gap {
+  height: var(--tm-gap);
+  line-height: var(--tm-gap);
+}
+
+/* ---- Code blocks (github-dark: padding 1em, line-height 1.45, radius 3px) -------------- */
+
+.tm-editor .cm-content .tm-code-line {
+  --tm-xpad: var(--tm-code-pad);
+  font-family: var(--tm-mono);
+  font-size: 0.85em;
+  line-height: 1.45;
+}
+.tm-editor .cm-content .tm-code-line::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: var(--tm-indent);
+  right: 0;
+  background: var(--tm-code-bg);
+}
+.tm-editor .cm-content .tm-code-first {
+  padding-top: var(--tm-code-pad);
+}
+.tm-editor .cm-content .tm-code-first::before {
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+.tm-editor .cm-content .tm-code-last {
+  padding-bottom: var(--tm-code-pad);
+}
+.tm-editor .cm-content .tm-code-last::before {
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+.tm-editor .cm-content .tm-code-fence {
+  color: var(--tm-faded);
+}
+.tm-editor .cm-content .tm-code-indented {
+  text-indent: -4ch;
+}
+.tm-editor .cm-content .tm-code-header-line {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+.tm-editor .cm-content .tm-code-header-line.tm-code-last {
+  padding-bottom: 6px;
+}
+
+/* ---- Rules (github-dark: hr height 4px) ------------------------------------------------- */
+
+.tm-editor .cm-content .tm-hr {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+.tm-editor .cm-content .tm-hr::after {
+  content: '';
+  position: absolute;
+  left: var(--tm-indent);
+  right: 0;
+  top: 50%;
+  height: 4px;
+  margin-top: -2px;
+  background: var(--tm-hr);
+}
+
+/* ---- HTML, footnotes, front matter ------------------------------------------------------ */
+
+.tm-editor .cm-content .tm-html,
+.tm-editor .cm-content .tm-html-inline,
+.tm-editor .cm-content .tm-frontmatter {
+  font-family: var(--tm-mono);
+  font-size: 0.85em;
+  color: var(--tm-faded);
+}
+.tm-editor .cm-content .tm-html-inline {
+  font-size: 0.85em;
+}
+.tm-editor .cm-content .tm-html-comment {
+  font-style: italic;
+}
+.tm-editor .cm-content .tm-frontmatter {
+  line-height: 1.45;
+}
+/* The raw text while the selection is in it (Rich editor) reads at full strength. */
+.tm-editor .cm-content .tm-frontmatter-open {
+  color: var(--tm-fg);
+}
+.tm-editor .cm-content .tm-frontmatter-open.tm-frontmatter-mark {
+  color: var(--tm-faded);
+}
+
+.tm-editor .cm-content .tm-footnote-ref {
+  vertical-align: super;
+  font-size: 0.75em;
+  line-height: 0;
+  color: var(--tm-link);
+}
+.tm-editor .cm-content .tm-footnote-label {
+  color: var(--tm-faded);
+}
+/* A definition's further lines, one list step in (render/footnotes.ts). */
+.tm-footnote-cont {
+  --tm-fn: var(--tm-list-step);
+}
+
+/* ---- Spacing (see render/spacing.ts) ---------------------------------------------------- */
+
+.tm-editor .cm-content .tm-gap-touch {
+  --tm-gap-t: var(--tm-gap);
+}
+.tm-editor .cm-content .tm-gap-heading {
+  --tm-gap-h: 8px;
+}
+.tm-editor .cm-content .tm-gap-line {
+  height: var(--tm-gap);
+  line-height: var(--tm-gap);
+}
+.tm-editor .cm-content .tm-gap-extra {
+  height: 0.6em;
+  line-height: 0.6em;
+}
+
+/* ---- Notices ---------------------------------------------------------------------------- */
+
+.tm-notices {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--tm-border);
+}
+.tm-notice {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 4px 4px 10px;
+  border: 1px solid var(--tm-border);
+  border-left: 3px solid var(--tm-info);
+  border-radius: 3px;
+  background: var(--tm-widget-bg);
+  color: var(--tm-widget-fg);
+}
+.tm-notice-warning {
+  border-left-color: var(--tm-warning);
+}
+.tm-notice-error {
+  border-left-color: var(--tm-error);
+}
+/* The failure page's one notice (failurePage.ts), away from the page's edges. */
+.tm-failed {
+  margin: 16px;
+}
+.tm-notice-text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.tm-notice-action {
+  font: inherit;
+  padding: 2px 10px;
+  border: none;
+  border-radius: 2px;
+  background: var(--tm-button-bg);
+  color: var(--tm-button-fg);
+  cursor: pointer;
+}
+.tm-notice-action:hover {
+  background: var(--tm-button-hover-bg);
+}
+.tm-notice-close {
+  font: inherit;
+  font-size: 16px;
+  line-height: 1;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 3px;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+.tm-notice-close:hover {
+  background: var(--tm-button2-bg);
+}
+.tm-notice button:focus-visible {
+  outline: 1px solid var(--tm-focus);
+  outline-offset: 1px;
+}
+/* A button beside the main one (the message strip's). */
+.tm-notice-action-secondary {
+  background: var(--tm-button2-bg);
+  color: var(--tm-button2-fg);
+}
+.tm-notice-action-secondary:hover {
+  background: var(--tm-button2-hover-bg);
+}
+
+/* ---- The message strip (messageStrip.ts): one message, in a notice's look -------------- */
+
+.tm-messages {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--tm-border);
+}
+/* On a narrow tab the buttons go under the words rather than squeezing them. */
+.tm-message {
+  flex-wrap: wrap;
+  row-gap: 4px;
+}
+.tm-message-text {
+  flex: 1 1 20em;
+  min-width: 0;
+}
+.tm-message-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+/* A target of 24 by 24 at the least, as VS Code's own notification buttons are (WCAG 2.2, 2.5.8). */
+.tm-message .tm-notice-action {
+  min-height: 24px;
+}
+/* How many messages wait behind this one: words, not a control, so quieter than the buttons. */
+.tm-message-more {
+  color: var(--tm-faded);
+}
+
+/* ---- Reduced motion --------------------------------------------------------------------- */
+
+/* With reduced motion asked for, a change of state shows at once rather than moving into place. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

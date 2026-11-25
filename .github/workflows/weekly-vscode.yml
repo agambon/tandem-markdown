@@ -1,0 +1,52 @@
+# Weekly upstream check against the current stable VS Code release on Linux, Windows and macOS,
+# so changes in VS Code's document events, save lifecycle or custom editor API are caught early.
+name: Weekly VS Code check
+
+on:
+  schedule:
+    - cron: '17 8 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: weekly-vscode
+  cancel-in-progress: true
+
+jobs:
+  vscode:
+    name: In VS Code stable (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Run the in-VS-Code suite
+        shell: bash
+        env:
+          VSCODE_TEST_VERSION: stable
+          TM_ITEST_DIR: ${{ runner.temp }}/tandem-markdown-itest
+        run: |
+          if [ "$RUNNER_OS" = Linux ]; then
+            xvfb-run -a npm run itest
+          else
+            npm run itest
+          fi
+      - name: Keep the log of a failed run
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: itest-weekly-${{ matrix.os }}
+          path: |
+            ${{ runner.temp }}/tandem-markdown-itest/last-run.log
+            ${{ runner.temp }}/tandem-markdown-itest/user-data/logs
+          if-no-files-found: ignore

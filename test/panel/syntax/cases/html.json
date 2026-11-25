@@ -1,0 +1,684 @@
+{
+  "cases": [
+    {
+      "name": "a details wrapper is folded under its summary, its inside markdown",
+      "syntax": null,
+      "example": "Above.\n\n<details>\n<summary>More <b>here</b></summary>\n\n**Inside** text.\n\n</details>\n\nBelow.",
+      "nodes": [],
+      "view": "Above.\n\nMore here\n\nBelow.",
+      "drawn": {
+        "folding section": 1,
+        "fold button": 1
+      },
+      "reference": {
+        "group": "html",
+        "title": "Folding sections",
+        "becomes": "A section folded under its summary, open if `open` says so. A click on the summary folds or unfolds it without changing the file, and the markdown inside is drawn and edited as anywhere.",
+        "writers": ["GitHub", "GitLab", "Azure DevOps"]
+      }
+    },
+    {
+      "name": "a details wrapper written open shows its inside, its end tag hidden",
+      "syntax": null,
+      "example": "<details open>\n<summary>Open one</summary>\n\n- a list item\n\n</details>\n\nBelow.",
+      "nodes": [],
+      "view": "Open one\n\n- a list item\n\nBelow.",
+      "drawn": {
+        "folding section": 1,
+        "bulleted item": 1
+      }
+    },
+    {
+      "name": "a details wrapper with no summary shows the browser's own",
+      "syntax": null,
+      "example": "<details>\n\nHidden.\n\n</details>",
+      "nodes": [],
+      "view": "Details",
+      "drawn": {
+        "folding section": 1
+      }
+    },
+    {
+      "name": "a centered div aligns the markdown inside it and hides its tag lines",
+      "syntax": null,
+      "example": "<div align=\"center\">\n\n# Title\n\nCentered **words**.\n\n</div>\n\nAfter.",
+      "nodes": [],
+      "view": "Title\n\nCentered words.\n\nAfter.",
+      "drawn": {
+        "centered text": 1,
+        "level 1 heading": 1
+      },
+      "reference": {
+        "group": "html",
+        "title": "Aligned blocks",
+        "becomes": "The markdown inside, aligned as `align` says. The tag lines are hidden until the cursor is on them. `<p align>`, `<center>` and HTML marked `markdown` work the same way.",
+        "writers": ["GitHub", "Python-Markdown", "Material for MkDocs"]
+      }
+    },
+    {
+      "name": "a paragraph aligned right, and center, are wrappers too",
+      "syntax": null,
+      "example": "<p align=\"right\">\n\nRight.\n\n</p>\n\n<center>\n\nMiddle.\n\n</center>",
+      "nodes": [],
+      "view": "Right.\n\nMiddle.\n",
+      "drawn": {
+        "text aligned right": 1,
+        "centered text": 1
+      }
+    },
+    {
+      "name": "HTML marked markdown is a wrapper whose classes mean nothing here",
+      "syntax": null,
+      "example": "<div class=\"grid cards\" markdown>\n\n- one\n- two\n\n</div>",
+      "nodes": [],
+      "view": "- one\n- two\n",
+      "drawn": {
+        "bulleted item": 2
+      }
+    },
+    {
+      "name": "wrappers nest, the inner alignment winning",
+      "syntax": null,
+      "example": "<div align=\"center\">\n\nOuter.\n\n<div align=\"left\">\n\nInner.\n\n</div>\n\n</div>",
+      "nodes": [],
+      "view": "Outer.\n\nInner.\n",
+      "drawn": {
+        "centered text": 1,
+        "text aligned left": 1
+      }
+    },
+    {
+      "name": "an opening tag with no closing one draws nothing special",
+      "syntax": null,
+      "example": "<div align=\"center\">\n\nText.",
+      "nodes": [],
+      "view": "<div align=\"center\">\n\nText.",
+      "drawn": {
+        "HTML shown as code": 1,
+        "centered text": 0
+      }
+    },
+    {
+      "name": "a closing tag with no opening one shows as code",
+      "syntax": null,
+      "example": "Text.\n\n</details>",
+      "nodes": [],
+      "view": "Text.\n\n</details>",
+      "drawn": {
+        "HTML shown as code": 1
+      }
+    },
+    {
+      "name": "a wrapper inside a list item",
+      "syntax": null,
+      "example": "- item\n\n  <details>\n  <summary>In the list</summary>\n\n  Hidden.\n\n  </details>\n- next",
+      "nodes": [],
+      "view": "- item\n\nIn the list\n- next",
+      "drawn": {
+        "folding section": 1,
+        "bulleted item": 2
+      }
+    },
+    {
+      "name": "a self-contained block is drawn as HTML",
+      "syntax": null,
+      "example": "<table>\n  <tr><th>Name</th><th>Size</th></tr>\n  <tr><td>a.md</td><td>2 KB</td></tr>\n</table>",
+      "nodes": [],
+      "view": "\n  NameSize\n  a.md2 KB\n",
+      "drawn": {
+        "drawn HTML": 1,
+        "HTML shown as code": 0
+      },
+      "reference": {
+        "group": "html",
+        "title": "HTML blocks",
+        "becomes": "Drawn as a browser draws it, through the elements GitHub allows. Its pencil, or the cursor, opens its source.",
+        "writers": ["GitHub", "Pandoc", "Jupyter's export"]
+      }
+    },
+    {
+      "name": "an aligned paragraph holding a sized picture is drawn as HTML",
+      "syntax": null,
+      "example": "<p align=\"center\">\n  <img src=\"logo.png\" width=\"120\" alt=\"Logo\">\n</p>",
+      "nodes": [],
+      "view": "\n  \n",
+      "drawn": {
+        "drawn HTML": 1,
+        "picture": 1
+      }
+    },
+    {
+      "name": "a figure with its caption",
+      "syntax": null,
+      "example": "<figure>\n  <img src=\"chart.png\" alt=\"Chart\">\n  <figcaption>Sales by month</figcaption>\n</figure>",
+      "nodes": [],
+      "view": "\n  \n  Sales by month\n",
+      "drawn": {
+        "drawn HTML": 1,
+        "picture": 1
+      }
+    },
+    {
+      "name": "Notion's aside, kept as a block with its text",
+      "syntax": null,
+      "example": "<aside>\n💡 Remember the milk.\n</aside>",
+      "nodes": [],
+      "view": "\n💡 Remember the milk.\n",
+      "drawn": {
+        "drawn HTML": 1
+      },
+      "reference": {
+        "group": "html",
+        "title": "Notion's asides",
+        "becomes": "A block with its text.",
+        "writers": ["Notion"]
+      }
+    },
+    {
+      "name": "a notebook's table, its style element left out",
+      "syntax": null,
+      "example": "<div>\n<style scoped>\n    .dataframe tbody tr th { vertical-align: top; }\n</style>\n<table border=\"1\" class=\"dataframe\">\n  <thead><tr><th></th><th>a</th></tr></thead>\n  <tbody><tr><th>0</th><td>1</td></tr></tbody>\n</table>\n</div>",
+      "nodes": [],
+      "view": "\n\n\n  a\n  01\n\n",
+      "drawn": {
+        "drawn HTML": 1
+      }
+    },
+    {
+      "name": "an opener holding more than its tag, with no closer, is drawn as it is",
+      "syntax": null,
+      "example": "<div align=\"center\">\n  <img src=\"logo.png\" width=\"80\">",
+      "nodes": [],
+      "view": "\n  ",
+      "drawn": {
+        "drawn HTML": 1,
+        "picture": 1
+      }
+    },
+    {
+      "name": "a block a browser shows nothing for is removed",
+      "syntax": null,
+      "example": "Above.\n\n<div></div>\n\nBelow.",
+      "nodes": [],
+      "view": "Above.\n\nBelow.",
+      "drawn": {
+        "drawn HTML": 0,
+        "HTML shown as code": 0
+      }
+    },
+    {
+      "name": "a paragraph that is only a named anchor is removed",
+      "syntax": null,
+      "example": "<a name=\"readme-top\"></a>\n\nTitle text.",
+      "nodes": [],
+      "view": "Title text.",
+      "drawn": {
+        "HTML tag shown as code": 0
+      }
+    },
+    {
+      "name": "tag-shaped text that names no element stays as typed, alone and inside a block",
+      "syntax": null,
+      "example": "<name>\n\n<div>\nUse <your-key> here.\n</div>",
+      "nodes": [],
+      "view": "<name>\n\n\nUse <your-key> here.\n",
+      "drawn": {
+        "HTML shown as code": 0,
+        "drawn HTML": 1
+      }
+    },
+    {
+      "name": "HTML that leaves elements open for later blocks shows as code",
+      "syntax": null,
+      "example": "<table>\n<tr>\n<td>\n\n**Cell**\n\n</td>\n</tr>\n</table>",
+      "nodes": [],
+      "view": "<table>\n<tr>\n<td>\n\nCell\n\n</td>\n</tr>\n</table>",
+      "drawn": {
+        "HTML shown as code": 2,
+        "drawn HTML": 0
+      },
+      "reference": {
+        "group": "html",
+        "title": "HTML split by blank lines",
+        "becomes": "Code. Each part leaves elements open for the next, so none of them can be drawn on its own.",
+        "writers": ["GitHub"]
+      }
+    },
+    {
+      "name": "a link written as HTML is drawn and opened as a link",
+      "syntax": null,
+      "example": "See <a href=\"https://example.com/docs\">the docs</a> now.",
+      "nodes": [],
+      "view": "See the docs now.",
+      "drawn": {
+        "link": 1,
+        "HTML tag shown as code": 0
+      },
+      "cursor": "the docs",
+      "reference": {
+        "group": "html",
+        "title": "Links in HTML",
+        "becomes": "A link, opened as a markdown link is. A link whose address GitHub refuses, such as `javascript:`, is its text alone.",
+        "writers": ["GitHub", "web clippers"]
+      }
+    },
+    {
+      "name": "a link whose address GitHub refuses is its text alone",
+      "syntax": null,
+      "example": "A <a href=\"javascript:alert(1)\">trap</a> here.",
+      "nodes": [],
+      "view": "A trap here.",
+      "drawn": {
+        "link": 0
+      }
+    },
+    {
+      "name": "a picture element on one line shows the picture for each theme",
+      "syntax": null,
+      "example": "Logo: <picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"dark.png\"><img src=\"light.png\" alt=\"Logo\"></picture>",
+      "nodes": [],
+      "view": "Logo: ",
+      "drawn": {
+        "picture for the dark theme": 1,
+        "picture for the light theme": 1,
+        "picture": 2
+      }
+    },
+    {
+      "name": "a picture element as a block, as GitHub's documentation writes it",
+      "syntax": null,
+      "example": "<picture>\n  <source media=\"(prefers-color-scheme: dark)\" srcset=\"logo-dark.png\">\n  <source media=\"(prefers-color-scheme: light)\" srcset=\"logo-light.png\">\n  <img alt=\"Logo\" src=\"logo-light.png\">\n</picture>",
+      "nodes": [],
+      "view": "",
+      "drawn": {
+        "drawn HTML": 1,
+        "picture for the dark theme": 1,
+        "picture for the light theme": 1,
+        "picture": 2
+      },
+      "reference": {
+        "group": "html",
+        "title": "Pictures for each theme in HTML",
+        "becomes": "The picture for the theme in use.",
+        "writers": ["GitHub"]
+      }
+    },
+    {
+      "name": "HTML inside a table cell",
+      "syntax": null,
+      "example": "| Keys | Steps |\n|---|---|\n| <kbd>Ctrl</kbd>+<kbd>S</kbd> | <ul><li>one</li><li>two</li></ul> |\n| <a href=\"https://example.com\">site</a> | H<sub>2</sub>O |",
+      "nodes": [],
+      "view": "KeysStepsCtrl+SonetwositeH2O",
+      "drawn": {
+        "table": 1,
+        "key": 2,
+        "subscript": 1,
+        "link": 1
+      }
+    },
+    {
+      "name": "a picture embedded in a table cell is drawn as the picture",
+      "syntax": "wikilinks",
+      "value": "noteFirst",
+      "example": "| Picture |\n|---|\n| ![[pic.png\\|100]] |",
+      "nodes": ["Embed"],
+      "view": "Picture",
+      "drawn": {
+        "picture": 1,
+        "link": 0
+      },
+      "off": "Picture![[pic.png|100]]"
+    },
+    {
+      "name": "a picture in a table cell is drawn as the picture",
+      "syntax": null,
+      "example": "| Picture |\n|---|\n| ![chart](chart.png) <img src=\"dot.png\" width=\"8\"> |",
+      "nodes": [],
+      "view": "Picture ",
+      "drawn": {
+        "picture": 2
+      }
+    },
+    {
+      "name": "Foam's embed with a size and a place",
+      "syntax": "wikilinks",
+      "value": "noteFirst",
+      "example": "![[pic.png|300|center]]",
+      "nodes": ["Embed"],
+      "view": "",
+      "drawn": {
+        "picture": 1,
+        "centered picture": 1
+      },
+      "reference": {
+        "group": "notes",
+        "title": "Embedded pictures",
+        "becomes": "The picture, at the width (or width and height) after the bar. Foam's form also places it left, center or right.",
+        "writers": ["Obsidian", "Foam"]
+      }
+    },
+    {
+      "name": "a size after the alt text",
+      "syntax": "pictureSizes",
+      "example": "![Engelbart|100x145](engelbart.jpg) and ![Small|60](small.png)",
+      "nodes": [],
+      "view": " and ",
+      "drawn": {
+        "picture": 2
+      },
+      "cursor": "|100x145",
+      "off": " and ",
+      "reference": {
+        "group": "notes",
+        "title": "Picture sizes after the alt text",
+        "becomes": "The picture at that width, or width and height.",
+        "writers": ["Obsidian"]
+      }
+    },
+    {
+      "name": "a size in braces after a picture, as Pandoc writes it from Word",
+      "syntax": "pictureSizes",
+      "example": "![](media/image1.png){width=\"6.5in\" height=\"4.875in\"}",
+      "nodes": ["ImageAttributes"],
+      "view": "",
+      "drawn": {
+        "picture": 1
+      },
+      "cursor": "{width",
+      "off": "{width=\"6.5in\" height=\"4.875in\"}"
+    },
+    {
+      "name": "a width in percent in braces",
+      "syntax": "pictureSizes",
+      "example": "Before ![chart](chart.png){width=50%} after.",
+      "nodes": ["ImageAttributes"],
+      "view": "Before  after.",
+      "drawn": {
+        "picture": 1
+      },
+      "off": "Before {width=50%} after.",
+      "reference": {
+        "group": "documents",
+        "title": "Picture sizes in braces",
+        "becomes": "The picture at that size, the braces hidden. Pandoc writes a size like this for every picture in a Word file.",
+        "writers": ["Pandoc", "Quarto", "GitLab"]
+      }
+    },
+    {
+      "name": "braces whose attributes have no space between them, as Pandoc reads them",
+      "syntax": "pictureSizes",
+      "example": "Before ![chart](chart.png){.wide#chart width=50%} after.",
+      "nodes": ["ImageAttributes"],
+      "view": "Before  after.",
+      "drawn": {
+        "picture": 1
+      },
+      "off": "Before {.wide#chart width=50%} after."
+    },
+    {
+      "name": "braces that Pandoc does not read as attributes stay text after the picture",
+      "syntax": "pictureSizes",
+      "example": "Before ![chart](chart.png){#a/b width=50%} after.",
+      "nodes": [],
+      "view": "Before {#a/b width=50%} after.",
+      "drawn": {
+        "picture": 1
+      },
+      "off": "Before {#a/b width=50%} after."
+    },
+    {
+      "name": "braces not right after a picture stay text",
+      "syntax": "pictureSizes",
+      "example": "Word {width=50%} and ![](a.png) {width=50%}",
+      "nodes": [],
+      "view": "Word {width=50%} and a.pngNot found {width=50%}",
+      "drawn": {
+        "picture": 0,
+        "picture not shown": 1
+      },
+      "off": "Word {width=50%} and a.pngNot found {width=50%}"
+    },
+    {
+      "name": "Azure's size after the address",
+      "syntax": "otherPictureSizes",
+      "example": "![Diagram](./diagram.png =500x250)",
+      "nodes": ["ImageSize"],
+      "view": "",
+      "drawn": {
+        "picture": 1
+      },
+      "cursor": "=500x250",
+      "reference": {
+        "group": "documents",
+        "title": "Picture sizes after the address",
+        "becomes": "The picture at that size.",
+        "writers": ["Azure DevOps"]
+      }
+    },
+    {
+      "name": "Logseq's size in braces",
+      "syntax": "otherPictureSizes",
+      "example": "![image.png](../assets/image.png){:height 452, :width 785}",
+      "nodes": ["LogseqImageAttributes"],
+      "view": "",
+      "drawn": {
+        "picture": 1
+      },
+      "off": "{:height 452, :width 785}",
+      "reference": {
+        "group": "notes",
+        "title": "Logseq picture sizes",
+        "becomes": "The picture at that size, the braces hidden.",
+        "writers": ["Logseq"]
+      }
+    },
+    {
+      "name": "pictures for one theme, as GitHub writes them",
+      "syntax": "themePictures",
+      "example": "![Logo](logo-dark.png#gh-dark-mode-only)\n![Logo](logo-light.png#gh-light-mode-only)",
+      "nodes": [],
+      "view": "\n",
+      "drawn": {
+        "picture for the dark theme": 1,
+        "picture for the light theme": 1,
+        "picture": 2
+      },
+      "off": "\n",
+      "reference": {
+        "group": "github",
+        "title": "Pictures for one theme",
+        "becomes": "Each picture shown only while the editor's theme is dark (`#gh-dark-mode-only`) or light (`#gh-light-mode-only`).",
+        "writers": ["GitHub"]
+      }
+    },
+    {
+      "name": "a picture for one theme, as Material for MkDocs writes it",
+      "syntax": "themePictures",
+      "example": "![Chart](chart-dark.png#only-dark)",
+      "nodes": [],
+      "view": "",
+      "drawn": {
+        "picture for the dark theme": 1,
+        "picture": 1
+      },
+      "off": "",
+      "reference": {
+        "group": "documents",
+        "title": "Pictures for one theme in MkDocs",
+        "becomes": "The picture, shown only while the editor's theme is dark (`#only-dark`) or light (`#only-light`).",
+        "writers": ["Material for MkDocs"]
+      }
+    },
+    {
+      "name": "a picture stored in the file is drawn, nothing fetched",
+      "syntax": null,
+      "example": "A dot: ![dot](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==)",
+      "nodes": [],
+      "view": "A dot: ",
+      "drawn": {
+        "picture": 1,
+        "picture not shown": 0
+      }
+    },
+    {
+      "name": "Google Docs' pictures stored at the end of the file",
+      "syntax": null,
+      "example": "![][image1]\n\n[image1]: <data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==>",
+      "nodes": [],
+      "view": "\n",
+      "drawn": {
+        "picture": 1,
+        "picture not shown": 0
+      },
+      "reference": {
+        "group": "documents",
+        "title": "Pictures stored in the file",
+        "becomes": "The picture, drawn from the file with nothing fetched. PNG, JPEG, GIF and WebP pictures are drawn; another kind says why it is not.",
+        "writers": ["Google Docs' export", "Notion's export"]
+      }
+    },
+    {
+      "name": "a stored picture in HTML is drawn",
+      "syntax": null,
+      "example": "Icon <img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==\" alt=\"dot\"> here.",
+      "nodes": [],
+      "view": "Icon  here.",
+      "drawn": {
+        "picture": 1,
+        "picture not shown": 0
+      }
+    },
+    {
+      "name": "a stored picture of another type is refused, and says why",
+      "syntax": null,
+      "example": "![x](data:image/svg+xml;base64,PHN2Zz48L3N2Zz4=)",
+      "nodes": [],
+      "view": "data:image/svg+xml;base64,PHN2Zz48L3N2Zz4=Only PNG, JPEG, GIF and WebP pictures stored in the file are shown",
+      "drawn": {
+        "picture not shown": 1,
+        "picture": 0
+      }
+    },
+    {
+      "name": "a video written as a picture is a player",
+      "syntax": "media",
+      "example": "![demo](demo.mp4)",
+      "nodes": [],
+      "view": "",
+      "drawn": {
+        "player": 1
+      },
+      "off": "demo.mp4Could not be loaded",
+      "reference": {
+        "group": "documents",
+        "title": "Video written as a picture",
+        "becomes": "A player, which never starts by itself.",
+        "writers": ["GitLab", "Logseq"]
+      }
+    },
+    {
+      "name": "Obsidian's embed of a sound file is a player",
+      "syntax": "media",
+      "example": "![[talk.ogg]]",
+      "nodes": [],
+      "view": "",
+      "drawn": {
+        "player": 1,
+        "link": 0
+      },
+      "off": "talk.ogg",
+      "reference": {
+        "group": "notes",
+        "title": "Embedded video and sound",
+        "becomes": "A player, which never starts by itself.",
+        "writers": ["Obsidian"]
+      }
+    },
+    {
+      "name": "a video tag on one line is a player that never plays by itself",
+      "syntax": "media",
+      "example": "<video src=\"clip.mp4\" controls autoplay></video>",
+      "nodes": [],
+      "view": "",
+      "drawn": {
+        "player": 1
+      },
+      "reference": {
+        "group": "html",
+        "title": "Video and sound in HTML",
+        "becomes": "A player, which never starts by itself, even when `autoplay` asks it to.",
+        "writers": ["Typora", "Azure DevOps", "web clippers"]
+      }
+    },
+    {
+      "name": "a video block with its sources, as a web clipper keeps it",
+      "syntax": "media",
+      "example": "<video controls width=\"480\">\n  <source src=\"clip.webm\" type=\"video/webm\">\n</video>",
+      "nodes": [],
+      "view": "\n  \n",
+      "drawn": {
+        "drawn HTML": 1,
+        "player": 1
+      }
+    },
+    {
+      "name": "an audio tag with a remote address",
+      "syntax": "media",
+      "example": "<audio src=\"https://example.com/song.mp3\" controls></audio>",
+      "nodes": [],
+      "view": "",
+      "drawn": {
+        "player": 1
+      }
+    },
+    {
+      "name": "a picture's size in braces and after its alt text in a table cell",
+      "syntax": "pictureSizes",
+      "example": "| Logo | Small |\n|---|---|\n| ![Logo](logo.png){width=50%} | ![Small\\|60](small.png) |",
+      "nodes": ["ImageAttributes"],
+      "view": "LogoSmall",
+      "drawn": {
+        "table": 1,
+        "picture": 2
+      },
+      "off": "LogoSmall{width=50%}"
+    },
+    {
+      "name": "a picture's size after its address in a table cell, as Azure DevOps writes it",
+      "syntax": "otherPictureSizes",
+      "example": "| Diagram |\n|---|\n| ![Diagram](./diagram.png =500x250) |",
+      "nodes": ["ImageSize"],
+      "view": "Diagram",
+      "drawn": {
+        "table": 1,
+        "picture": 1
+      },
+      "off": "Diagram![Diagram](./diagram.png =500x250)"
+    },
+    {
+      "name": "pictures for each theme in a table cell",
+      "syntax": "themePictures",
+      "example": "| Logo |\n|---|\n| ![Logo](logo-dark.png#gh-dark-mode-only)![Logo](logo-light.png#gh-light-mode-only) |",
+      "nodes": [],
+      "view": "Logo",
+      "drawn": {
+        "table": 1,
+        "picture for the dark theme": 1,
+        "picture for the light theme": 1
+      },
+      "off": "Logo"
+    },
+    {
+      "name": "a video written as a picture in a table cell is a player",
+      "syntax": "media",
+      "example": "| Demo |\n|---|\n| ![demo](demo.mp4) |",
+      "nodes": [],
+      "view": "Demo",
+      "drawn": {
+        "table": 1,
+        "player": 1
+      },
+      "off": "Demodemo.mp4Could not be loaded"
+    }
+  ]
+}

@@ -1,0 +1,1409 @@
+{
+  "name": "tandem-markdown",
+  "displayName": "Tandem Markdown",
+  "description": "A WYSIWYG markdown editor for VS Code with support for a wide range of markdown syntax styles. You can keep a note open while an AI agent works on the same file, or while someone else's changes come in through a sync tool, a shared folder or git.",
+  "icon": "icon.png",
+  "galleryBanner": {
+    "color": "#1e2430",
+    "theme": "dark"
+  },
+  "version": "0.1.0",
+  "preview": true,
+  "publisher": "fortwhimsy",
+  "author": "Fort Whimsy LLC",
+  "license": "MIT",
+  "pricing": "Free",
+  "homepage": "https://github.com/agambon/tandem-markdown#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/agambon/tandem-markdown.git"
+  },
+  "bugs": {
+    "url": "https://github.com/agambon/tandem-markdown/issues"
+  },
+  "engines": {
+    "vscode": "^1.120.0"
+  },
+  "categories": [
+    "Other",
+    "Visualization"
+  ],
+  "keywords": [
+    "markdown",
+    "wysiwyg",
+    "live preview",
+    "editor",
+    "wikilinks",
+    "tables",
+    "merge",
+    "foam",
+    "obsidian"
+  ],
+  "main": "./dist/host/extension.js",
+  "activationEvents": [
+    "onLanguage:markdown"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
+    },
+    "virtualWorkspaces": {
+      "supported": "limited",
+      "description": "Files that are not on disk open in Rich view only."
+    }
+  },
+  "contributes": {
+    "customEditors": [
+      {
+        "viewType": "tandemMarkdown.editor",
+        "displayName": "Rich Editor",
+        "selector": [
+          {
+            "filenamePattern": "*.md"
+          },
+          {
+            "filenamePattern": "*.markdown"
+          },
+          {
+            "filenamePattern": "*.txt"
+          }
+        ],
+        "priority": "option"
+      }
+    ],
+    "commands": [
+      {
+        "command": "tandemMarkdown.showSource",
+        "title": "Show Source",
+        "category": "Tandem Markdown",
+        "icon": "$(code)"
+      },
+      {
+        "command": "tandemMarkdown.showRichView",
+        "title": "Show Rich View",
+        "category": "Tandem Markdown",
+        "icon": "$(eye)"
+      },
+      {
+        "command": "tandemMarkdown.showRichEditor",
+        "title": "Show Rich Editor",
+        "category": "Tandem Markdown",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "tandemMarkdown.openSourceToSide",
+        "title": "Open Source to the Side",
+        "category": "Tandem Markdown",
+        "icon": "$(code)"
+      },
+      {
+        "command": "tandemMarkdown.reviewInSource",
+        "title": "Review in Source",
+        "category": "Tandem Markdown",
+        "icon": "$(copilot)"
+      },
+      {
+        "command": "tandemMarkdown.openRichViewToSide",
+        "title": "Open Rich View to the Side",
+        "category": "Tandem Markdown",
+        "icon": "$(eye)"
+      },
+      {
+        "command": "tandemMarkdown.openRichEditorToSide",
+        "title": "Open Rich Editor to the Side",
+        "category": "Tandem Markdown",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "tandemMarkdown.showRichViewOnRichTab",
+        "title": "Show Rich View",
+        "category": "Tandem Markdown",
+        "icon": "$(eye)"
+      },
+      {
+        "command": "tandemMarkdown.showRichViewOnSourceTab",
+        "title": "Show Rich View",
+        "category": "Tandem Markdown",
+        "icon": "$(eye)"
+      },
+      {
+        "command": "tandemMarkdown.showRichEditorOnRichTab",
+        "title": "Show Rich Editor",
+        "category": "Tandem Markdown",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "tandemMarkdown.showRichEditorOnSourceTab",
+        "title": "Show Rich Editor",
+        "category": "Tandem Markdown",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "tandemMarkdown.openRichViewToSideOnRichTab",
+        "title": "Open Rich View to the Side",
+        "category": "Tandem Markdown",
+        "icon": "$(eye)"
+      },
+      {
+        "command": "tandemMarkdown.openRichViewToSideOnSourceTab",
+        "title": "Open Rich View to the Side",
+        "category": "Tandem Markdown",
+        "icon": "$(eye)"
+      },
+      {
+        "command": "tandemMarkdown.openRichEditorToSideOnRichTab",
+        "title": "Open Rich Editor to the Side",
+        "category": "Tandem Markdown",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "tandemMarkdown.openRichEditorToSideOnSourceTab",
+        "title": "Open Rich Editor to the Side",
+        "category": "Tandem Markdown",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "tandemMarkdown.switchView",
+        "title": "Switch View",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.openInRichEditor",
+        "title": "Open in Rich Editor",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.openInRichView",
+        "title": "Open in Rich View",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.toggleScrollSync",
+        "title": "Toggle Scroll Sync",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.turnOffScrollSync",
+        "title": "Turn Off Scroll Sync",
+        "category": "Tandem Markdown",
+        "icon": "$(sync)"
+      },
+      {
+        "command": "tandemMarkdown.turnOnScrollSync",
+        "title": "Turn On Scroll Sync",
+        "category": "Tandem Markdown",
+        "icon": "$(sync-ignored)"
+      },
+      {
+        "command": "tandemMarkdown.undo",
+        "title": "Undo",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.redo",
+        "title": "Redo",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.save",
+        "title": "Save",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.close",
+        "title": "Close",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.showLog",
+        "title": "Show Log",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.copyDiagnostics",
+        "title": "Copy Diagnostics",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.openBackupFolder",
+        "title": "Open Backup Folder",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.compareWithBackup",
+        "title": "Compare with Backup",
+        "category": "Tandem Markdown",
+        "icon": "$(history)"
+      },
+      {
+        "command": "tandemMarkdown.useChangeFromDisk",
+        "title": "Use Change from Disk",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.replaceMyView",
+        "title": "Replace My View",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.useClashChangeButton",
+        "title": "Where you changed the same words, puts the file's words in place of yours.",
+        "shortTitle": "Use Change from Disk",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.useGoneChangeButton",
+        "title": "Puts this change into your view and keeps your other edits. Where you changed the same words, the change's words win.",
+        "shortTitle": "Use Change from Disk",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.replaceMyViewButton",
+        "title": "Replaces everything in your view with this version.",
+        "shortTitle": "Replace My View",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.showWaitingMessage",
+        "title": "Go to Waiting Message",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.addAgentInstructions",
+        "title": "Add Agent Instructions",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.copyPromptForAgent",
+        "title": "Copy Prompt for Agent",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.copyRelativePathWithLines",
+        "title": "Copy Relative Path with Line Numbers",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.revealHeading",
+        "title": "Reveal Heading",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.openConflictFile",
+        "title": "Open Conflict File",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.toggleBold",
+        "title": "Bold",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.toggleItalic",
+        "title": "Italic",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.toggleStrikethrough",
+        "title": "Strikethrough",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.toggleCode",
+        "title": "Inline Code",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.toggleHighlight",
+        "title": "Highlight",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.insertLink",
+        "title": "Link",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.headingUp",
+        "title": "Heading Level Up",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.headingDown",
+        "title": "Heading Level Down",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.toggleFold",
+        "title": "Toggle Section Fold",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.foldAll",
+        "title": "Fold All Sections",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.unfoldAll",
+        "title": "Unfold All Sections",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.toggleBulletList",
+        "title": "Bullet List",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.toggleNumberedList",
+        "title": "Numbered List",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.toggleTaskList",
+        "title": "Task List",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.toggleTask",
+        "title": "Check or Uncheck Task",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.toggleQuote",
+        "title": "Quote",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.insertCodeBlock",
+        "title": "Code Block",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.insertTable",
+        "title": "Table",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.insertImage",
+        "title": "Image",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.insertRule",
+        "title": "Horizontal Rule",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.pastePlain",
+        "title": "Paste as Plain Text",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.find",
+        "title": "Find",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.replace",
+        "title": "Replace",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.openLink",
+        "title": "Open Link",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.rename",
+        "title": "Rename",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.quickFix",
+        "title": "Quick Fix",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.verify",
+        "title": "Verify File",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.toggleTabMovesFocus",
+        "title": "Toggle Tab Moves Focus",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.showKeys",
+        "title": "Show Keyboard Shortcuts",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.useByDefault",
+        "title": "Use Tandem Markdown by Default",
+        "category": "Tandem Markdown"
+      },
+      {
+        "command": "tandemMarkdown.useSourceByDefault",
+        "title": "Use Source by Default",
+        "category": "Tandem Markdown"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "tandemMarkdown.showSource",
+          "when": "resourceExtname != .conflict && (resourceLangId == markdown || resourceExtname == .md || resourceExtname == .markdown || resourceExtname == .txt || resourceScheme == untitled && resourceLangId == plaintext)"
+        },
+        {
+          "command": "tandemMarkdown.showRichView",
+          "when": "resourceExtname != .conflict && (resourceLangId == markdown || resourceExtname == .md || resourceExtname == .markdown || resourceExtname == .txt || resourceScheme == untitled && resourceLangId == plaintext)"
+        },
+        {
+          "command": "tandemMarkdown.showRichEditor",
+          "when": "resourceExtname != .conflict && (resourceLangId == markdown || resourceExtname == .md || resourceExtname == .markdown || resourceExtname == .txt || resourceScheme == untitled && resourceLangId == plaintext)"
+        },
+        {
+          "command": "tandemMarkdown.switchView",
+          "when": "resourceExtname != .conflict && (resourceLangId == markdown || resourceExtname == .md || resourceExtname == .markdown || resourceExtname == .txt || resourceScheme == untitled && resourceLangId == plaintext)"
+        },
+        {
+          "command": "tandemMarkdown.openSourceToSide",
+          "when": "activeCustomEditorId == 'tandemMarkdown.editor'"
+        },
+        {
+          "command": "tandemMarkdown.reviewInSource",
+          "when": "activeCustomEditorId == 'tandemMarkdown.editor' && chatEdits.hasEditorModifications"
+        },
+        {
+          "command": "tandemMarkdown.openRichViewToSide",
+          "when": "resourceExtname != .conflict && (resourceLangId == markdown || resourceExtname == .md || resourceExtname == .markdown || resourceExtname == .txt || resourceScheme == untitled && resourceLangId == plaintext)"
+        },
+        {
+          "command": "tandemMarkdown.openRichEditorToSide",
+          "when": "resourceExtname != .conflict && (resourceLangId == markdown || resourceExtname == .md || resourceExtname == .markdown || resourceExtname == .txt || resourceScheme == untitled && resourceLangId == plaintext)"
+        },
+        {
+          "command": "tandemMarkdown.showRichViewOnRichTab",
+          "when": "false"
+        },
+        {
+          "command": "tandemMarkdown.showRichViewOnSourceTab",
+          "when": "false"
+        },
+        {
+          "command": "tandemMarkdown.showRichEditorOnRichTab",
+          "when": "false"
+        },
+        {
+          "command": "tandemMarkdown.showRichEditorOnSourceTab",
+          "when": "false"
+        },
+        {
+          "command": "tandemMarkdown.openRichViewToSideOnRichTab",
+          "when": "false"
+        },
+        {
+          "command": "tandemMarkdown.openRichViewToSideOnSourceTab",
+          "when": "false"
+        },
+        {
+          "command": "tandemMarkdown.openRichEditorToSideOnRichTab",
+          "when": "false"
+        },
+        {
+          "command": "tandemMarkdown.openRichEditorToSideOnSourceTab",
+          "when": "false"
+        },
+        {
+          "command": "tandemMarkdown.undo",
+          "when": "false"
+        },
+        {
+          "command": "tandemMarkdown.redo",
+          "when": "false"
+        },
+        {
+          "command": "tandemMarkdown.save",
+          "when": "false"
+        },
+        {
+          "command": "tandemMarkdown.close",
+          "when": "false"
+        },
+        {
+          "command": "tandemMarkdown.revealHeading",
+          "when": "false"
+        },
+        {
+          "command": "tandemMarkdown.openConflictFile",
+          "when": "false"
+        },
+        {
+          "command": "tandemMarkdown.useClashChangeButton",
+          "when": "false"
+        },
+        {
+          "command": "tandemMarkdown.useGoneChangeButton",
+          "when": "false"
+        },
+        {
+          "command": "tandemMarkdown.replaceMyViewButton",
+          "when": "false"
+        },
+        {
+          "command": "tandemMarkdown.openInRichEditor",
+          "when": "false"
+        },
+        {
+          "command": "tandemMarkdown.openInRichView",
+          "when": "false"
+        },
+        {
+          "command": "tandemMarkdown.toggleScrollSync",
+          "when": "resourceLangId == markdown || activeCustomEditorId == 'tandemMarkdown.editor'"
+        },
+        {
+          "command": "tandemMarkdown.turnOffScrollSync",
+          "when": "false"
+        },
+        {
+          "command": "tandemMarkdown.turnOnScrollSync",
+          "when": "false"
+        },
+        {
+          "command": "tandemMarkdown.toggleBold",
+          "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.mode == 'edit'"
+        },
+        {
+          "command": "tandemMarkdown.toggleItalic",
+          "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.mode == 'edit'"
+        },
+        {
+          "command": "tandemMarkdown.toggleStrikethrough",
+          "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.mode == 'edit'"
+        },
+        {
+          "command": "tandemMarkdown.toggleCode",
+          "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.mode == 'edit'"
+        },
+        {
+          "command": "tandemMarkdown.toggleHighlight",
+          "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.mode == 'edit'"
+        },
+        {
+          "command": "tandemMarkdown.insertLink",
+          "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.mode == 'edit'"
+        },
+        {
+          "command": "tandemMarkdown.headingUp",
+          "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.mode == 'edit'"
+        },
+        {
+          "command": "tandemMarkdown.headingDown",
+          "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.mode == 'edit'"
+        },
+        {
+          "command": "tandemMarkdown.toggleBulletList",
+          "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.mode == 'edit'"
+        },
+        {
+          "command": "tandemMarkdown.toggleNumberedList",
+          "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.mode == 'edit'"
+        },
+        {
+          "command": "tandemMarkdown.toggleTaskList",
+          "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.mode == 'edit'"
+        },
+        {
+          "command": "tandemMarkdown.toggleTask",
+          "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.mode == 'edit'"
+        },
+        {
+          "command": "tandemMarkdown.toggleQuote",
+          "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.mode == 'edit'"
+        },
+        {
+          "command": "tandemMarkdown.insertCodeBlock",
+          "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.mode == 'edit'"
+        },
+        {
+          "command": "tandemMarkdown.insertTable",
+          "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.mode == 'edit'"
+        },
+        {
+          "command": "tandemMarkdown.insertImage",
+          "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.mode == 'edit'"
+        },
+        {
+          "command": "tandemMarkdown.insertRule",
+          "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.mode == 'edit'"
+        },
+        {
+          "command": "tandemMarkdown.pastePlain",
+          "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.mode == 'edit'"
+        },
+        {
+          "command": "tandemMarkdown.find",
+          "when": "activeCustomEditorId == 'tandemMarkdown.editor'"
+        },
+        {
+          "command": "tandemMarkdown.replace",
+          "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.mode == 'edit'"
+        },
+        {
+          "command": "tandemMarkdown.openLink",
+          "when": "activeCustomEditorId == 'tandemMarkdown.editor'"
+        },
+        {
+          "command": "tandemMarkdown.rename",
+          "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.mode == 'edit'"
+        },
+        {
+          "command": "tandemMarkdown.quickFix",
+          "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.mode == 'edit'"
+        },
+        {
+          "command": "tandemMarkdown.verify",
+          "when": "resourceExtname != .conflict && (resourceLangId == markdown || resourceExtname == .md || resourceExtname == .markdown || resourceExtname == .txt || resourceScheme == untitled && resourceLangId == plaintext)"
+        },
+        {
+          "command": "tandemMarkdown.compareWithBackup",
+          "when": "resourceScheme == file && (resourceLangId == markdown || resourceExtname == .md || resourceExtname == .markdown || resourceExtname == .txt)"
+        },
+        {
+          "command": "tandemMarkdown.useChangeFromDisk",
+          "when": "diffEditorOriginalUri in tandemMarkdown.useClashVersions || diffEditorOriginalUri in tandemMarkdown.useGoneVersions"
+        },
+        {
+          "command": "tandemMarkdown.replaceMyView",
+          "when": "diffEditorOriginalUri in tandemMarkdown.replaceVersions"
+        },
+        {
+          "command": "tandemMarkdown.toggleTabMovesFocus",
+          "when": "activeCustomEditorId == 'tandemMarkdown.editor'"
+        },
+        {
+          "command": "tandemMarkdown.showKeys"
+        },
+        {
+          "command": "tandemMarkdown.useByDefault"
+        },
+        {
+          "command": "tandemMarkdown.useSourceByDefault"
+        },
+        {
+          "command": "tandemMarkdown.copyRelativePathWithLines",
+          "when": "activeCustomEditorId == 'tandemMarkdown.editor'"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "tandemMarkdown.useClashChangeButton",
+          "when": "diffEditorOriginalUri in tandemMarkdown.useClashVersions",
+          "group": "navigation@0"
+        },
+        {
+          "command": "tandemMarkdown.useGoneChangeButton",
+          "when": "diffEditorOriginalUri in tandemMarkdown.useGoneVersions",
+          "group": "navigation@0"
+        },
+        {
+          "command": "tandemMarkdown.replaceMyViewButton",
+          "when": "diffEditorOriginalUri in tandemMarkdown.replaceVersions",
+          "group": "navigation@0"
+        },
+        {
+          "command": "tandemMarkdown.reviewInSource",
+          "when": "activeCustomEditorId == 'tandemMarkdown.editor' && chatEdits.hasEditorModifications",
+          "group": "navigation@0"
+        },
+        {
+          "command": "tandemMarkdown.showSource",
+          "alt": "tandemMarkdown.openSourceToSide",
+          "when": "activeCustomEditorId == 'tandemMarkdown.editor'",
+          "group": "navigation@10"
+        },
+        {
+          "command": "tandemMarkdown.showRichEditorOnRichTab",
+          "alt": "tandemMarkdown.openRichEditorToSideOnRichTab",
+          "when": "activeCustomEditorId == 'tandemMarkdown.editor' && resource in tandemMarkdown.richViewFiles",
+          "group": "navigation@11"
+        },
+        {
+          "command": "tandemMarkdown.showRichEditorOnSourceTab",
+          "alt": "tandemMarkdown.openRichEditorToSideOnSourceTab",
+          "when": "resourceExtname != .conflict && (resourceLangId == markdown || resourceExtname == .md || resourceExtname == .markdown) && activeCustomEditorId != 'tandemMarkdown.editor' && !isInDiffEditor",
+          "group": "navigation@11"
+        },
+        {
+          "command": "tandemMarkdown.showRichViewOnRichTab",
+          "alt": "tandemMarkdown.openRichViewToSideOnRichTab",
+          "when": "activeCustomEditorId == 'tandemMarkdown.editor' && resource in tandemMarkdown.richEditorFiles",
+          "group": "navigation@12"
+        },
+        {
+          "command": "tandemMarkdown.showRichViewOnSourceTab",
+          "alt": "tandemMarkdown.openRichViewToSideOnSourceTab",
+          "when": "resourceExtname != .conflict && (resourceLangId == markdown || resourceExtname == .md || resourceExtname == .markdown) && activeCustomEditorId != 'tandemMarkdown.editor' && !isInDiffEditor",
+          "group": "navigation@12"
+        },
+        {
+          "command": "tandemMarkdown.turnOffScrollSync",
+          "when": "resource in tandemMarkdown.scrollSyncOn && !isInDiffEditor && (activeCustomEditorId == '' || activeCustomEditorId == 'tandemMarkdown.editor')",
+          "group": "navigation@13"
+        },
+        {
+          "command": "tandemMarkdown.turnOnScrollSync",
+          "when": "resource in tandemMarkdown.scrollSyncOff && !isInDiffEditor && (activeCustomEditorId == '' || activeCustomEditorId == 'tandemMarkdown.editor')",
+          "group": "navigation@13"
+        },
+        {
+          "command": "tandemMarkdown.compareWithBackup",
+          "when": "resource in tandemMarkdown.backupButtonFiles && !isInDiffEditor && (activeCustomEditorId == '' || activeCustomEditorId == 'tandemMarkdown.editor')",
+          "group": "navigation@14"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "tandemMarkdown.openInRichEditor",
+          "when": "!explorerResourceIsFolder && resourceExtname != .conflict && (resourceLangId == markdown || resourceExtname == .md || resourceExtname == .markdown)",
+          "group": "navigation@20"
+        },
+        {
+          "command": "tandemMarkdown.openInRichView",
+          "when": "!explorerResourceIsFolder && resourceExtname != .conflict && (resourceLangId == markdown || resourceExtname == .md || resourceExtname == .markdown)",
+          "group": "navigation@21"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "key": "ctrl+b",
+        "mac": "cmd+b",
+        "command": "tandemMarkdown.toggleBold",
+        "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.editorFocus && tandemMarkdown.mode == 'edit' && !tandemMarkdown.fieldFocus"
+      },
+      {
+        "key": "ctrl+i",
+        "mac": "cmd+i",
+        "command": "tandemMarkdown.toggleItalic",
+        "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.editorFocus && tandemMarkdown.mode == 'edit' && !tandemMarkdown.fieldFocus"
+      },
+      {
+        "key": "alt+s",
+        "mac": "ctrl+cmd+s",
+        "command": "tandemMarkdown.toggleStrikethrough",
+        "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.editorFocus && tandemMarkdown.mode == 'edit' && !tandemMarkdown.fieldFocus"
+      },
+      {
+        "key": "alt+k",
+        "mac": "ctrl+cmd+k",
+        "command": "tandemMarkdown.insertLink",
+        "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.editorFocus && tandemMarkdown.mode == 'edit' && !tandemMarkdown.fieldFocus"
+      },
+      {
+        "key": "alt+c",
+        "mac": "ctrl+cmd+c",
+        "command": "tandemMarkdown.toggleTask",
+        "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.editorFocus && tandemMarkdown.mode == 'edit' && !tandemMarkdown.fieldFocus"
+      },
+      {
+        "key": "ctrl+shift+]",
+        "command": "tandemMarkdown.headingUp",
+        "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.editorFocus && tandemMarkdown.mode == 'edit' && !tandemMarkdown.fieldFocus"
+      },
+      {
+        "key": "ctrl+shift+[",
+        "command": "tandemMarkdown.headingDown",
+        "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.editorFocus && tandemMarkdown.mode == 'edit' && !tandemMarkdown.fieldFocus"
+      },
+      {
+        "key": "ctrl+k ctrl+l",
+        "mac": "cmd+k cmd+l",
+        "command": "tandemMarkdown.toggleFold",
+        "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.editorFocus && !tandemMarkdown.fieldFocus"
+      },
+      {
+        "key": "ctrl+k ctrl+0",
+        "mac": "cmd+k cmd+0",
+        "command": "tandemMarkdown.foldAll",
+        "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.editorFocus && !tandemMarkdown.fieldFocus"
+      },
+      {
+        "key": "ctrl+k ctrl+j",
+        "mac": "cmd+k cmd+j",
+        "command": "tandemMarkdown.unfoldAll",
+        "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.editorFocus && !tandemMarkdown.fieldFocus"
+      },
+      {
+        "key": "ctrl+shift+v",
+        "mac": "cmd+shift+v",
+        "command": "tandemMarkdown.pastePlain",
+        "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.editorFocus && tandemMarkdown.mode == 'edit'"
+      },
+      {
+        "key": "alt+enter",
+        "mac": "ctrl+cmd+enter",
+        "command": "tandemMarkdown.openLink",
+        "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.editorFocus && !tandemMarkdown.fieldFocus"
+      },
+      {
+        "key": "ctrl+f",
+        "mac": "cmd+f",
+        "command": "tandemMarkdown.find",
+        "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.editorFocus"
+      },
+      {
+        "key": "ctrl+h",
+        "mac": "alt+cmd+f",
+        "command": "tandemMarkdown.replace",
+        "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.editorFocus && tandemMarkdown.mode == 'edit'"
+      },
+      {
+        "key": "ctrl+s",
+        "mac": "cmd+s",
+        "command": "tandemMarkdown.save",
+        "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.editorFocus"
+      },
+      {
+        "key": "ctrl+z",
+        "mac": "cmd+z",
+        "command": "tandemMarkdown.undo",
+        "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.editorFocus"
+      },
+      {
+        "key": "ctrl+y",
+        "mac": "cmd+y",
+        "command": "tandemMarkdown.redo",
+        "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.editorFocus"
+      },
+      {
+        "key": "ctrl+shift+z",
+        "mac": "cmd+shift+z",
+        "command": "tandemMarkdown.redo",
+        "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.editorFocus"
+      },
+      {
+        "key": "ctrl+w",
+        "mac": "cmd+w",
+        "command": "tandemMarkdown.close",
+        "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.editorFocus"
+      },
+      {
+        "key": "ctrl+f4",
+        "command": "tandemMarkdown.close",
+        "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.editorFocus && !isMac"
+      },
+      {
+        "key": "f2",
+        "command": "tandemMarkdown.rename",
+        "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.editorFocus && tandemMarkdown.mode == 'edit' && !tandemMarkdown.fieldFocus"
+      },
+      {
+        "key": "ctrl+.",
+        "mac": "cmd+.",
+        "command": "tandemMarkdown.quickFix",
+        "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.editorFocus && tandemMarkdown.mode == 'edit' && !tandemMarkdown.fieldFocus"
+      },
+      {
+        "key": "ctrl+m",
+        "mac": "ctrl+shift+m",
+        "command": "tandemMarkdown.toggleTabMovesFocus",
+        "when": "activeCustomEditorId == 'tandemMarkdown.editor' && tandemMarkdown.editorFocus"
+      },
+      {
+        "key": "alt+m",
+        "mac": "ctrl+cmd+m",
+        "command": "tandemMarkdown.switchView",
+        "when": "resourceExtname != .conflict && (resourceLangId == markdown || resourceExtname == .md || resourceExtname == .markdown || resourceExtname == .txt || resourceScheme == untitled && resourceLangId == plaintext)"
+      }
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "tandemMarkdown.outline",
+          "name": "Tandem Markdown Outline",
+          "when": "activeCustomEditorId == 'tandemMarkdown.editor'"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Tandem Markdown",
+      "properties": {
+        "tandemMarkdown.defaultRichMode": {
+          "type": "string",
+          "enum": [
+            "edit",
+            "view"
+          ],
+          "enumDescriptions": [
+            "Rich editor",
+            "Rich view"
+          ],
+          "default": "edit",
+          "description": "Which rich view Switch View and Reopen With open first.",
+          "scope": "resource",
+          "order": 1
+        },
+        "tandemMarkdown.contentWidth": {
+          "type": "number",
+          "default": 860,
+          "minimum": 0,
+          "description": "Width of the text column in pixels. Use 0 for the full width of the tab.",
+          "scope": "resource",
+          "order": 2
+        },
+        "tandemMarkdown.fontSize": {
+          "type": "number",
+          "default": 16,
+          "minimum": 6,
+          "maximum": 60,
+          "description": "Size of the text in pixels.",
+          "scope": "resource",
+          "order": 3
+        },
+        "tandemMarkdown.fontFamily": {
+          "type": "string",
+          "default": "",
+          "description": "Font for the text. Leave empty to use the system font.",
+          "scope": "resource",
+          "order": 4
+        },
+        "tandemMarkdown.lineHeight": {
+          "type": "number",
+          "default": 1.6,
+          "minimum": 1,
+          "maximum": 3,
+          "description": "Line height for the text, as a multiple of the font size.",
+          "scope": "resource",
+          "order": 4
+        },
+        "tandemMarkdown.table.alignOnEdit": {
+          "type": "boolean",
+          "default": false,
+          "description": "Pad every row of a table so its columns line up after a cell is edited. This rewrites the whole table in the file.",
+          "scope": "resource",
+          "order": 5
+        },
+        "tandemMarkdown.outsideChanges.whenBothChanged": {
+          "type": "string",
+          "enum": [
+            "keepMine",
+            "keepTheirs"
+          ],
+          "enumDescriptions": [
+            "Keep your words there. The other program's version goes to a backup, and a message says so.",
+            "Keep the other program's words there. A copy of your text goes to a backup, and a message says so."
+          ],
+          "default": "keepMine",
+          "description": "What to keep where you and another program both change the same words in a note.",
+          "scope": "resource",
+          "order": 11
+        },
+        "tandemMarkdown.outsideChanges.highlight": {
+          "type": "boolean",
+          "default": true,
+          "description": "Highlight each line another program changes, with an outline that stays until you have seen it.",
+          "scope": "resource",
+          "order": 12
+        },
+        "tandemMarkdown.outsideChanges.announce": {
+          "type": "boolean",
+          "default": true,
+          "description": "Tell your screen reader when another program changes a note you have open in the Rich editor or the Rich view.",
+          "scope": "resource",
+          "order": 13
+        },
+        "tandemMarkdown.frontmatter.display": {
+          "type": "string",
+          "enum": [
+            "table",
+            "source",
+            "hidden"
+          ],
+          "enumDescriptions": [
+            "As a table of names and values",
+            "As the text in the file",
+            "Hidden in Rich view; in Rich editor, one line reading \"Front matter\" that opens the text when clicked"
+          ],
+          "default": "table",
+          "description": "How the front matter block at the top of a file is shown.",
+          "scope": "resource",
+          "order": 6
+        },
+        "tandemMarkdown.images.allowRemote": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show pictures from https addresses, in markdown and in HTML, and play video and sound from them while tandemMarkdown.syntax.media is on.",
+          "scope": "resource",
+          "order": 7
+        },
+        "tandemMarkdown.maxRichFileSizeKb": {
+          "type": "number",
+          "default": 2048,
+          "minimum": 1,
+          "description": "Files larger than this many kilobytes open in the rich views with drawing turned off.",
+          "scope": "resource",
+          "order": 8
+        },
+        "tandemMarkdown.scrollSync": {
+          "type": "boolean",
+          "default": true,
+          "description": "Scroll the visible tabs of a note together once one of them is a rich view. Each note starts this way; the button in its tabs' title bars, or Toggle Scroll Sync, links or unlinks them for that note until the window closes. A note visible only in Source starts unlinked.",
+          "scope": "resource",
+          "order": 9
+        },
+        "tandemMarkdown.changeMarks": {
+          "type": "boolean",
+          "default": true,
+          "description": "In the Rich editor's margin, mark the lines added, changed and removed since the file's last commit in git.",
+          "scope": "resource",
+          "order": 10
+        },
+        "tandemMarkdown.hideBuiltInPreviewButtons": {
+          "type": "boolean",
+          "default": true,
+          "description": "Hide VS Code's built-in Markdown preview buttons in the editor title bar and Explorer menu so Tandem Markdown's view buttons replace them. VS Code's built-in preview commands and shortcuts still work.",
+          "scope": "window",
+          "order": 10
+        },
+        "tandemMarkdown.syntax.wikilinks": {
+          "type": "string",
+          "enum": [
+            "noteFirst",
+            "textFirst",
+            "off"
+          ],
+          "markdownEnumDescriptions": [
+            "`[[note|shown text]]`, as Obsidian, Foam and Bear write them.",
+            "`[[shown text|note]]`, as Dendron and GitLab wikis write them.",
+            "As typed."
+          ],
+          "default": "noteFirst",
+          "markdownDescription": "Draw `[[wikilinks]]` as links, and pictures embedded with `![[picture.png]]`: `noteFirst` reads the note before the bar, as Obsidian, Foam and Bear write them; `textFirst` reads the shown text first, as Dendron and GitLab wikis do; `off` shows them as typed.",
+          "scope": "resource",
+          "order": 15
+        },
+        "tandemMarkdown.syntax.highlight": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Draw `==text==` as highlighted text.",
+          "scope": "resource",
+          "order": 16
+        },
+        "tandemMarkdown.syntax.footnotes": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Draw footnotes: a reference, `[^1]`, as its note's number, the note numbered where it stands, and notes written in place, `^[text]`.",
+          "scope": "resource",
+          "order": 17
+        },
+        "tandemMarkdown.syntax.tags": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Draw `#tags` as labels, by Obsidian's rule (a color code such as `#ff0000` is a tag; `#123` is not). Ctrl+click (Cmd+click on a Mac) searches the workspace for the tag.",
+          "scope": "resource",
+          "order": 18
+        },
+        "tandemMarkdown.syntax.emoji": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Draw emoji codes on GitHub's list, such as `:smile:`, as the emoji.",
+          "scope": "resource",
+          "order": 19
+        },
+        "tandemMarkdown.syntax.callouts": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Draw GitHub's alerts and Obsidian's callouts, `> [!NOTE]`, as boxes. Off shows them as quotes.",
+          "scope": "resource",
+          "order": 20
+        },
+        "tandemMarkdown.syntax.math": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Draw math: `$…$` in a line (prices such as `$5 and $10` stay text), `$$…$$` blocks and `math` code blocks.",
+          "scope": "resource",
+          "order": 21
+        },
+        "tandemMarkdown.syntax.pictureSizes": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Draw a picture at the size written in braces after it, `![](pic.png){width=50%}` (Pandoc, Quarto, GitLab), or after its alt text and a bar, as Obsidian writes it.",
+          "scope": "resource",
+          "order": 22
+        },
+        "tandemMarkdown.syntax.otherPictureSizes": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Read a picture's size written after its address, `![](pic.png =300x200)` (Azure DevOps), and in Logseq's braces, `![](pic.png){:height 200, :width 300}`.",
+          "scope": "resource",
+          "order": 23
+        },
+        "tandemMarkdown.syntax.media": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Play video and sound files from the workspace where a file has `<video>` or `<audio>`, an embed such as `![[talk.ogg]]`, or a link to one written as a picture, `![demo](demo.mp4)`. Nothing plays by itself; files from https addresses only while `tandemMarkdown.images.allowRemote` is on.",
+          "scope": "resource",
+          "order": 24
+        },
+        "tandemMarkdown.syntax.themePictures": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Show a picture whose address ends in `#gh-dark-mode-only` or `#only-dark` only with a dark theme, and one ending in `#gh-light-mode-only` or `#only-light` only with a light theme (GitHub, Material for MkDocs).",
+          "scope": "resource",
+          "order": 25
+        },
+        "tandemMarkdown.syntax.mermaid": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Draw `mermaid` code blocks as Mermaid diagrams.",
+          "scope": "resource",
+          "order": 26
+        },
+        "tandemMarkdown.syntax.contents": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Draw `[TOC]`, `[toc]`, `[[_TOC_]]` or `[[toc]]` (VitePress, in any letter case) on a line of its own as a list of the file's headings. `[[toc]]` stays a link when a note named toc answers it.",
+          "scope": "resource",
+          "order": 27
+        },
+        "tandemMarkdown.syntax.embeds": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Draw a note embedded with `![[Note]]`, `![[Note#Heading]]` or `![[Note#^id]]` on a line of its own as that note, its section or its block, read-only. Needs wikilinks.",
+          "scope": "resource",
+          "order": 28
+        },
+        "tandemMarkdown.syntax.blockIds": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Fade a block id such as `^quote-1` at the end of a paragraph in Rich editor, and hide it in Rich view.",
+          "scope": "resource",
+          "order": 29
+        },
+        "tandemMarkdown.syntax.tilde": {
+          "type": "string",
+          "enum": [
+            "both",
+            "strikethrough",
+            "subscript",
+            "off"
+          ],
+          "markdownEnumDescriptions": [
+            "`H~2~O` and `x^2^` as subscript and superscript, as Pandoc draws them, and any other `~text~` struck through, as GitHub draws it.",
+            "`~text~` struck through, as GitHub draws it.",
+            "`H~2~O` and `x^2^` as subscript and superscript, as Pandoc draws them.",
+            "As typed."
+          ],
+          "default": "both",
+          "markdownDescription": "How to read a pair of single tildes or carets. `both` reads each pair as the program that writes it means it: one straight after a letter, a digit or a closing bracket (`)`, `]` or `}`) with no space inside (`H~2~O`, `x~i~`, `x^2^`) is subscript or superscript, as Pandoc, Quarto, Typora and Joplin read them, and any other `~text~` is struck through by GitHub's rule, so `~5 to ~10` stays text; `strikethrough` strikes every `~text~` through, as GitHub does; `subscript` reads every pair with no space inside as subscript or superscript, as Pandoc does; `off` shows them as typed. A space escaped with a backslash counts as no space, an escaped tilde or caret is text, and nothing in code is read. Two tildes always strike through.",
+          "scope": "resource",
+          "order": 30
+        },
+        "tandemMarkdown.syntax.comments": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Fade Obsidian's comments, `%%text%%` and blocks between `%%` lines, in the Rich editor, and hide them in Rich view.",
+          "scope": "resource",
+          "order": 31
+        },
+        "tandemMarkdown.syntax.taskMarks": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Draw tasks with another mark in the box, such as `- [?]` and `- [-]` (Obsidian), as boxes showing the mark. A click does not check them.",
+          "scope": "resource",
+          "order": 32
+        },
+        "tandemMarkdown.syntax.highlightColors": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Draw a highlight whose text starts with a color emoji, such as `==🔴Important==`, in that color, the emoji hidden (Obsidian's six colors; Bear writes five of them).",
+          "scope": "resource",
+          "order": 33
+        },
+        "tandemMarkdown.syntax.boxes": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Draw `:::` blocks (Pandoc, Quarto, VitePress, Docusaurus) and `!!!` admonitions (MkDocs) as boxes; a name such as `note` or `warning` gives a callout's look, and `??? note` folds.",
+          "scope": "resource",
+          "order": 34
+        },
+        "tandemMarkdown.syntax.headingAttributes": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Hide attributes in braces after a heading, `## Title {#intro}` (Pandoc, kramdown, Hugo), and take the `#id` as the heading's link address.",
+          "scope": "resource",
+          "order": 35
+        },
+        "tandemMarkdown.syntax.spans": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Draw Pandoc's styled spans, `[text]{.underline}`, `{.smallcaps}` and `{.mark}`, and hide the bookmarks Word leaves, `[]{#_Toc12 .anchor}`, which links still jump to.",
+          "scope": "resource",
+          "order": 36
+        },
+        "tandemMarkdown.syntax.tomlFrontmatter": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Draw TOML front matter, between `+++` lines at the top of a file (Hugo), as a table, as YAML front matter is drawn.",
+          "scope": "resource",
+          "order": 37
+        },
+        "tandemMarkdown.syntax.jsonFrontmatter": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Draw JSON front matter at the top of a file, between `;;;` lines (GitLab) or as a bare `{…}` object (Hugo), as a table.",
+          "scope": "resource",
+          "order": 38
+        },
+        "tandemMarkdown.syntax.definitionLists": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Draw definition lists, a term on its own line and then `: Its definition` (Pandoc, PHP Markdown Extra, kramdown), with the term in bold.",
+          "scope": "resource",
+          "order": 39
+        },
+        "tandemMarkdown.syntax.gridTables": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Draw Pandoc's grid tables, ruled with lines such as `+------+------+`, as tables. Their cells can hold paragraphs and lists, and are edited in the source.",
+          "scope": "resource",
+          "order": 40
+        },
+        "tandemMarkdown.syntax.abbreviations": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Read abbreviation definitions, `*[HTML]: Hyper Text Markup Language` (PHP Markdown Extra, Python-Markdown, kramdown): the abbreviation shows what it stands for as a tooltip wherever it appears, and the definition is left out of Rich view.",
+          "scope": "resource",
+          "order": 41
+        },
+        "tandemMarkdown.syntax.codeFenceLabels": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Read a code block's language from braces or words after its fence (`{.python}`, `{r}`, `js{1,4}`), as Pandoc, Quarto and VitePress write it, and show a `title=\"…\"` it gives in its header.",
+          "scope": "resource",
+          "order": 42
+        },
+        "tandemMarkdown.syntax.latexMath": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Draw math in LaTeX's delimiters: `\\(…\\)` in a line and `\\[…\\]` as a paragraph of its own, as chat assistants write them, and environments such as `\\begin{align}` (Jupyter). Drawn while `math` is on.",
+          "scope": "resource",
+          "order": 43
+        },
+        "tandemMarkdown.syntax.doubledLatexMath": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Draw math written with doubled backslashes, `\\\\(…\\\\)` and `\\\\[…\\\\]`, as MultiMarkdown and Jupyter write it. Drawn while `math` is on.",
+          "scope": "resource",
+          "order": 44
+        },
+        "tandemMarkdown.syntax.criticMarkup": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Draw tracked-change marks (CriticMarkup, as MultiMarkdown writes them): `{++added++}`, `{--deleted--}`, `{~~old~>new~~}`, `{==marked==}` and `{>>comments<<}`.",
+          "scope": "resource",
+          "order": 45
+        },
+        "tandemMarkdown.syntax.contentTabs": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Draw MkDocs content tabs, `=== \"Tab\"` over an indented body, each as a box under its title. Drawn while `boxes` is on.",
+          "scope": "resource",
+          "order": 46
+        },
+        "tandemMarkdown.syntax.fencedQuotes": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Draw GitLab's quote between `>>>` lines as a quote. Drawn while `boxes` is on.",
+          "scope": "resource",
+          "order": 47
+        },
+        "tandemMarkdown.syntax.conflictMarkers": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Draw git's conflict markers, a block from a `<<<<<<<` line to a `>>>>>>>` line, as one conflict with its sides labeled and buttons to keep either side or both. Off, the lines are read as any other markdown.",
+          "scope": "resource",
+          "order": 48
+        },
+        "tandemMarkdown.conflictFiles": {
+          "type": "boolean",
+          "default": true,
+          "description": "When Tandem Markdown cannot settle another program's change to a note, write it up in a conflict file beside the note (for Field notes.md, Field notes.md.conflict), where an AI agent can read it and act on it. When off, no conflict file is written; backups are kept either way.",
+          "scope": "resource",
+          "order": 14
+        }
+      }
+    },
+    "configurationDefaults": {
+      "[markdown]": {
+        "files.saveConflictResolution": "overwriteFileOnDisk"
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run build:production",
+    "build": "node esbuild.mjs",
+    "build:production": "node esbuild.mjs --production",
+    "watch": "node esbuild.mjs --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "format": "prettier --write --cache .",
+    "format:check": "prettier --check --cache .",
+    "test": "vitest run",
+    "test:core": "vitest run --project core",
+    "test:panel": "vitest run --project panel",
+    "check": "npm run format:check && npm run lint && npm run typecheck && vitest run --project core && npm run check:generated",
+    "check:generated": "node scripts/third-party.mjs --check && node scripts/syntax-reference.mjs --check",
+    "specs": "node scripts/areas.mjs --run",
+    "release-checks": "node scripts/release-checks.mjs",
+    "itest": "node esbuild.mjs --itest && node out/itest/runTest.js",
+    "harness": "node esbuild.mjs --harness && node harness/serve.mjs",
+    "notices": "node scripts/third-party.mjs",
+    "syntax-reference": "node scripts/syntax-reference.mjs",
+    "package": "vsce package --no-dependencies"
+  },
+  "devDependencies": {
+    "@codemirror/autocomplete": "^6.20.4",
+    "@codemirror/collab": "^6.1.1",
+    "@codemirror/commands": "^6.11.1",
+    "@codemirror/lang-markdown": "^6.5.2",
+    "@codemirror/language": "^6.13.1",
+    "@codemirror/language-data": "^6.5.2",
+    "@codemirror/search": "^6.7.2",
+    "@codemirror/state": "^6.7.6",
+    "@codemirror/view": "^6.43.15",
+    "@joplin/turndown-plugin-gfm": "^1.0.71",
+    "@lezer/common": "^1.5.5",
+    "@lezer/highlight": "^1.2.5",
+    "@lezer/markdown": "^1.8.1",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.20.5",
+    "@types/turndown": "^5.0.6",
+    "@types/vscode": "~1.120.0",
+    "@typescript/native": "npm:typescript@^7.0.2",
+    "@vscode/codicons": "^0.0.46-24",
+    "@vscode/test-electron": "^3.1.0",
+    "@vscode/vsce": "^4.1.1",
+    "dompurify": "^3.4.17",
+    "entities": "^8.1.0",
+    "esbuild": "^0.28.2",
+    "eslint": "^10.15.0",
+    "fast-check": "^4.10.2",
+    "gemoji": "^8.1.0",
+    "katex": "^0.19.1",
+    "markdown-it": "^15.0.3",
+    "mermaid": "^12.3.0",
+    "mocha": "^12.0.3",
+    "playwright-core": "^1.65.1",
+    "prettier": "^3.10.1",
+    "style-mod": "^4.1.4",
+    "turndown": "^7.2.5",
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
+    "typescript-eslint": "^8.72.2",
+    "vitest": "^5.1.0",
+    "yaml": "^2.9.1"
+  }
+}

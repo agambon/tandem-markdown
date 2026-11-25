@@ -1,0 +1,1021 @@
+{
+  "cases": [
+    {
+      "name": "a VitePress container with a title",
+      "syntax": "boxes",
+      "example": "::: danger STOP\nDanger zone, do not proceed.\n:::",
+      "nodes": ["Box"],
+      "view": "STOP\nDanger zone, do not proceed.\n",
+      "drawn": {
+        "box title": 1,
+        "danger callout": 1
+      },
+      "cursor": "::: danger",
+      "reference": {
+        "group": "documents",
+        "title": "VitePress containers",
+        "becomes": "A box with the title after its name. A name a callout has, such as `info`, `tip`, `warning` or `danger`, gives the callout's look, any other name a plain box labeled with it, and `details` folds.",
+        "writers": ["VitePress", "markdown-it-container"]
+      }
+    },
+    {
+      "name": "a VitePress container takes its type's name as its title",
+      "syntax": "boxes",
+      "example": "::: info\nThis is an info box.\n:::",
+      "nodes": ["Box"],
+      "view": "Info\nThis is an info box.\n",
+      "drawn": {
+        "box title": 1,
+        "info callout": 1
+      }
+    },
+    {
+      "name": "a VitePress details container folds, closed",
+      "syntax": "boxes",
+      "example": "::: details Click me to see more\nThe hidden text.\n:::",
+      "nodes": ["Box"],
+      "view": "Click me to see more",
+      "drawn": {
+        "box title": 1,
+        "fold button": 1,
+        "box": 1
+      }
+    },
+    {
+      "name": "a Docusaurus admonition with its title in brackets",
+      "syntax": "boxes",
+      "example": ":::tip[Use the **docs**]\n\nSome content.\n\n:::",
+      "nodes": ["Box"],
+      "view": "Use the docs\n\nSome content.\n\n",
+      "drawn": {
+        "box title": 1,
+        "bold": 1,
+        "tip callout": 1
+      },
+      "cursor": ":::tip[",
+      "off": ":::tip[Use the docs]\n\nSome content.\n\n:::",
+      "reference": {
+        "group": "documents",
+        "title": "Docusaurus admonitions",
+        "becomes": "A box with a callout's look and the title in brackets.",
+        "writers": ["Docusaurus"]
+      }
+    },
+    {
+      "name": "a Docusaurus admonition in its older form",
+      "syntax": "boxes",
+      "example": ":::caution Take care\nThe text.\n:::",
+      "nodes": ["Box"],
+      "view": "Take care\nThe text.\n",
+      "drawn": {
+        "box title": 1,
+        "caution callout": 1
+      }
+    },
+    {
+      "name": "Pandoc fenced divs, one inside the other",
+      "syntax": "boxes",
+      "example": "::: Warning\nThis is a warning.\n\n::: Danger\nThis is a warning within a warning.\n:::\n:::",
+      "nodes": ["Box", "Box"],
+      "view": "Warning\nThis is a warning.\n\nDanger\nThis is a warning within a warning.\n\n",
+      "drawn": {
+        "box title": 2,
+        "warning callout": 1,
+        "danger callout": 1,
+        "quote or box inside another": 1
+      },
+      "reference": {
+        "group": "documents",
+        "title": "Pandoc fenced divs",
+        "becomes": "A box for each div, nested as written. A class a callout has, such as `Warning`, gives the callout's look, and any other class a plain box labeled with it.",
+        "writers": ["Pandoc", "R Markdown"]
+      }
+    },
+    {
+      "name": "a Pandoc div with a class no program styles is a plain box labeled with it",
+      "syntax": "boxes",
+      "example": "::: {.columns}\nThe left column.\n:::",
+      "nodes": ["Box"],
+      "view": "columns\nThe left column.\n",
+      "drawn": {
+        "box title": 1,
+        "box": 1
+      }
+    },
+    {
+      "name": "a Pandoc div closed by colons on its own opening line",
+      "syntax": "boxes",
+      "example": "::: Warning ::::::\nThis is a warning.\n:::",
+      "nodes": ["Box"],
+      "view": "Warning\nThis is a warning.\n",
+      "drawn": {
+        "box title": 1,
+        "warning callout": 1
+      }
+    },
+    {
+      "name": "a Quarto callout with a title in its attributes",
+      "syntax": "boxes",
+      "example": "::: {.callout-note title=\"Heads up\"}\nThe body.\n:::",
+      "nodes": ["Box"],
+      "view": "Heads up\nThe body.\n",
+      "drawn": {
+        "box title": 1,
+        "note callout": 1
+      },
+      "reference": {
+        "group": "documents",
+        "title": "Quarto callouts",
+        "becomes": "A callout of that type, titled by its `title` or by the heading that opens it. `collapse=\"true\"` folds it.",
+        "writers": ["Quarto"]
+      }
+    },
+    {
+      "name": "a Quarto callout takes the heading that opens it as its title",
+      "syntax": "boxes",
+      "example": "::: {.callout-tip}\n## Tip with a title\nThe body.\n:::",
+      "nodes": ["Box"],
+      "view": "\nTip with a title\nThe body.\n",
+      "drawn": {
+        "box title": 1,
+        "tip callout": 1
+      },
+      "off": "::: {.callout-tip}\nTip with a title\nThe body.\n:::"
+    },
+    {
+      "name": "a Quarto callout that collapses",
+      "syntax": "boxes",
+      "example": "::: {.callout-caution collapse=\"true\"}\n## Expand to learn more\nThe hidden text.\n:::",
+      "nodes": ["Box"],
+      "view": "\nExpand to learn more",
+      "drawn": {
+        "box title": 1,
+        "fold button": 1,
+        "caution callout": 1
+      },
+      "off": "::: {.callout-caution collapse=\"true\"}\nExpand to learn more\nThe hidden text.\n:::"
+    },
+    {
+      "name": "an Azure DevOps diagram block is drawn as a Mermaid diagram",
+      "syntax": "boxes",
+      "example": "::: mermaid\ngraph LR;\nA-->B\n:::",
+      "nodes": ["FencedCode"],
+      "view": "",
+      "drawn": {
+        "diagram": 1,
+        "quote, box or callout": 0
+      },
+      "reference": {
+        "group": "math",
+        "title": "Mermaid between colons",
+        "becomes": "A Mermaid diagram, while `tandemMarkdown.syntax.mermaid` is on too.",
+        "writers": ["Azure DevOps"]
+      }
+    },
+    {
+      "name": "a box never closed runs to the end",
+      "syntax": "boxes",
+      "example": "::: tip\nRuns to the end.\n\nAnd on.",
+      "nodes": ["Box"],
+      "view": "Tip\nRuns to the end.\n\nAnd on.",
+      "drawn": {
+        "tip callout": 1
+      }
+    },
+    {
+      "name": "a callout inside a box keeps its own look",
+      "syntax": "boxes",
+      "example": "::: tip\n> [!WARNING]\n> Careful.\n:::",
+      "nodes": ["Box"],
+      "view": "Tip\nWarning\nCareful.\n",
+      "drawn": {
+        "tip callout": 1,
+        "warning callout": 1,
+        "quote or box inside another": 1
+      },
+      "off": "::: tip\nWarning\nCareful.\n:::"
+    },
+    {
+      "name": "a box inside a list item",
+      "syntax": "boxes",
+      "example": "- An item\n\n  ::: tip\n  Inside the list.\n  :::",
+      "nodes": ["Box"],
+      "view": "- An item\n\nTip\nInside the list.\n",
+      "drawn": {
+        "tip callout": 1
+      },
+      "off": "- An item\n\n::: tip\nInside the list.\n:::"
+    },
+    {
+      "name": "a Material admonition with a title and an indented body",
+      "syntax": "boxes",
+      "example": "!!! note \"Phasellus posuere in sem ut cursus\"\n\n    Lorem ipsum dolor sit amet.\n\nAfter it.",
+      "nodes": ["Box"],
+      "view": "Phasellus posuere in sem ut cursus\n\nLorem ipsum dolor sit amet.\n\nAfter it.",
+      "drawn": {
+        "box title": 1,
+        "note callout": 1
+      },
+      "cursor": "!!! note",
+      "reference": {
+        "group": "documents",
+        "title": "MkDocs admonitions",
+        "becomes": "A box with a callout's look and the title in quotes, its body indented four spaces. A type no callout has takes the note's look.",
+        "writers": ["Material for MkDocs", "Python-Markdown"]
+      }
+    },
+    {
+      "name": "an admonition takes its type's name as its title, and a list inside lines up",
+      "syntax": "boxes",
+      "example": "!!! warning\n    Careful with:\n\n    - the first thing,\n      which wraps;\n    - the second.",
+      "nodes": ["Box"],
+      "view": "Warning\nCareful with:\n\n- the first thing,\nwhich wraps;\n- the second.",
+      "drawn": {
+        "box title": 1,
+        "warning callout": 1,
+        "bulleted item": 2
+      }
+    },
+    {
+      "name": "Material reads important as a tip and caution as a warning",
+      "syntax": "boxes",
+      "example": "!!! important\n    Text.\n\n!!! caution\n    Text.",
+      "nodes": ["Box", "Box"],
+      "view": "Important\nText.\n\nCaution\nText.",
+      "drawn": {
+        "tip callout": 1,
+        "warning callout": 1
+      }
+    },
+    {
+      "name": "a folding admonition, closed and open",
+      "syntax": "boxes",
+      "example": "??? question \"Why?\"\n    Because.\n\n???+ tip \"Open\"\n    Shown.",
+      "nodes": ["Box", "Box"],
+      "view": "Why?\n\nOpen\nShown.",
+      "drawn": {
+        "fold button": 2,
+        "question callout": 1,
+        "tip callout": 1
+      },
+      "reference": {
+        "group": "documents",
+        "title": "MkDocs folding admonitions",
+        "becomes": "A box that folds, closed for `???` and open for `???+`.",
+        "writers": ["Material for MkDocs"]
+      }
+    },
+    {
+      "name": "an admonition whose title is written empty has no head",
+      "syntax": "boxes",
+      "example": "!!! note \"\"\n    No title.",
+      "nodes": ["Box"],
+      "view": "\nNo title.",
+      "drawn": {
+        "box title": 0,
+        "note callout": 1
+      }
+    },
+    {
+      "name": "a line of colons in prose stays text",
+      "syntax": "boxes",
+      "example": "A line of colons:\n\n:::\n\nand more ::: here.",
+      "nodes": [],
+      "view": "A line of colons:\n\n:::\n\nand more ::: here.",
+      "drawn": {
+        "quote, box or callout": 0
+      }
+    },
+    {
+      "name": "a time after colons stays text",
+      "syntax": "boxes",
+      "example": ":::12:30 and\n::: 10:30 stand-up",
+      "nodes": [],
+      "view": ":::12:30 and\n::: 10:30 stand-up",
+      "drawn": {
+        "quote, box or callout": 0
+      }
+    },
+    {
+      "name": "a definition and a property written with colons stay text",
+      "syntax": "boxes",
+      "example": "Ratio:: 3:::1\nNote::: a remark",
+      "nodes": [],
+      "view": "Ratio:: 3:::1\nNote::: a remark",
+      "drawn": {
+        "quote, box or callout": 0
+      }
+    },
+    {
+      "name": "a sentence after question or exclamation marks stays text",
+      "syntax": "boxes",
+      "example": "??? no idea what happened\n!!! that was close",
+      "nodes": [],
+      "view": "??? no idea what happened\n!!! that was close",
+      "drawn": {
+        "quote, box or callout": 0
+      }
+    },
+    {
+      "name": "attributes after a heading are hidden (Pandoc)",
+      "syntax": "headingAttributes",
+      "example": "# Intro {#intro .big}\nText.",
+      "nodes": ["Attributes"],
+      "view": "Intro\nText.",
+      "drawn": {
+        "level 1 heading": 1
+      },
+      "cursor": "{#intro .big}",
+      "off": "Intro {#intro .big}\nText.",
+      "reference": {
+        "group": "documents",
+        "title": "Heading attributes",
+        "becomes": "The braces are hidden, and an `#id` in them is the heading's link address.",
+        "writers": ["Pandoc", "kramdown", "Hugo", "Python-Markdown", "Google Docs' export"]
+      }
+    },
+    {
+      "name": "Pandoc's mark for an unnumbered heading",
+      "syntax": "headingAttributes",
+      "example": "## Preface {-}",
+      "nodes": ["Attributes"],
+      "view": "Preface",
+      "drawn": {
+        "level 2 heading": 1
+      },
+      "off": "Preface {-}"
+    },
+    {
+      "name": "an id on a heading from Google Docs' export",
+      "syntax": "headingAttributes",
+      "example": "# Synopsis {#synopsis}",
+      "nodes": ["Attributes"],
+      "view": "Synopsis",
+      "drawn": {
+        "level 1 heading": 1
+      },
+      "off": "Synopsis {#synopsis}"
+    },
+    {
+      "name": "kramdown's colon and a closing run of hashes",
+      "syntax": "headingAttributes",
+      "example": "## A heading {: #id .cls}\n### Closed ### {#c}",
+      "nodes": ["Attributes", "Attributes"],
+      "view": "A heading\nClosed",
+      "drawn": {
+        "level 2 heading": 1,
+        "level 3 heading": 1
+      },
+      "off": "A heading {: #id .cls}\nClosed ### {#c}"
+    },
+    {
+      "name": "braces that are not attributes stay, and so do braces after a paragraph",
+      "syntax": "headingAttributes",
+      "example": "## Map {a b}\n\n## Kept {}\n\nA paragraph {#id}",
+      "nodes": [],
+      "view": "Map {a b}\n\nKept {}\n\nA paragraph {#id}",
+      "drawn": {
+        "level 2 heading": 2
+      },
+      "off": "Map {a b}\n\nKept {}\n\nA paragraph {#id}"
+    },
+    {
+      "name": "Pandoc's underline, small capitals and highlight",
+      "syntax": "spans",
+      "example": "Some [underlined]{.underline}, [small caps]{.smallcaps} and [marked]{.mark} text.",
+      "nodes": ["Span", "Span", "Span"],
+      "view": "Some underlined, small caps and marked text.",
+      "drawn": {
+        "underline": 1,
+        "small capitals": 1,
+        "highlight": 1
+      },
+      "cursor": "[underlined]{.underline}",
+      "reference": {
+        "group": "documents",
+        "title": "Styled spans",
+        "becomes": "Underlined text, small capitals and highlighted text.",
+        "writers": ["Pandoc"]
+      }
+    },
+    {
+      "name": "a span holds other markdown",
+      "syntax": "spans",
+      "example": "[**Bold** inside]{.mark} and [a [link](https://example.com) in]{.underline}",
+      "nodes": ["Span", "Span"],
+      "view": "Bold inside and a link in",
+      "drawn": {
+        "highlight": 1,
+        "bold": 1,
+        "underline": 1,
+        "link": 1
+      },
+      "off": "[Bold inside]{.mark} and [a link in]{.underline}"
+    },
+    {
+      "name": "a bookmark Word left is hidden",
+      "syntax": "spans",
+      "example": "# []{#_Toc123 .anchor}Introduction\n\nText []{#_Ref9 .anchor}here.",
+      "nodes": ["Span", "Span"],
+      "view": "Introduction\n\nText here.",
+      "drawn": {
+        "level 1 heading": 1
+      },
+      "cursor": "[]{#_Ref9 .anchor}",
+      "off": "[]{#_Toc123 .anchor}Introduction\n\nText []{#_Ref9 .anchor}here.",
+      "reference": {
+        "group": "documents",
+        "title": "Word bookmarks",
+        "becomes": "Hidden. A link to the bookmark still goes to it.",
+        "writers": ["Pandoc, from Word files"]
+      }
+    },
+    {
+      "name": "a span with a class no program styles stays as typed",
+      "syntax": "spans",
+      "example": "A [span]{.red} and [words]{lang=fr} stay.",
+      "nodes": [],
+      "view": "A [span]{.red} and [words]{lang=fr} stay.",
+      "drawn": {
+        "underline": 0
+      },
+      "reference": {
+        "group": "typed",
+        "title": "Spans with other classes",
+        "becomes": "Shown as typed.",
+        "writers": ["Pandoc"]
+      }
+    },
+    {
+      "name": "brackets apart from their braces, or escaped, stay text",
+      "syntax": "spans",
+      "example": "Not [a span] {.mark} and \\[escaped]{.mark}",
+      "nodes": [],
+      "view": "Not [a span] {.mark} and [escaped]{.mark}",
+      "drawn": {
+        "highlight": 0
+      },
+      "off": "Not [a span] {.mark} and [escaped]{.mark}"
+    },
+    {
+      "name": "TOML front matter as Hugo writes it is a table",
+      "syntax": "tomlFrontmatter",
+      "example": "+++\ntitle = \"My post\"\ndate = 1979-05-27T07:32:00Z\ntags = [\"travel\", \"food\"]\ndraft = false\n\n[params]\nauthor = 'Jane'\n+++\n# Body",
+      "nodes": ["Frontmatter"],
+      "view": "titleMy postdate1979-05-27T07:32:00ZtagstravelfooddraftfalseparamsauthorJane\nBody",
+      "drawn": {
+        "front matter table": 1,
+        "table in front matter": 1,
+        "list in front matter": 1
+      },
+      "off": "+++\ntitle = \"My post\"\ndate = 1979-05-27T07:32:00Z\ntags = [\"travel\", \"food\"]\ndraft = false\n\n[params]\nauthor = 'Jane'\n+++\nBody",
+      "reference": {
+        "group": "documents",
+        "title": "TOML front matter",
+        "becomes": "A table of names and values, as YAML front matter is drawn.",
+        "writers": ["Hugo"]
+      }
+    },
+    {
+      "name": "TOML that does not read shows as source",
+      "syntax": "tomlFrontmatter",
+      "example": "+++\nnot = valid = toml\n+++\nText",
+      "nodes": ["Frontmatter"],
+      "view": "+++\nnot = valid = toml\n+++\nText",
+      "drawn": {
+        "front matter table": 0,
+        "front matter shown as source": 1
+      }
+    },
+    {
+      "name": "+++ lines below the top stay text",
+      "syntax": "tomlFrontmatter",
+      "example": "Text\n\n+++\ntitle = \"x\"\n+++",
+      "nodes": [],
+      "view": "Text\n\n+++\ntitle = \"x\"\n+++",
+      "drawn": {
+        "front matter table": 0
+      }
+    },
+    {
+      "name": "JSON front matter between GitLab's ;;; lines",
+      "syntax": "jsonFrontmatter",
+      "example": ";;;\n{\n  \"title\": \"JSON\",\n  \"weight\": 1.0\n}\n;;;\nText",
+      "nodes": ["Frontmatter"],
+      "view": "titleJSONweight1.0\nText",
+      "drawn": {
+        "front matter table": 1
+      },
+      "reference": {
+        "group": "documents",
+        "title": "JSON front matter",
+        "becomes": "A table of names and values, from JSON between `;;;` lines or a bare JSON object at the top of the file.",
+        "writers": ["GitLab", "Hugo"]
+      }
+    },
+    {
+      "name": "a bare JSON object at the top, as Hugo reads it",
+      "syntax": "jsonFrontmatter",
+      "example": "{\n  \"title\": \"Bare\",\n  \"tags\": [\"x\", \"y\"]\n}\nText",
+      "nodes": ["Frontmatter"],
+      "view": "titleBaretagsxy\nText",
+      "drawn": {
+        "front matter table": 1,
+        "list in front matter": 1
+      }
+    },
+    {
+      "name": "braces at the top that are not a JSON object stay text",
+      "syntax": "jsonFrontmatter",
+      "example": "{not json}\n\nText",
+      "nodes": [],
+      "view": "{not json}\n\nText",
+      "drawn": {
+        "front matter table": 0
+      }
+    },
+    {
+      "name": "a term and its definition",
+      "syntax": "definitionLists",
+      "example": "Term\n: Its definition\n\nAfter",
+      "nodes": ["Definition"],
+      "view": "Term\nIts definition\n\nAfter",
+      "drawn": {
+        "definition term": 1,
+        "definition": 1
+      },
+      "cursor": ": Its",
+      "reference": {
+        "group": "documents",
+        "title": "Definition lists",
+        "becomes": "The term in bold, its definition indented beneath it.",
+        "writers": ["Pandoc", "PHP Markdown Extra", "kramdown", "Python-Markdown", "MultiMarkdown"]
+      }
+    },
+    {
+      "name": "a list as PHP Markdown Extra and Pandoc write it, a list inside lining up",
+      "syntax": "definitionLists",
+      "example": "Apple\n:   Pomaceous fruit of plants of the genus Malus in\n    the family Rosaceae.\n\nOrange\n\n:   The fruit of an evergreen tree.\n\n    - with a list\n      that wraps\n    - in it",
+      "nodes": ["Definition", "Definition"],
+      "view": "Apple\nPomaceous fruit of plants of the genus Malus in\nthe family Rosaceae.\n\nOrange\n\nThe fruit of an evergreen tree.\n\n- with a list\nthat wraps\n- in it",
+      "drawn": {
+        "definition term": 2,
+        "definition": 2,
+        "bulleted item": 2
+      }
+    },
+    {
+      "name": "a definition in a quote",
+      "syntax": "definitionLists",
+      "example": "> Term\n> : A definition in a quote",
+      "nodes": ["Definition"],
+      "view": "Term\nA definition in a quote",
+      "drawn": {
+        "definition term": 1,
+        "definition": 1,
+        "quote": 1
+      },
+      "off": "Term\n: A definition in a quote"
+    },
+    {
+      "name": "a colon line with no one-line term before it stays text",
+      "syntax": "definitionLists",
+      "example": ": no term\n\nTwo lines\nof text\n: not a definition\n\n# Heading\n: not one either",
+      "nodes": [],
+      "view": ": no term\n\nTwo lines\nof text\n: not a definition\n\nHeading\n: not one either",
+      "drawn": {
+        "definition": 0
+      },
+      "off": ": no term\n\nTwo lines\nof text\n: not a definition\n\nHeading\n: not one either"
+    },
+    {
+      "name": "Pandoc's grid table, its cells holding lists, its header row not a highlight",
+      "syntax": "gridTables",
+      "example": "+---------------+---------------+--------------------+\n| Fruit         | Price         | Advantages         |\n+===============+===============+====================+\n| Bananas       | $1.34         | - built-in wrapper |\n|               |               | - bright color     |\n+---------------+---------------+--------------------+\n| Oranges       | **$2.10**     | - cures scurvy     |\n|               |               | - tasty            |\n+---------------+---------------+--------------------+\n\nAfter",
+      "nodes": ["GridTable"],
+      "view": "FruitPriceAdvantagesBananas$1.34built-in wrapperbright colorOranges$2.10cures scurvytasty\n\nAfter",
+      "drawn": {
+        "table": 1,
+        "bold": 1,
+        "highlight": 0
+      },
+      "off": "+---------------+---------------+--------------------+\n| Fruit         | Price         | Advantages         |\n+===============+===============+====================+\n| Bananas       | $1.34         | - built-in wrapper |\n|               |               | - bright color     |\n+---------------+---------------+--------------------+\n| Oranges       | $2.10     | - cures scurvy     |\n|               |               | - tasty            |\n+---------------+---------------+--------------------+\n\nAfter",
+      "reference": {
+        "group": "documents",
+        "title": "Grid tables",
+        "becomes": "A table whose cells can hold paragraphs and lists. Its cells are edited in its source, which its pencil or the cursor opens.",
+        "writers": ["Pandoc"]
+      }
+    },
+    {
+      "name": "a grid table whose borders do not line up shows as code",
+      "syntax": "gridTables",
+      "example": "+---+---+\n| a  | b |\n+---+---+",
+      "nodes": ["GridTable"],
+      "view": "+---+---+\n| a  | b |\n+---+---+",
+      "drawn": {
+        "table": 0,
+        "code block": 1
+      }
+    },
+    {
+      "name": "a line of plus signs and dashes in a paragraph stays text",
+      "syntax": "gridTables",
+      "example": "Sum:\n+---+\n| a |\n+---+\n\n+--- not a border",
+      "nodes": [],
+      "view": "Sum:\n+---+\n| a |\n+---+\n\n+--- not a border",
+      "drawn": {
+        "table": 0,
+        "code block": 0
+      }
+    },
+    {
+      "name": "a grid cell draws links and footnotes defined below, numbered with the file's notes",
+      "syntax": "gridTables",
+      "example": "Before^[first].\n\n+----------------------+\n| [docs][d] and^[two]  |\n| a reference[^n]      |\n+----------------------+\n\n[d]: https://example.com/docs\n\n[^n]: The note.",
+      "nodes": ["GridTable"],
+      "view": "Before1.\n\ndocs and2\na reference3\n\n3. The note.",
+      "drawn": {
+        "table": 1,
+        "link": 1,
+        "footnote reference": 3,
+        "footnote text": 1
+      },
+      "off": "Before1.\n\n+----------------------+\n| docs and2  |\n| a reference3      |\n+----------------------+\n\n3. The note."
+    },
+    {
+      "name": "an abbreviation gets its meaning as a tooltip, and its definition is left out",
+      "syntax": "abbreviations",
+      "example": "The HTML specification is maintained by the W3C.\n\n*[HTML]: Hyper Text Markup Language\n*[W3C]:  World Wide Web Consortium",
+      "nodes": ["Abbreviation", "Abbreviation"],
+      "view": "The HTML specification is maintained by the W3C.\n",
+      "drawn": {
+        "abbreviation": 2
+      },
+      "cursor": "*[W3C]",
+      "off": "The HTML specification is maintained by the W3C.\n\n*[HTML]: Hyper Text Markup Language\n*[W3C]:  World Wide Web Consortium",
+      "reference": {
+        "group": "documents",
+        "title": "Abbreviations",
+        "becomes": "Each use of the abbreviation shows its meaning as a tooltip, and the definition is left out of Rich view.",
+        "writers": ["PHP Markdown Extra", "Python-Markdown", "kramdown", "Material for MkDocs"]
+      }
+    },
+    {
+      "name": "an abbreviation is a whole word, and not looked for in code or addresses",
+      "syntax": "abbreviations",
+      "example": "HTML5, XHTML, `HTML` and <https://example.com/HTML> stay plain; HTML is marked.\n\n*[HTML]: Hyper Text Markup Language",
+      "nodes": ["Abbreviation"],
+      "view": "HTML5, XHTML, HTML and https://example.com/HTML stay plain; HTML is marked.\n",
+      "drawn": {
+        "abbreviation": 1
+      },
+      "off": "HTML5, XHTML, HTML and https://example.com/HTML stay plain; HTML is marked.\n\n*[HTML]: Hyper Text Markup Language"
+    },
+    {
+      "name": "text that only looks like a definition stays text",
+      "syntax": "abbreviations",
+      "example": "A *[note]* here, and *[x] : y with a space.\n\n*[]: empty",
+      "nodes": [],
+      "view": "A [note] here, and *[x] : y with a space.\n\n*[]: empty",
+      "drawn": {
+        "abbreviation": 0
+      },
+      "off": "A [note] here, and *[x] : y with a space.\n\n*[]: empty"
+    },
+    {
+      "name": "a language in braces, as Pandoc writes it, labels the code block",
+      "syntax": "codeFenceLabels",
+      "example": "```{.python}\nprint('hi')\n```",
+      "nodes": [],
+      "view": "pythonCopy\nprint('hi')",
+      "drawn": {
+        "code block": 1
+      },
+      "off": "{.python}Copy\nprint('hi')",
+      "reference": {
+        "group": "documents",
+        "title": "Code languages in braces",
+        "becomes": "A code block labeled and colored as that language: the first class in the braces, wherever it stands, so `{#id .haskell}` is Haskell.",
+        "writers": ["Pandoc", "Quarto"]
+      }
+    },
+    {
+      "name": "code that runs in R Markdown and Quarto shows as code in its language",
+      "syntax": "codeFenceLabels",
+      "example": "```{r label, echo=FALSE}\nplot(cars)\n```\n\n```{python}\n#| echo: false\nprint(1)\n```",
+      "nodes": [],
+      "view": "rCopy\nplot(cars)\n\npythonCopy\n#| echo: false\nprint(1)",
+      "drawn": {
+        "code block": 2
+      },
+      "off": "{rCopy\nplot(cars)\n\n{python}Copy\n#| echo: false\nprint(1)",
+      "reference": {
+        "group": "documents",
+        "title": "Code that runs",
+        "becomes": "A code block in that language. The code is shown, not run.",
+        "writers": ["R Markdown", "Quarto"]
+      }
+    },
+    {
+      "name": "line marks after the language, as VitePress writes them, are not part of it",
+      "syntax": "codeFenceLabels",
+      "example": "```js{1,4}\nlet a = 1;\n```",
+      "nodes": [],
+      "view": "jsCopy\nlet a = 1;",
+      "drawn": {
+        "code block": 1
+      },
+      "off": "js{1,4}Copy\nlet a = 1;",
+      "reference": {
+        "group": "documents",
+        "title": "Line marks after the language",
+        "becomes": "A code block in that language.",
+        "writers": ["VitePress", "Hugo"]
+      }
+    },
+    {
+      "name": "a title on the fence (Docusaurus, Material) shows in the code block's header",
+      "syntax": "codeFenceLabels",
+      "example": "```js title=\"app.js\" {1,4-6} showLineNumbers\nconsole.log(1);\n```",
+      "nodes": [],
+      "view": "app.jsjsCopy\nconsole.log(1);",
+      "drawn": {
+        "code block": 1
+      },
+      "off": "jsCopy\nconsole.log(1);",
+      "reference": {
+        "group": "documents",
+        "title": "Code block titles",
+        "becomes": "A code block with the title in its header.",
+        "writers": ["Docusaurus", "Material for MkDocs"]
+      }
+    },
+    {
+      "name": "a fence with an id before the language is labeled and colored as the language",
+      "syntax": "codeFenceLabels",
+      "example": "```{#id .haskell .numberLines}\nmain = pure ()\n```",
+      "nodes": [],
+      "view": "haskellCopy\nmain = pure ()",
+      "drawn": {
+        "code block": 1
+      },
+      "off": "{#idCopy\nmain = pure ()"
+    },
+    {
+      "name": "math in a line as chat assistants write it",
+      "syntax": "latexMath",
+      "example": "The area is \\(\\pi r^2\\) here.",
+      "nodes": ["InlineMath"],
+      "view": "The area is πr2 here.",
+      "drawn": {
+        "formula": 1
+      },
+      "cursor": "\\(\\pi r^2\\)",
+      "off": "The area is (\\pi r^2) here.",
+      "reference": {
+        "group": "math",
+        "title": "LaTeX math in a line",
+        "becomes": "A formula in the line. Drawn while `tandemMarkdown.syntax.math` is on.",
+        "writers": ["chat assistants", "Markdown Preview Enhanced"]
+      }
+    },
+    {
+      "name": "display math as a paragraph of its own, as chat assistants write it",
+      "syntax": "latexMath",
+      "example": "Einstein wrote\n\n\\[\nE = mc^2\n\\]\n\nlong ago.",
+      "nodes": ["DisplayMath"],
+      "view": "Einstein wrote\n\nE=mc2\n\nlong ago.",
+      "drawn": {
+        "math block": 1
+      },
+      "off": "Einstein wrote\n\n[\nE = mc^2\n]\n\nlong ago.",
+      "reference": {
+        "group": "math",
+        "title": "LaTeX math blocks",
+        "becomes": "A formula on its own lines, when the brackets stand as a paragraph of their own; inside a sentence they stay brackets. Drawn while `tandemMarkdown.syntax.math` is on.",
+        "writers": ["chat assistants", "Markdown Preview Enhanced"]
+      }
+    },
+    {
+      "name": "escaped brackets inside a sentence, as web clippers write them, stay brackets",
+      "syntax": "latexMath",
+      "example": "See note \\[1\\] and \\[edit\\].\n\n\\[a\\] and \\[b\\]",
+      "nodes": [],
+      "view": "See note [1] and [edit].\n\n[a] and [b]",
+      "drawn": {
+        "formula": 0
+      },
+      "off": "See note [1] and [edit].\n\n[a] and [b]"
+    },
+    {
+      "name": "a LaTeX environment as a paragraph of its own, as Jupyter draws it",
+      "syntax": "latexMath",
+      "example": "\\begin{align}\na &= b + c \\\\\nd &= e\n\\end{align}",
+      "nodes": ["DisplayMath"],
+      "view": "ad​=b+c=e​​",
+      "drawn": {
+        "math block": 1
+      },
+      "off": "\\begin{align}\na &= b + c \\\nd &= e\n\\end{align}",
+      "reference": {
+        "group": "math",
+        "title": "LaTeX environments",
+        "becomes": "A formula on its own lines, for the environments KaTeX draws, such as `align`. Drawn while `tandemMarkdown.syntax.math` is on.",
+        "writers": ["Jupyter", "Pandoc"]
+      }
+    },
+    {
+      "name": "an unclosed delimiter and an environment KaTeX cannot draw stay text",
+      "syntax": "latexMath",
+      "example": "Open \\( only.\n\n\\begin{multline}\nx\n\\end{multline}",
+      "nodes": [],
+      "view": "Open ( only.\n\n\\begin{multline}\nx\n\\end{multline}",
+      "drawn": {
+        "formula": 0
+      },
+      "off": "Open ( only.\n\n\\begin{multline}\nx\n\\end{multline}"
+    },
+    {
+      "name": "an environment KaTeX cannot draw stays as typed",
+      "syntax": "latexMath",
+      "example": "\\begin{multline}\nx\n\\end{multline}",
+      "nodes": [],
+      "view": "\\begin{multline}\nx\n\\end{multline}",
+      "drawn": {
+        "formula": 0
+      },
+      "plain": ["\\begin{multline}"],
+      "reference": {
+        "group": "typed",
+        "title": "Environments KaTeX cannot draw",
+        "becomes": "Shown as typed.",
+        "writers": ["Pandoc", "Jupyter"]
+      }
+    },
+    {
+      "name": "math with doubled backslashes, as MultiMarkdown writes it",
+      "syntax": "doubledLatexMath",
+      "example": "Inline \\\\(x^2\\\\) here.\n\n\\\\[ y = 2 \\\\]",
+      "nodes": ["InlineMath", "DisplayMath"],
+      "view": "Inline x2 here.\n\ny=2",
+      "drawn": {
+        "formula": 1
+      },
+      "off": "Inline \\(x^2\\) here.\n\n\\[ y = 2 \\]",
+      "reference": {
+        "group": "math",
+        "title": "Math with doubled backslashes",
+        "becomes": "A formula. Drawn while `tandemMarkdown.syntax.math` is on.",
+        "writers": ["MultiMarkdown", "Jupyter"]
+      }
+    },
+    {
+      "name": "a formula over two lines, shown as typed, looks like the text around it",
+      "syntax": "math",
+      "example": "Some $a +\nb$ here.",
+      "nodes": ["InlineMath"],
+      "view": "Some $a +\nb$ here.",
+      "drawn": {
+        "formula": 0
+      },
+      "plain": ["a +"],
+      "reference": {
+        "group": "typed",
+        "title": "Math in a line over two lines",
+        "becomes": "Shown as typed: a formula in a line must end on the line it starts.",
+        "writers": ["Pandoc"]
+      }
+    },
+    {
+      "name": "tracked-change marks as MultiMarkdown writes them",
+      "syntax": "criticMarkup",
+      "example": "An {++added++}, a {--cut--}, an {~~old~>new~~}, a {==marked==}{>>with a comment<<} word.",
+      "nodes": ["CriticAddition", "CriticDeletion", "CriticSubstitution", "CriticHighlight", "CriticComment"],
+      "view": "An added, a cut, an oldnew, a markedwith a comment word.",
+      "drawn": {
+        "inserted text": 2,
+        "deleted text": 2,
+        "highlight": 1,
+        "comment on a change": 1
+      },
+      "cursor": "{++added++}",
+      "off": "An {++added++}, a {--cut--}, an {old~>new}, a {==marked==}{>>with a comment<<} word.",
+      "reference": {
+        "group": "documents",
+        "title": "Tracked changes",
+        "becomes": "Additions, deletions and replacements in color, highlighted text, and comments set apart.",
+        "writers": ["MultiMarkdown", "PyMdown Extensions"]
+      }
+    },
+    {
+      "name": "a tracked change holds markdown, and an unclosed one stays text",
+      "syntax": "criticMarkup",
+      "example": "A {++**bold** insertion++} and {++ an open one.",
+      "nodes": ["CriticAddition"],
+      "view": "A bold insertion and {++ an open one.",
+      "drawn": {
+        "inserted text": 1,
+        "bold": 1
+      },
+      "off": "A {++bold insertion++} and {++ an open one."
+    },
+    {
+      "name": "MkDocs content tabs, each a box under its title",
+      "syntax": "contentTabs",
+      "example": "=== \"Python\"\n\n    print(1)\n\n=== \"Shell\"\n\n    echo 1",
+      "nodes": ["Box", "Box"],
+      "view": "Python\n\nprint(1)\n\nShell\n\necho 1",
+      "drawn": {
+        "box": 2
+      },
+      "off": "=== \"Python\"\n\n    print(1)\n\n=== \"Shell\"\n\n    echo 1",
+      "reference": {
+        "group": "documents",
+        "title": "MkDocs content tabs",
+        "becomes": "Each tab as a box under its title. Drawn while `tandemMarkdown.syntax.boxes` is on.",
+        "writers": ["Material for MkDocs"]
+      }
+    },
+    {
+      "name": "GitLab's quote between >>> lines",
+      "syntax": "fencedQuotes",
+      "example": ">>>\nA quote over\nseveral lines.\n>>>\n\nAfter.",
+      "nodes": ["Box"],
+      "view": "\nA quote over\nseveral lines.\n\n\nAfter.",
+      "drawn": {
+        "quote": 1,
+        "box": 0
+      },
+      "off": "\nA quote over\nseveral lines.\n\n\nAfter.",
+      "reference": {
+        "group": "documents",
+        "title": "GitLab quotes",
+        "becomes": "A quote. Drawn while `tandemMarkdown.syntax.boxes` is on.",
+        "writers": ["GitLab"]
+      }
+    },
+    {
+      "name": "a styled span in a table cell",
+      "syntax": "spans",
+      "example": "| Word |\n|---|\n| [Note]{.underline} and [Name]{.smallcaps} |",
+      "nodes": ["Span", "Span"],
+      "view": "WordNote and Name",
+      "drawn": {
+        "table": 1,
+        "underline": 1,
+        "small capitals": 1
+      },
+      "off": "Word[Note]{.underline} and [Name]{.smallcaps}"
+    },
+    {
+      "name": "an abbreviation in a table cell",
+      "syntax": "abbreviations",
+      "example": "| Format | Year |\n|---|---|\n| HTML | 1993 |\n\n*[HTML]: Hyper Text Markup Language",
+      "nodes": ["Abbreviation"],
+      "view": "FormatYearHTML1993\n",
+      "drawn": {
+        "table": 1,
+        "abbreviation": 1
+      },
+      "off": "FormatYearHTML1993\n\n*[HTML]: Hyper Text Markup Language"
+    },
+    {
+      "name": "tracked changes in a table cell",
+      "syntax": "criticMarkup",
+      "example": "| Draft |\n|---|\n| The {++quick ++}fox {--ran--}{++jumped++} |",
+      "nodes": ["CriticAddition", "CriticDeletion", "CriticAddition"],
+      "view": "DraftThe quick fox ranjumped",
+      "drawn": {
+        "table": 1,
+        "inserted text": 2,
+        "deleted text": 1
+      },
+      "off": "DraftThe {++quick ++}fox {--ran--}{++jumped++}"
+    },
+    {
+      "name": "math in LaTeX's delimiters in a table cell",
+      "syntax": "latexMath",
+      "example": "| Shape | Area |\n|---|---|\n| Circle | \\(\\pi r^2\\) |",
+      "nodes": ["InlineMath"],
+      "view": "ShapeAreaCircleπr2",
+      "drawn": {
+        "table": 1,
+        "formula": 1
+      },
+      "off": "ShapeAreaCircle(\\pi r^2)"
+    },
+    {
+      "name": "math with doubled backslashes in a table cell",
+      "syntax": "doubledLatexMath",
+      "example": "| Shape | Area |\n|---|---|\n| Square | \\\\(a^2\\\\) |",
+      "nodes": ["InlineMath"],
+      "view": "ShapeAreaSquarea2",
+      "drawn": {
+        "table": 1,
+        "formula": 1
+      },
+      "off": "ShapeAreaSquare\\(a^2\\)"
+    }
+  ]
+}

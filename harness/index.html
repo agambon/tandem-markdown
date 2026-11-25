@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--
+      The panel's real policy (pageHtml in src/host/provider.ts), with 'self' standing for the webview's origin.
+      One addition: connect-src 'self', so the page can fetch its samples. The real panel fetches nothing.
+    -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'nonce-tmharness' 'self'; style-src 'self' 'nonce-tmharness'; img-src 'self' https: data:; media-src 'self' https:; font-src 'self'; form-action 'none'; base-uri 'none'; connect-src 'self'"
+    />
+    <meta name="tm-csp-nonce" content="tmharness" />
+    <meta name="tm-assets" content="../panel/" />
+    <title>Tandem Markdown harness</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="../panel/codicon.css" />
+    <link rel="stylesheet" href="../panel/panel.css" />
+    <style nonce="tmharness">
+      :root {
+        --hx-bar: 40px;
+        --hx-status: 28px;
+        --hx-top: calc(var(--hx-bar) + var(--hx-status));
+      }
+      body {
+        background: var(--tm-fb-bg);
+        color: var(--tm-fb-fg);
+        font:
+          13px system-ui,
+          -apple-system,
+          'Segoe UI',
+          sans-serif;
+      }
+      .hx-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: var(--hx-bar);
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 0 12px;
+        overflow-x: auto;
+        white-space: nowrap;
+        background: var(--tm-fb-widget-bg);
+        border-bottom: 1px solid var(--tm-fb-border);
+      }
+      .hx-bar label,
+      .hx-buttons label {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .hx-bar select,
+      .hx-bar button,
+      .hx-buttons button {
+        font: inherit;
+      }
+      .hx-status {
+        position: fixed;
+        top: var(--hx-bar);
+        left: 0;
+        right: 0;
+        height: var(--hx-status);
+        box-sizing: border-box;
+        padding: 0 12px;
+        line-height: var(--hx-status);
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        border-bottom: 1px solid var(--tm-fb-border);
+        color: var(--tm-fb-faded);
+      }
+      .hx-status .hx-bad {
+        color: var(--tm-fb-error);
+        font-weight: 600;
+      }
+      .hx-left {
+        position: fixed;
+        top: var(--hx-top);
+        left: 0;
+        bottom: 0;
+        width: 50%;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 8px 12px;
+        border-right: 1px solid var(--tm-fb-border);
+        overflow: auto;
+      }
+      .hx-left section {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        min-height: 0;
+      }
+      .hx-left section.hx-grow {
+        flex: 1 1 0;
+      }
+      .hx-left h2 {
+        margin: 0;
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .hx-left textarea {
+        flex: 1 1 auto;
+        min-height: 80px;
+        resize: none;
+        box-sizing: border-box;
+        width: 100%;
+        padding: 6px;
+        font:
+          13px Consolas,
+          'Courier New',
+          monospace;
+        background: var(--tm-fb-bg);
+        color: var(--tm-fb-fg);
+        border: 1px solid var(--tm-fb-border);
+        border-radius: 3px;
+      }
+      .hx-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+      }
+      .hx-hint {
+        color: var(--tm-fb-warning);
+      }
+      .hx-hint:empty {
+        display: none;
+      }
+      .hx-notices {
+        margin: 0;
+        padding: 0 0 0 18px;
+        max-height: 140px;
+        overflow: auto;
+      }
+      .hx-notices li {
+        margin: 2px 0;
+      }
+      .hx-notices button {
+        margin-left: 8px;
+        font: inherit;
+      }
+      .hx-panel.tm-root {
+        top: var(--hx-top);
+        left: 50%;
+      }
+    </style>
+    <script type="module" nonce="tmharness" src="harness.js"></script>
+  </head>
+  <body class="vscode-dark">
+    <header class="hx-bar" id="hx-bar"></header>
+    <div class="hx-status" id="hx-status" role="status"></div>
+    <main class="hx-left">
+      <section class="hx-grow">
+        <h2 id="hx-document-label">The document</h2>
+        <textarea id="hx-document" aria-labelledby="hx-document-label" spellcheck="false"></textarea>
+        <div class="hx-buttons">
+          <button type="button" id="hx-save">Save</button>
+          <label><input type="checkbox" id="hx-autosave" /> Auto-save</label>
+          <button type="button" id="hx-undo">Undo</button>
+          <button type="button" id="hx-redo">Redo</button>
+        </div>
+      </section>
+      <section class="hx-grow">
+        <h2 id="hx-disk-label">The file on disk</h2>
+        <textarea id="hx-disk" aria-labelledby="hx-disk-label" spellcheck="false"></textarea>
+        <div class="hx-buttons">
+          <button type="button" id="hx-write">Write</button>
+          <button type="button" id="hx-flip">Flip line endings on disk</button>
+          <span class="hx-hint" id="hx-disk-hint"></span>
+        </div>
+      </section>
+      <section>
+        <h2>Notices</h2>
+        <ul class="hx-notices" id="hx-notices"></ul>
+      </section>
+    </main>
+    <div id="tm-root" class="hx-panel"></div>
+  </body>
+</html>

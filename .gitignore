@@ -1,0 +1,27 @@
+# Dependencies and build outputs
+node_modules/
+dist/
+out/
+coverage/
+.vscode-test/
+
+# Packaged extensions and logs
+*.vsix
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local secrets, scratch, and internal notes
+.env
+.env.*
+.local/
+*.conflict
+
+# Local AI agent instructions and rules
+.claude/
+CLAUDE.md
+CLAUDE.local.md
+AGENTS.md
+GEMINI.md

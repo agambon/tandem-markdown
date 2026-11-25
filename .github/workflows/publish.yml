@@ -1,0 +1,56 @@
+# Publishes Tandem Markdown to the Visual Studio Code Marketplace using GitHub Actions
+# Trusted Publishing (OIDC) without storing any Personal Access Token.
+# Triggers automatically when a GitHub Release is published, or manually via workflow_dispatch.
+name: Publish to Marketplace
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      pre_release:
+        description: 'Publish as a pre-release version (--pre-release)'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: publish-marketplace
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Verify and publish to VS Code Marketplace
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Verify release tag matches package.json version
+        if: github.event_name == 'release'
+        env:
+          TAG_NAME: ${{ github.event.release.tag_name }}
+        run: |
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          if [ "$TAG_NAME" != "v$PKG_VERSION" ]; then
+            echo "Release tag '$TAG_NAME' does not match package.json version 'v$PKG_VERSION'." >&2
+            exit 1
+          fi
+      - run: npm run check
+      - run: npm run test:panel
+      - name: Publish with OIDC Trusted Publishing
+        env:
+          IS_PRE_RELEASE: ${{ github.event_name == 'release' && github.event.release.prerelease || inputs.pre_release }}
+        run: |
+          if [ "$IS_PRE_RELEASE" = "true" ]; then
+            npx @vscode/vsce publish --oidc --no-dependencies --pre-release
+          else
+            npx @vscode/vsce publish --oidc --no-dependencies
+          fi

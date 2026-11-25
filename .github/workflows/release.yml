@@ -1,0 +1,140 @@
+# The checks run once before a release, started by hand (Actions, "Before a release", Run
+# workflow) or by pushing a version tag: the unit tests and the in-VS-Code suite on every system
+# and VS Code version the extension claims, the long simulation sweep and the long merge oracle
+# run, every browser spec, and the package with its list of files.
+name: Before a release
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+jobs:
+  unit:
+    name: Unit tests (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm test
+
+  vscode:
+    name: In VS Code ${{ matrix.vscode }} (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        # The floor in package.json's engines.vscode, and the current release.
+        vscode: ['1.120.0', stable]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Run the suite
+        shell: bash
+        env:
+          VSCODE_TEST_VERSION: ${{ matrix.vscode }}
+          TM_ITEST_DIR: ${{ runner.temp }}/tandem-markdown-itest
+        # VS Code needs a display; Linux runners have none, so there the suite runs under xvfb.
+        run: |
+          if [ "$RUNNER_OS" = Linux ]; then
+            xvfb-run -a npm run itest
+          else
+            npm run itest
+          fi
+      - name: Keep the log of a failed run
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: itest-${{ matrix.os }}-${{ matrix.vscode }}
+          path: |
+            ${{ runner.temp }}/tandem-markdown-itest/last-run.log
+            ${{ runner.temp }}/tandem-markdown-itest/user-data/logs
+          if-no-files-found: ignore
+
+  long:
+    name: Long simulation sweep and merge oracle run
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      # Each run of this workflow sweeps seeds no earlier run swept; a failure prints its seed.
+      - name: The simulation, 20,000 seeds
+        run: SIM_FIRST=$(( GITHUB_RUN_NUMBER * 20000 + 1 )) SIM_RUNS=20000 npx vitest run test/sync/simulation.test.ts
+      - name: The merge oracle, 200,000 cases a property, from a fresh seed
+        run: TEST_SEED=random MERGE3_ORACLE_RUNS=200000 npx vitest run test/core/merge3.test.ts
+
+  every-spec:
+    name: List every browser spec
+    runs-on: ubuntu-latest
+    outputs:
+      specs: ${{ steps.areas.outputs.specs }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+      - id: areas
+        run: node scripts/areas.mjs --all --github >> "$GITHUB_OUTPUT"
+
+  specs:
+    name: Browser spec ${{ matrix.spec }}
+    needs: every-spec
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        spec: ${{ fromJSON(needs.every-spec.outputs.specs) }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: node harness/tests/${{ matrix.spec }}.spec.mjs
+
+  package:
+    name: Package and its files
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run package
+      - name: The files the package holds
+        run: |
+          npx vsce ls --no-dependencies | tee package-files.txt
+          { echo '### The files the package holds'; echo '```'; cat package-files.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: vsix
+          path: '*.vsix'
+          if-no-files-found: error

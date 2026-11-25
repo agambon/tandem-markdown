@@ -1,0 +1,45 @@
+{
+  "name": "itest-helper",
+  "displayName": "Tandem Markdown test helper",
+  "description": "Loaded beside Tandem Markdown in its in-VS-Code suite only: reports problems and offers fixes, as a spell checker does, declares a stand-in editor whose priority is an object, and declares a notebook that opens some markdown notes by itself.",
+  "publisher": "tandem-markdown-tests",
+  "version": "0.0.0",
+  "private": true,
+  "engines": {
+    "vscode": "^1.120.0"
+  },
+  "activationEvents": [
+    "onLanguage:markdown",
+    "onCustomEditor:itestHelper.objectPriorityEditor",
+    "onNotebook:itestHelper.claimingNotebook"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "customEditors": [
+      {
+        "viewType": "itestHelper.objectPriorityEditor",
+        "displayName": "Object priority stand-in",
+        "selector": [
+          {
+            "filenamePattern": "*.objprio"
+          }
+        ],
+        "priority": {
+          "textEditor": "option",
+          "diffEditor": "explicit"
+        }
+      }
+    ],
+    "notebooks": [
+      {
+        "type": "itestHelper.claimingNotebook",
+        "displayName": "Claiming notebook stand-in",
+        "selector": [
+          {
+            "filenamePattern": "*.claimed.md"
+          }
+        ]
+      }
+    ]
+  }
+}

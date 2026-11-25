@@ -1,0 +1,436 @@
+{
+  "cases": [
+    {
+      "name": "a Mermaid diagram",
+      "syntax": "mermaid",
+      "example": "```mermaid\ngraph TD;\n  A-->B;\n```",
+      "nodes": [],
+      "view": "",
+      "drawn": {
+        "diagram": 1,
+        "drawing that failed": 0
+      },
+      "cursor": "A-->B;",
+      "off": "mermaidCopy\ngraph TD;\n  A-->B;",
+      "reference": {
+        "group": "math",
+        "title": "Mermaid diagrams",
+        "becomes": "A diagram drawn by Mermaid, shown as a picture in the editor's light or dark theme. A diagram with a mistake shows Mermaid's message. Its pencil, or the cursor, opens its source.",
+        "writers": ["GitHub", "GitLab", "Obsidian", "Typora", "Joplin", "Azure DevOps", "Material for MkDocs"]
+      }
+    },
+    {
+      "name": "a Mermaid diagram in a tilde fence",
+      "syntax": "mermaid",
+      "example": "~~~mermaid\nsequenceDiagram\n  A->>B: Hi\n~~~",
+      "nodes": [],
+      "view": "",
+      "drawn": {
+        "diagram": 1,
+        "drawing that failed": 0
+      },
+      "off": "mermaidCopy\nsequenceDiagram\n  A->>B: Hi"
+    },
+    {
+      "name": "a Mermaid diagram with its language in braces, as Quarto writes it",
+      "syntax": "mermaid",
+      "example": "```{mermaid}\nflowchart LR\n  A --> B\n```",
+      "nodes": [],
+      "view": "",
+      "drawn": {
+        "diagram": 1,
+        "drawing that failed": 0
+      },
+      "off": "mermaidCopy\nflowchart LR\n  A --> B"
+    },
+    {
+      "name": "a code block in another language that mentions mermaid stays code",
+      "syntax": "mermaid",
+      "example": "```js\nmermaid.render(id, text);\n```",
+      "nodes": [],
+      "view": "jsCopy\nmermaid.render(id, text);",
+      "off": "jsCopy\nmermaid.render(id, text);",
+      "drawn": {
+        "diagram": 0
+      }
+    },
+    {
+      "name": "a fence named after Mermaid but with another word first stays code",
+      "syntax": "mermaid",
+      "example": "```text mermaid\ngraph TD;\n```",
+      "nodes": [],
+      "view": "textCopy\ngraph TD;",
+      "off": "textCopy\ngraph TD;",
+      "drawn": {
+        "diagram": 0
+      }
+    },
+    {
+      "name": "a contents list of the file's headings",
+      "syntax": "contents",
+      "example": "# Title\n\n[TOC]\n\n## One\n\n### Deeper\n\n## Two",
+      "nodes": [],
+      "view": "Title\n\nTitleOneDeeperTwo\n\nOne\n\nDeeper\n\nTwo",
+      "drawn": {
+        "contents list": 1,
+        "contents entry": 4
+      },
+      "cursor": "[TOC]",
+      "off": "Title\n\n[TOC]\n\nOne\n\nDeeper\n\nTwo",
+      "reference": {
+        "group": "notes",
+        "title": "Contents lists",
+        "becomes": "A list of the file's headings, each a link to its heading, kept current as the headings change. `[toc]` works too.",
+        "writers": ["Typora", "Joplin", "Python-Markdown", "Markdown Preview Enhanced"]
+      }
+    },
+    {
+      "name": "a heading's entities, HTML and comments read as its text in the list",
+      "syntax": "contents",
+      "example": "# Tom &amp; <kbd>Jerry</kbd><!-- draft -->\n\n[TOC]",
+      "nodes": [],
+      "view": "Tom & Jerry\n\nTom & Jerry",
+      "drawn": {
+        "contents list": 1,
+        "contents entry": 1
+      },
+      "off": "Tom & Jerry\n\n[TOC]"
+    },
+    {
+      "name": "the marker in lower case",
+      "syntax": "contents",
+      "example": "[toc]\n\n# A",
+      "nodes": [],
+      "view": "A\n\nA",
+      "drawn": {
+        "contents list": 1,
+        "contents entry": 1
+      },
+      "off": "[toc]\n\nA"
+    },
+    {
+      "name": "the marker GitLab and Azure write",
+      "syntax": "contents",
+      "example": "[[_TOC_]]\n\n# A",
+      "nodes": [],
+      "view": "A\n\nA",
+      "drawn": {
+        "contents list": 1,
+        "contents entry": 1
+      },
+      "off": "[[_TOC_]]\n\nA",
+      "reference": {
+        "group": "documents",
+        "title": "GitLab and Azure DevOps contents lists",
+        "becomes": "A list of the file's headings, as `[TOC]` gives.",
+        "writers": ["GitLab", "Azure DevOps"]
+      }
+    },
+    {
+      "name": "a marker with no headings to list",
+      "syntax": "contents",
+      "example": "[TOC]",
+      "nodes": [],
+      "view": "No headings yet.",
+      "drawn": {
+        "contents list": 1,
+        "contents entry": 0
+      }
+    },
+    {
+      "name": "a marker inside a sentence stays text",
+      "syntax": "contents",
+      "example": "See [TOC] here.\n\n# A",
+      "nodes": [],
+      "view": "See [TOC] here.\n\nA",
+      "drawn": {
+        "contents list": 0
+      },
+      "off": "See [TOC] here.\n\nA"
+    },
+    {
+      "name": "a marker that is a defined reference link stays a link",
+      "syntax": "contents",
+      "example": "[toc]\n\n[toc]: https://example.com",
+      "nodes": [],
+      "view": "toc\n",
+      "drawn": {
+        "contents list": 0,
+        "link": 1
+      },
+      "off": "toc\n"
+    },
+    {
+      "name": "a marker in a quote stays text",
+      "syntax": "contents",
+      "example": "> [TOC]",
+      "nodes": [],
+      "view": "[TOC]",
+      "drawn": {
+        "contents list": 0
+      },
+      "off": "[TOC]"
+    },
+    {
+      "name": "the marker VitePress writes is a contents list when no note answers it",
+      "syntax": "contents",
+      "example": "[[toc]]\n\n# A\n\n## B",
+      "nodes": [],
+      "view": "AB\n\nA\n\nB",
+      "drawn": {
+        "contents list": 1,
+        "contents entry": 2,
+        "link": 0
+      },
+      "cursor": "[[toc]]",
+      "off": "toc\n\nA\n\nB",
+      "reference": {
+        "group": "documents",
+        "title": "VitePress contents lists",
+        "becomes": "A list of the file's headings, as `[TOC]` gives, in any letter case. When the workspace has a note named \"toc\", it stays a link to that note, as Obsidian and Foam read it.",
+        "writers": ["VitePress", "Joplin"]
+      }
+    },
+    {
+      "name": "VitePress's marker in capitals is a contents list too",
+      "syntax": "contents",
+      "example": "[[TOC]]\n\n# A",
+      "nodes": [],
+      "view": "A\n\nA",
+      "drawn": {
+        "contents list": 1,
+        "contents entry": 1
+      },
+      "off": "TOC\n\nA"
+    },
+    {
+      "name": "VitePress's marker inside a sentence stays a wikilink",
+      "syntax": "contents",
+      "example": "See [[toc]] here.\n\n# A",
+      "nodes": [],
+      "view": "See toc here.\n\nA",
+      "drawn": {
+        "contents list": 0,
+        "link": 1
+      },
+      "off": "See toc here.\n\nA"
+    },
+    {
+      "name": "the contents markers of other programs stay as typed",
+      "syntax": "contents",
+      "example": "${toc}\n\n{{TOC}}\n\n* TOC\n{:toc}\n\n# A",
+      "nodes": [],
+      "view": "${toc}\n\n{{TOC}}\n\n* TOC\n{:toc}\n\nA",
+      "drawn": {
+        "contents list": 0
+      },
+      "off": "${toc}\n\n{{TOC}}\n\n* TOC\n{:toc}\n\nA",
+      "reference": {
+        "group": "typed",
+        "title": "Other contents markers",
+        "becomes": "Shown as typed: `${toc}`, MultiMarkdown's `{{TOC}}`, and kramdown's `{:toc}`, whose `* TOC` line is a list of one item.",
+        "writers": ["MultiMarkdown", "kramdown"]
+      }
+    },
+    {
+      "name": "an embedded block of another note",
+      "syntax": "embeds",
+      "example": "![[Other note#^quote-1]]",
+      "nodes": [],
+      "view": "Other noteA line to quote.",
+      "drawn": {
+        "embedded note": 1
+      },
+      "cursor": "Other note#^quote-1",
+      "off": "Other note > ^quote-1",
+      "reference": {
+        "group": "notes",
+        "title": "Embedded notes",
+        "becomes": "The note, or its section or block, drawn in place and read-only on a line of its own, with a button that opens the note. It needs wikilinks on.",
+        "writers": ["Obsidian", "Foam", "Dendron", "Markdown Preview Enhanced"]
+      }
+    },
+    {
+      "name": "an embed with an escaped bar before its shown text names the same block",
+      "syntax": "embeds",
+      "example": "![[Other note#^quote-1\\|the quote]]",
+      "nodes": [],
+      "view": "Other noteA line to quote.",
+      "drawn": {
+        "embedded note": 1
+      },
+      "off": "the quote"
+    },
+    {
+      "name": "an embedded section of another note",
+      "syntax": "embeds",
+      "example": "# A\n\n![[Other note#Part two]]",
+      "nodes": [],
+      "view": "A\n\nOther notePart twoA line to quote.- one- two",
+      "drawn": {
+        "embedded note": 1
+      },
+      "off": "A\n\nOther note > Part two"
+    },
+    {
+      "name": "notes embedded three deep read their pictures from their own folders",
+      "syntax": "embeds",
+      "example": "![[Deep one]]",
+      "nodes": [],
+      "view": "Deep oneDeep oneDeep twoDeep twoDeep threeDeep three and Other note > Part two",
+      "drawn": {
+        "embedded note": 3,
+        "picture": 3,
+        "picture not shown": 0
+      },
+      "off": "Deep one"
+    },
+    {
+      "name": "an embed of a missing note says so",
+      "syntax": "embeds",
+      "example": "![[Missing]]",
+      "nodes": [],
+      "view": "No note named “Missing” in this workspace.",
+      "drawn": {
+        "embedded note": 1
+      },
+      "off": "Missing"
+    },
+    {
+      "name": "an embed inside a sentence stays a link",
+      "syntax": "embeds",
+      "example": "See ![[Other note]] here.",
+      "nodes": [],
+      "view": "See Other note here.",
+      "drawn": {
+        "embedded note": 0
+      },
+      "off": "See Other note here.",
+      "reference": {
+        "group": "typed",
+        "title": "Embeds inside a sentence",
+        "becomes": "A link to the note, not the note drawn in place.",
+        "writers": ["Obsidian"]
+      }
+    },
+    {
+      "name": "an embedded picture stays a picture",
+      "syntax": "embeds",
+      "example": "![[picture.png]]",
+      "nodes": [],
+      "view": "",
+      "drawn": {
+        "embedded note": 0,
+        "picture": 1
+      },
+      "off": ""
+    },
+    {
+      "name": "an embedded document or sound file stays a link, not a note",
+      "syntax": "embeds",
+      "example": "![[doc.pdf#page=3]]\n\n![[talk.opus]]",
+      "nodes": [],
+      "view": "doc.pdf > page=3\n\ntalk.opus",
+      "drawn": {
+        "embedded note": 0
+      },
+      "off": "doc.pdf > page=3\n\ntalk.opus"
+    },
+    {
+      "name": "an embedded PDF is a link to it",
+      "syntax": "embeds",
+      "example": "![[doc.pdf#page=3]]",
+      "nodes": [],
+      "view": "doc.pdf > page=3",
+      "drawn": {
+        "embedded note": 0,
+        "link": 1
+      },
+      "off": "doc.pdf > page=3",
+      "reference": {
+        "group": "typed",
+        "title": "Embedded PDFs",
+        "becomes": "A link to the document, not the document drawn in place.",
+        "writers": ["Obsidian"]
+      }
+    },
+    {
+      "name": "a block id at the end of a paragraph",
+      "syntax": "blockIds",
+      "example": "A paragraph. ^quote-1",
+      "nodes": [],
+      "view": "A paragraph.",
+      "drawn": {},
+      "cursor": "^quote-1",
+      "reference": {
+        "group": "notes",
+        "title": "Block ids",
+        "becomes": "Hidden in Rich view and faded in Rich editor. An embed or a link names the block by it.",
+        "writers": ["Obsidian", "Foam", "Dendron"]
+      }
+    },
+    {
+      "name": "a block id on a list item",
+      "syntax": "blockIds",
+      "example": "- one\n- two ^item-2",
+      "nodes": [],
+      "view": "- one\n- two",
+      "drawn": {}
+    },
+    {
+      "name": "a block id on a line of its own",
+      "syntax": "blockIds",
+      "example": "Text.\n^abc",
+      "nodes": [],
+      "view": "Text.",
+      "drawn": {}
+    },
+    {
+      "name": "a caret inside text stays text",
+      "syntax": "blockIds",
+      "example": "Costs x ^ 2 and a^b",
+      "nodes": [],
+      "view": "Costs x ^ 2 and a^b",
+      "drawn": {}
+    },
+    {
+      "name": "a caret in code or a footnote stays text",
+      "syntax": "blockIds",
+      "example": "Use [^1] and `x ^a`",
+      "nodes": [],
+      "view": "Use [^1] and x ^a",
+      "drawn": {},
+      "off": "Use [^1] and x ^a"
+    },
+    {
+      "name": "git's conflict markers",
+      "syntax": "conflictMarkers",
+      "example": "<<<<<<< HEAD\nBudget: 4,200, agreed with Dana on the 12th.\n=======\nBudget: 4,500.\n>>>>>>> north-wall",
+      "nodes": ["ConflictBlock", "ConflictMark", "ConflictMark", "ConflictMark"],
+      "view": "Merge conflictCurrent change (HEAD)Budget: 4,200, agreed with Dana on the 12th.Incoming change (north-wall)Budget: 4,500.Resolve in Source",
+      "drawn": {
+        "merge conflict": 1,
+        "level 1 heading": 0
+      },
+      "cursor": "Budget: 4,500.",
+      "off": "<<<<<<< HEAD\nBudget: 4,200, agreed with Dana on the 12th.\nBudget: 4,500.\nnorth-wall",
+      "reference": {
+        "group": "git",
+        "title": "Git's conflict markers",
+        "becomes": "A merge conflict, its two sides labeled with the names git gave them. Its lines are not read as markdown, where the line above `=======` would become a heading. In the Rich editor, three buttons keep one side or both. A link opens the note in Source at the conflict.",
+        "writers": ["git"]
+      }
+    },
+    {
+      "name": "git's conflict markers in a code block stay code",
+      "syntax": "conflictMarkers",
+      "example": "```\n<<<<<<< HEAD\na\n=======\nb\n>>>>>>> x\n```",
+      "nodes": [],
+      "view": "Copy\n<<<<<<< HEAD\na\n=======\nb\n>>>>>>> x",
+      "drawn": {
+        "merge conflict": 0,
+        "code block": 1
+      }
+    }
+  ]
+}

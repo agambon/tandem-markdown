@@ -1,0 +1,16 @@
+name: Feature request
+description: Something the extension does not do and should.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: What you want to do
+      description: The task, in your words, and what gets in the way today.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: How it could work
+      description: Optional. What you would expect to press or see.

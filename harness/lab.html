@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--
+      The panel's real policy, with 'self' standing for the webview's origin. One addition:
+      connect-src 'self', so the lab can fetch its samples. The real panel fetches nothing.
+    -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'nonce-tmlab' 'self'; style-src 'self' 'nonce-tmlab'; img-src 'self' https: data:; media-src 'self' https:; font-src 'self'; form-action 'none'; base-uri 'none'; connect-src 'self'"
+    />
+    <meta name="tm-csp-nonce" content="tmlab" />
+    <meta name="tm-assets" content="../panel/" />
+    <title>Tandem Markdown lab</title>
+    <link rel="icon" href="data:," />
+    <!-- VS Code's icon font and the panel's own stylesheet, as the panel bundle builds them. -->
+    <link rel="stylesheet" href="../panel/codicon.css" />
+    <link rel="stylesheet" href="../panel/panel.css" />
+    <style nonce="tmlab">
+      .lab-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 40px;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 0 12px;
+        font:
+          13px system-ui,
+          sans-serif;
+        background: var(--tm-fb-widget-bg);
+        color: var(--tm-fb-fg);
+        border-bottom: 1px solid var(--tm-fb-border);
+      }
+      .lab-bar label {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .lab-bar select {
+        font: inherit;
+      }
+      .tm-root {
+        top: 40px;
+      }
+    </style>
+    <script type="module" nonce="tmlab" src="lab.js"></script>
+  </head>
+  <body class="vscode-dark">
+    <div class="lab-bar" id="lab-bar"></div>
+    <div class="tm-root">
+      <div class="tm-toolbar"></div>
+      <div class="tm-notices"></div>
+      <div class="tm-editor"></div>
+    </div>
+  </body>
+</html>

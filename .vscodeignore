@@ -1,0 +1,11 @@
+**
+!dist/host/**
+!dist/panel/**
+!package.json
+!icon.png
+!README.md
+!CHANGELOG.md
+!SUPPORT.md
+!THIRD_PARTY_NOTICES.md
+dist/**/*.map
+!LICENSE

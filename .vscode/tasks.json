@@ -1,0 +1,19 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "type": "npm",
+      "script": "build",
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": []
+    },
+    {
+      "label": "build: itest",
+      "type": "shell",
+      "command": "node esbuild.mjs --itest",
+      "group": "build",
+      "problemMatcher": []
+    }
+  ]
+}

@@ -1,0 +1,380 @@
+{
+  "cases": [
+    {
+      "name": "headings with # and underlined headings",
+      "syntax": null,
+      "example": "# A heading\n\n### A smaller heading\n\nAn underlined heading\n=====================\n\nA smaller one\n-------------",
+      "nodes": [],
+      "view": "A heading\n\nA smaller heading\n\nAn underlined heading\n\nA smaller one",
+      "drawn": { "level 1 heading": 2, "level 2 heading": 1, "level 3 heading": 1 },
+      "cursor": "# A heading",
+      "reference": {
+        "group": "standard",
+        "title": "Headings",
+        "becomes": "A heading. `#` to `######` give the six levels, and a line of `=` or `-` under the text gives the first two."
+      }
+    },
+    {
+      "name": "bold and italic with stars and with underscores",
+      "syntax": null,
+      "example": "**Bold**, __bold__, *italic*, _italic_ and ***both***.",
+      "nodes": [],
+      "view": "Bold, bold, italic, italic and both.",
+      "drawn": { "bold": 3, "italic": 3 },
+      "cursor": "**Bold**",
+      "reference": {
+        "group": "standard",
+        "title": "Bold and italic",
+        "becomes": "Bold and italic text."
+      }
+    },
+    {
+      "name": "code in a line, with a backtick inside",
+      "syntax": null,
+      "example": "Run `npm ci` first, or ``a `tick` inside``.",
+      "nodes": [],
+      "view": "Run npm ci first, or a `tick` inside.",
+      "drawn": { "code": 2 },
+      "cursor": "`npm ci`",
+      "reference": {
+        "group": "standard",
+        "title": "Code in a line",
+        "becomes": "Code, set apart from the text. Two backticks around it let it hold one."
+      }
+    },
+    {
+      "name": "links inline, by reference, in angle brackets, to a file and to a heading",
+      "syntax": null,
+      "example": "An [inline link](https://example.com \"Title\"), a [reference link][ref], <https://example.com>, [a file](Other%20note.md) and [a heading](#a-heading).\n\n[ref]: https://example.com",
+      "nodes": [],
+      "view": "An inline link, a reference link, https://example.com, a file and a heading.\n",
+      "drawn": { "link": 5 },
+      "cursor": "[a file](Other%20note.md)",
+      "reference": {
+        "group": "standard",
+        "title": "Links",
+        "becomes": "A link showing its text. A click opens it in Rich view, and Ctrl+click (Cmd+click on a Mac) in Rich editor. A reference link's definition is left out of Rich view."
+      }
+    },
+    {
+      "name": "pictures inline and by reference",
+      "syntax": null,
+      "example": "![A picture](picture.png \"Its title\") and ![a reference][pic]\n\n[pic]: chart.png",
+      "nodes": [],
+      "view": " and \n",
+      "drawn": { "picture": 2 },
+      "reference": {
+        "group": "standard",
+        "title": "Pictures",
+        "becomes": "The picture, from the workspace, or from an https address while `tandemMarkdown.images.allowRemote` is on. A picture that cannot be shown says why in its place."
+      }
+    },
+    {
+      "name": "a quote with an unmarked line and a quote inside it",
+      "syntax": null,
+      "example": "> A quote\nwith an unmarked line,\n>\n> > and a quote inside it.",
+      "nodes": [],
+      "view": "A quote\nwith an unmarked line,\n\nand a quote inside it.",
+      "drawn": { "quote": 2, "quote or box inside another": 1 },
+      "reference": {
+        "group": "standard",
+        "title": "Quotes",
+        "becomes": "A quote with a bar beside it. Quotes nest, and a line with no `>` goes on with the quote above it."
+      }
+    },
+    {
+      "name": "bulleted and numbered lists, nested, numbered from any number",
+      "syntax": null,
+      "example": "- An item\n- Another, holding\n\n  a second paragraph\n  - and a list\n\n3. Numbered from three\n4. Four\n\n1) With a parenthesis",
+      "nodes": [],
+      "view": "- An item\n- Another, holding\n\na second paragraph\n- and a list\n\n3. Numbered from three\n4. Four\n\n1) With a parenthesis",
+      "drawn": { "bulleted item": 3, "numbered item": 3 },
+      "reference": {
+        "group": "standard",
+        "title": "Lists",
+        "becomes": "A bulleted or numbered list. A numbered list starts at its first number, and an item can hold paragraphs, code and other lists."
+      }
+    },
+    {
+      "name": "fenced code blocks with backticks and with tildes",
+      "syntax": null,
+      "example": "```js\nlet a = 1;\n```\n\n~~~python\nprint(1)\n~~~",
+      "nodes": [],
+      "view": "jsCopy\nlet a = 1;\n\npythonCopy\nprint(1)",
+      "drawn": { "code block": 2 },
+      "cursor": "```js",
+      "reference": {
+        "group": "standard",
+        "title": "Code blocks",
+        "becomes": "A code block colored as its language, with the language's name and a Copy button above it."
+      }
+    },
+    {
+      "name": "indented code",
+      "syntax": null,
+      "example": "Text.\n\n    indented code\n\nText.",
+      "nodes": [],
+      "view": "Text.\n\n    indented code\n\nText.",
+      "drawn": { "code block": 1 },
+      "reference": {
+        "group": "standard",
+        "title": "Indented code",
+        "becomes": "A code block."
+      }
+    },
+    {
+      "name": "rules",
+      "syntax": null,
+      "example": "Above.\n\n---\n\n***\n\nBelow.",
+      "nodes": [],
+      "view": "Above.\n\n\n\n\n\nBelow.",
+      "drawn": { "rule": 2 },
+      "reference": {
+        "group": "standard",
+        "title": "Rules",
+        "becomes": "A line across the page."
+      }
+    },
+    {
+      "name": "line breaks with two spaces and with a backslash",
+      "syntax": null,
+      "example": "Two spaces  \nand a backslash\\\nbreak a line.",
+      "nodes": [],
+      "view": "Two spaces  \nand a backslash\nbreak a line.",
+      "drawn": {},
+      "reference": {
+        "group": "standard",
+        "title": "Line breaks",
+        "becomes": "A line break. The backslash is hidden."
+      }
+    },
+    {
+      "name": "each line of a paragraph stays a line of its own",
+      "syntax": null,
+      "example": "One line of a paragraph\nand the next line of it.",
+      "nodes": [],
+      "view": "One line of a paragraph\nand the next line of it.",
+      "drawn": {},
+      "reference": {
+        "group": "standard",
+        "title": "Lines of a paragraph",
+        "becomes": "Each line of the file stays a line of its own, where CommonMark joins them into one."
+      }
+    },
+    {
+      "name": "backslash escapes and entities",
+      "syntax": null,
+      "example": "\\*Not italic\\*, &copy; &amp; &#169; &#xA9;.",
+      "nodes": [],
+      "view": "*Not italic*, © & © ©.",
+      "drawn": {},
+      "cursor": "&copy;",
+      "reference": {
+        "group": "standard",
+        "title": "Backslash escapes and entities",
+        "becomes": "The character itself: the backslash before it is hidden, and an entity shows as the character it names."
+      }
+    },
+    {
+      "name": "HTML comments are hidden in Rich view",
+      "syntax": null,
+      "example": "Text <!-- a comment --> more.\n\n<!--\nA comment block.\n-->\n\nAfter.",
+      "nodes": [],
+      "view": "Text  more.\n\nAfter.",
+      "drawn": {},
+      "cursor": "<!-- a comment -->",
+      "reference": {
+        "group": "html",
+        "title": "HTML comments",
+        "becomes": "Hidden in Rich view, and shown in Rich editor.",
+        "writers": ["GitHub", "Hugo", "Docusaurus", "Markdown Preview Enhanced"]
+      }
+    },
+    {
+      "name": "a table with aligned columns, formatting and a line break in a cell",
+      "syntax": null,
+      "example": "| Left | Center | Right |\n|:-----|:------:|------:|\n| a    | **b**  | `c`   |\n| one<br>two | d | e |",
+      "nodes": [],
+      "view": "LeftCenterRightabconetwode",
+      "drawn": { "table": 1, "bold": 1, "code": 1 },
+      "reference": {
+        "group": "github",
+        "title": "Tables",
+        "becomes": "A table. Colons in the line of dashes align its columns, cells hold formatting, and `<br>` breaks a line in a cell. A click on a cell edits that cell alone.",
+        "writers": ["GitHub", "nearly every other program"]
+      }
+    },
+    {
+      "name": "a task list",
+      "syntax": null,
+      "example": "- [x] Done\n- [ ] To do",
+      "nodes": [],
+      "view": "Done\nTo do",
+      "drawn": { "checkbox": 2 },
+      "reference": {
+        "group": "github",
+        "title": "Task lists",
+        "becomes": "Checkboxes. A click checks or unchecks one, in Rich view too.",
+        "writers": ["GitHub", "nearly every other program"]
+      }
+    },
+    {
+      "name": "strikethrough with two tildes",
+      "syntax": null,
+      "example": "~~Two tildes~~ strike through.",
+      "nodes": [],
+      "view": "Two tildes strike through.",
+      "drawn": { "strikethrough": 1 },
+      "cursor": "~~Two tildes~~",
+      "reference": {
+        "group": "github",
+        "title": "Strikethrough",
+        "becomes": "Struck-through text.",
+        "writers": ["GitHub", "nearly every other program"]
+      }
+    },
+    {
+      "name": "bare web addresses, www. addresses and email addresses are links",
+      "syntax": null,
+      "example": "Visit https://example.com, www.example.com or write to someone@example.com.",
+      "nodes": [],
+      "view": "Visit https://example.com, www.example.com or write to someone@example.com.",
+      "drawn": { "link": 3 },
+      "reference": {
+        "group": "github",
+        "title": "Bare addresses",
+        "becomes": "Links: web addresses, addresses that start with `www.`, and email addresses.",
+        "writers": ["GitHub", "GitLab", "Obsidian"]
+      }
+    },
+    {
+      "name": "YAML front matter is a table",
+      "syntax": null,
+      "example": "---\ntitle: A note\ntags: [travel, food]\n---\n\nText.",
+      "nodes": [],
+      "view": "titleA notetagstravelfood\n\nText.",
+      "drawn": { "front matter table": 1, "list in front matter": 1 },
+      "reference": {
+        "group": "notes",
+        "title": "Front matter",
+        "becomes": "A table of names and values, from YAML or from JSON between the `---` lines. `tandemMarkdown.frontmatter.display` chooses a table (the default), the text as typed, or hiding it in Rich view.",
+        "writers": ["Obsidian", "Jekyll", "Hugo", "MkDocs", "Docusaurus", "Pandoc"]
+      }
+    },
+    {
+      "name": "JSON front matter between --- lines is a table",
+      "syntax": null,
+      "example": "---\n{\"tags\": [\"journal\"]}\n---\n\nText.",
+      "nodes": [],
+      "view": "tagsjournal\n\nText.",
+      "drawn": { "front matter table": 1, "list in front matter": 1 }
+    },
+    {
+      "name": "inserted text marked with plus signs stays as typed",
+      "syntax": null,
+      "example": "An ++inserted++ word.",
+      "nodes": [],
+      "view": "An ++inserted++ word.",
+      "drawn": {},
+      "plain": ["++inserted++"],
+      "reference": {
+        "group": "typed",
+        "title": "Inserted text",
+        "becomes": "Shown as typed.",
+        "writers": ["Joplin", "markdown-it-ins", "Hugo"]
+      }
+    },
+    {
+      "name": "attributes after a paragraph or a word stay as typed",
+      "syntax": null,
+      "example": "A paragraph\n{: .note}\n\nAn *emphasized*{.red} word.",
+      "nodes": [],
+      "view": "A paragraph\n{: .note}\n\nAn emphasized{.red} word.",
+      "drawn": { "italic": 1 },
+      "plain": ["{: .note}", "{.red}"],
+      "reference": {
+        "group": "typed",
+        "title": "Attributes after other blocks and words",
+        "becomes": "The braces show as typed, and what they follow is drawn.",
+        "writers": ["kramdown", "Python-Markdown", "Hugo"]
+      }
+    },
+    {
+      "name": "citations stay as typed",
+      "syntax": null,
+      "example": "As shown [@doe99, p. 33] and by @smith04.",
+      "nodes": [],
+      "view": "As shown [@doe99, p. 33] and by @smith04.",
+      "drawn": {},
+      "plain": ["[@doe99, p. 33]", "@smith04"],
+      "reference": {
+        "group": "typed",
+        "title": "Citations",
+        "becomes": "Shown as typed.",
+        "writers": ["Pandoc", "Quarto", "R Markdown"]
+      }
+    },
+    {
+      "name": "template tags and shortcodes stay as typed",
+      "syntax": null,
+      "example": "{{< figure src=\"chart.png\" >}}\n\n{% include note.html %} and {{ page.title }}",
+      "nodes": [],
+      "view": "{{< figure src=\"chart.png\" >}}\n\n{% include note.html %} and {{ page.title }}",
+      "drawn": {},
+      "plain": ["{{< figure src=\"chart.png\" >}}", "{% include note.html %}", "{{ page.title }}"],
+      "reference": {
+        "group": "typed",
+        "title": "Template tags and shortcodes",
+        "becomes": "Shown as typed.",
+        "writers": ["Hugo", "Jekyll"]
+      }
+    },
+    {
+      "name": "a table cell draws what a line draws",
+      "syntax": null,
+      "example": "| What | Example |\n|---|---|\n| Formatting | **bold**, `code` and ==marked== |\n| Links | [[Other note]] and #active |\n| Math | $E = mc^2$ |\n| Emoji | :tada: |",
+      "nodes": [],
+      "view": "WhatExampleFormattingbold, code and markedLinksOther note and #activeMathE=mc2Emoji🎉",
+      "drawn": {
+        "table": 1,
+        "bold": 1,
+        "code": 1,
+        "highlight": 1,
+        "link": 1,
+        "tag": 1,
+        "formula": 1,
+        "emoji": 1
+      },
+      "reference": {
+        "group": "github",
+        "title": "Table cells",
+        "becomes": "A cell draws what a line draws: formatting, links and wikilinks, tags, emoji, math, footnotes, pictures and HTML, each under its own setting. What is a block by nature, such as a contents list or a block id, shows as typed in a cell, and an embedded note shows as a link to it. A `|` in a cell is written `\\|`, in a link's shown text and a picture's size too.",
+        "writers": ["GitHub", "GitLab", "Obsidian", "Pandoc"]
+      }
+    },
+    {
+      "name": "what is a block by nature shows as typed in a table cell, and an embedded note as a link",
+      "syntax": null,
+      "example": "| Marker | Embed |\n|---|---|\n| [TOC] and a line ^block-1 | ![[Other note]] |",
+      "nodes": [],
+      "view": "MarkerEmbed[TOC] and a line ^block-1Other note",
+      "drawn": {
+        "table": 1,
+        "link": 1,
+        "contents list": 0,
+        "embedded note": 0
+      }
+    },
+    {
+      "name": "escapes, entities and addresses in a table cell",
+      "syntax": null,
+      "example": "| Text | Address |\n|---|---|\n| a \\| b &amp; c &copy; | <https://example.com> and www.example.com |",
+      "nodes": [],
+      "view": "TextAddressa | b & c ©https://example.com and www.example.com",
+      "drawn": {
+        "table": 1,
+        "link": 2
+      }
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+Getting started
+Install the tool with npm install lantern, then read the setup guide. It works on every platform, and most shells.
+
+Fast start
+Small config
+one file
+no state_dir needed
+Clone it
+Run it
+lantern init --name demo
+lantern run
+Tip: run lantern doctor first.
+
+Option	Default
+port	8080
+quiet	false
