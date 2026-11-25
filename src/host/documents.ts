@@ -25,6 +25,7 @@ import { isMarkdownPath, MARKDOWN_EXTENSIONS } from '../core/fileKinds';
 import { plainNotice } from '../core/noticeText';
 import { systemSchedule, type HostToPanel } from '../core/protocol';
 import { backupFolder, deleteBackup, writeBackup } from './backups';
+import { LocalDirWatcher } from './localDirWatcher';
 import { log } from './log';
 import { isConflictName } from './model/conflictName';
 import { documentText } from './model/documentText';
@@ -70,6 +71,8 @@ interface Entry extends TrackedDocument {
   disposeTimer: NodeJS.Timeout | null;
   /** A watcher for this file alone, when the workspace watcher does not cover it. */
   watcher: vscode.Disposable | null;
+  /** On Linux, a direct non-recursive directory watch so newly created nested folders report edits immediately. */
+  localWatcher: (() => void) | null;
   disposed: boolean;
   /** `performance.now()` at the document's last content change (or when it was first tracked). */
   lastChange: number;
@@ -85,6 +88,7 @@ function rememberedBaseKey(uri: string): string {
 export class Documents implements vscode.Disposable {
   private readonly entries = new Map<string, Entry>();
   private readonly disposables: vscode.Disposable[] = [];
+  private readonly localDirWatcher = new LocalDirWatcher();
   /** Documents whose remembered base was copied to a new path, by key, with the path being renamed. */
   private readonly movedBases = new Map<string, vscode.Uri>();
   /** For the in-VS-Code tests: the window's focus as the outside-change hold sees it; undefined reads VS Code's. */
@@ -145,6 +149,7 @@ export class Documents implements vscode.Disposable {
   dispose(): void {
     for (const e of [...this.entries.values()]) this.disposeEntry(e);
     for (const d of this.disposables) d.dispose();
+    this.localDirWatcher.dispose();
     stopFileReads();
   }
 
@@ -251,6 +256,7 @@ export class Documents implements vscode.Disposable {
       reconciled,
       disposeTimer: null,
       watcher: null,
+      localWatcher: null,
       disposed: false,
       lastChange: performance.now(),
     };
@@ -271,6 +277,8 @@ export class Documents implements vscode.Disposable {
     this.cancelDispose(e);
     e.watcher?.dispose();
     e.watcher = null;
+    e.localWatcher?.();
+    e.localWatcher = null;
     e.coordinator.dispose();
     noticesClosed(e.key);
     if (this.entries.get(e.key) === e) this.entries.delete(e.key);
@@ -381,9 +389,9 @@ export class Documents implements vscode.Disposable {
 
   /** A file the workspace watcher does not see gets a watcher of its own. */
   private updateWatcher(e: Entry): void {
-    const needs = e.reconciled && !e.disposed && !coveredByWorkspaceWatcher(e.document.uri);
+    const uri = e.document.uri;
+    const needs = e.reconciled && !e.disposed && !coveredByWorkspaceWatcher(uri);
     if (needs && !e.watcher) {
-      const uri = e.document.uri;
       const w = vscode.workspace.createFileSystemWatcher(
         new vscode.RelativePattern(vscode.Uri.joinPath(uri, '..'), fileNameOf(uri)),
       );
@@ -393,6 +401,13 @@ export class Documents implements vscode.Disposable {
     } else if (!needs && e.watcher) {
       e.watcher.dispose();
       e.watcher = null;
+    }
+    const needsLocal = process.platform === 'linux' && e.reconciled && !e.disposed && uri.scheme === 'file';
+    if (needsLocal && !e.localWatcher) {
+      e.localWatcher = this.localDirWatcher.watch(uri.fsPath, () => this.diskEvent(uri));
+    } else if (!needsLocal && e.localWatcher) {
+      e.localWatcher();
+      e.localWatcher = null;
     }
   }
 

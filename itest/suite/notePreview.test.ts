@@ -7,7 +7,7 @@
 // panel's `previewNote` request.
 
 import * as assert from 'node:assert/strict';
-import { existsSync, mkdirSync, rmdirSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, rmdirSync, rmSync, symlinkSync, unlinkSync, writeFileSync } from 'node:fs';
 import * as path from 'node:path';
 import * as vscode from 'vscode';
 import { errorMessage } from '../../src/core/errors';
@@ -42,8 +42,10 @@ suite('The start of a linked note', () => {
 
   suiteTeardown(async () => {
     await closeEverything();
-    // rmdir takes the junction itself away and leaves the folder it points to alone.
-    rmdirSync(path.join(workspaceDir(), 'preview', 'linked'));
+    const linked = path.join(workspaceDir(), 'preview', 'linked');
+    // A junction on Windows is removed with rmdirSync; on POSIX it is a symbolic link, removed with unlinkSync.
+    if (process.platform === 'win32') rmdirSync(linked);
+    else unlinkSync(linked);
     if (fileLink) rmSync(path.join(workspaceDir(), 'preview', 'filelink.md'), { force: true });
     // Windows can keep a folder busy for seconds after it was read, above all through a network
     // path as one case here does. The next run makes the folder again, so one left behind is no fault.

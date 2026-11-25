@@ -55,7 +55,10 @@ export function headingTextStart(state: EditorState, pos: number): number {
 export function revealHeadingSpec(state: EditorState, from: number): TransactionSpec {
   const pos = Math.max(0, Math.min(state.doc.length, Math.floor(from)));
   const line = state.doc.lineAt(pos);
-  const scroll = EditorView.scrollIntoView(line.from, { y: 'start', yMargin: 8 });
+  // Headings carry an 8px transparent top border (--tm-gap-h) plus font half-leading; 14px keeps
+  // the full line box below the top of the scroll area across OS font metrics without scrolling past
+  // the 16px blank gap line above it.
+  const scroll = EditorView.scrollIntoView(line.from, { y: 'start', yMargin: 14 });
   const hasFolds = (state.field(foldedHeadings, false)?.size ?? 0) > 0;
   const effects = hasFolds
     ? [scroll, unfoldHeadingAtEffect.of(line.from), redrawFeatureEffect.of('headingFolds')]
